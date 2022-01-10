@@ -17,6 +17,9 @@ module.exports = {
         'link': '#ff4d4d',
         'info': '#ffa6a6',
       },
+      fontFamily: {
+        'sans' : ['DIN Next LT Pro', 'Helvetica', 'Arial', 'sans-serif']
+      }      
     },
   },
   plugins: [],
