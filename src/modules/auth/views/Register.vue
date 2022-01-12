@@ -3,7 +3,7 @@
     <form @submit.prevent="onSubmit">
       <div class="mb-6">
         <label for="user" class="block mb-2 text-base font-bold text-dark"
-          >Usuario</label
+          >Usuario a Registrar</label
         >
         <input
           type="text"
@@ -63,25 +63,28 @@
           mb-2
         "
       >
-        Iniciar Sesión
+        Registrar
       </button>
     </form>
   </div>
 </template>
 
 <script>
-
 import { ref } from 'vue'
+import useAuth from '../composables/useAuth'
 
 export default {
   setup () {
+
+    const { createUser } = useAuth()
+
     const userForm = ref({
       usuario: '',
       password: '',
     })
 
     const onSubmit = async() => {
-      console.log(userForm.value)
+      createUser(userForm.value)
     }
 
     return {
