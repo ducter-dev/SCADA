@@ -1,9 +1,12 @@
 <template>
   <div class="w-3/12">
+    <div class="flex justify-center items-center content-center my-8">
+      <h2 class="text-xl font-bold">Registro</h2>
+    </div>
     <form @submit.prevent="onSubmit">
       <div class="mb-6">
         <label for="user" class="block mb-2 text-base font-bold text-dark"
-          >Usuario a Registrar</label
+          >Nombre</label
         >
         <input
           type="text"
@@ -12,7 +15,7 @@
             bg-gray-50
             border border-gray-300
             text-dark text-base
-            font-semibold
+            font-normal
             rounded-lg
             focus:ring-black focus:border-dark
             block
@@ -44,6 +47,36 @@
           placeholder=""
           required
         />
+      </div>
+      <div class="mb-6">
+        <label for="categories" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Selecciona una Categoría</label>
+        <select id="categories" class="bg-gray-50
+            border border-gray-300
+            text-dark text-base
+            font-semibold
+            rounded-lg
+            focus:ring-black focus:border-dark
+            block
+            w-full
+            p-2.5"
+            v-model="userForm.categoria">
+          <option v-for="categoria in categorias" :key="categoria.id" :value="categoria">{{ categoria.nombre }}</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label for="departaments" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Selecciona un Departamento</label>
+        <select id="departaments" class="bg-gray-50
+            border border-gray-300
+            text-dark text-base
+            font-semibold
+            rounded-lg
+            focus:ring-black focus:border-dark
+            block
+            w-full
+            p-2.5"
+            v-model="userForm.departamento">
+          <option v-for="departamento in departamentos" :key="departamento.id" :value="departamento">{{ departamento.nombre }}</option>
+        </select>
       </div>
       <button
         type="submit"
@@ -78,9 +111,25 @@ export default {
 
     const { createUser } = useAuth()
 
+    const categorias = [
+      { id: 1, nombre: 'Administrador'},
+      { id: 2, nombre: 'Supervisor'},
+      { id: 3, nombre: 'Operador'},
+      { id: 4, nombre: 'Auditor Fiscal'},
+    ]
+
+    const departamentos = [
+      { id: 1, nombre: 'Administración'},
+      { id: 2, nombre: 'Cuarto de Control'},
+      { id: 3, nombre: 'Acceso'},
+      { id: 4, nombre: 'Báscula'},
+    ]
+
     const userForm = ref({
       usuario: '',
       password: '',
+      categoria: null,
+      departamento: null,
     })
 
     const onSubmit = async() => {
@@ -89,7 +138,9 @@ export default {
 
     return {
       userForm,
-      onSubmit, 
+      onSubmit,
+      categorias,
+      departamentos,
     }
   }
 }

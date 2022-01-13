@@ -1,5 +1,8 @@
 <template>
   <div class="w-3/12">
+    <div class="flex justify-center items-center content-center my-8">
+      <h2 class="text-xl font-bold">Login</h2>
+    </div>
     <form @submit.prevent="onSubmit">
       <div class="mb-6">
         <label for="user" class="block mb-2 text-base font-bold text-dark"
