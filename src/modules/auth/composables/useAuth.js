@@ -4,14 +4,23 @@ const useAuth = () => {
 
   const store = useStore()
   
-  const createUser = async( user ) => {
-    console.log(user)
-    const resp = await store.dispatch('action', user)
+  const signIn = async( user ) => {
+    const resp = await store.dispatch('auth/loginUser', user)
     return resp
   }
-  return {
-    createUser
+
+  const createUser = async( user ) => {
+    console.log(user)
+    const resp = await store.dispatch('user/createUser', user)
+    return resp
   }
+
+  return {
+    createUser,
+    signIn,
+  }
+
+  
 }
 
 export default useAuth
