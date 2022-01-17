@@ -79,7 +79,7 @@ import useAuth from '../composables/useAuth'
 export default {
   setup () {
 
-    const { createUser } = useAuth()
+    const { signIn } = useAuth()
 
     const userForm = ref({
       usuario: '',
@@ -87,7 +87,7 @@ export default {
     })
 
     const onSubmit = async() => {
-      createUser(userForm.value)
+      signIn(userForm.value)
     }
 
     return {

@@ -134,7 +134,7 @@ export default {
     })
 
     const onSubmit = async() => {
-      createUser(userForm.value)
+      const { ok }  = await createUser(userForm.value)
     }
 
     return {
