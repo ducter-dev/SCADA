@@ -27,28 +27,6 @@
         />
       </div>
       <div class="mb-6">
-        <label for="password" class="block mb-2 text-base font-bold text-dark"
-          >Contraseña</label
-        >
-        <input
-          type="password"
-          v-model="userForm.password"
-          class="
-            bg-gray-50
-            border border-gray-300
-            text-dark text-base
-            font-semibold
-            rounded-lg
-            focus:ring-black focus:border-dark
-            block
-            w-full
-            p-2.5
-          "
-          placeholder=""
-          required
-        />
-      </div>
-      <div class="mb-6">
         <label for="categories" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Selecciona una Categoría</label>
         <select id="categories" class="bg-gray-50
             border border-gray-300
@@ -103,13 +81,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import useAuth from '../composables/useAuth'
+import { computed, ref } from 'vue'
+import useUser from '../composables/useUser'
+import { useStore } from 'vuex'
+
 
 export default {
   setup () {
-
-    const { createUser } = useAuth()
+    const store = useStore()
+    const userSToEdit = computed(() => store.getters['user/currentUser'])
+    const { editarUser } = useUser()
 
     const categorias = [
       { id: 1, nombre: 'Administrador'},
@@ -126,22 +107,26 @@ export default {
       { id: 5, nombre: 'Exterior'},
     ]
 
+    const { id, nombre, categoria, departamento } = userSToEdit.value
+
     const userForm = ref({
-      usuario: '',
-      password: '',
-      categoria: null,
-      departamento: null,
+      id: id,
+      usuario: nombre,
+      categoria: categoria,
+      departamento: departamento, 
     })
 
     const onSubmit = async() => {
-      createUser(userForm.value)
+      editarUser(userForm.value)
     }
+    
 
     return {
       userForm,
       onSubmit,
       categorias,
       departamentos,
+      
     }
   }
 }
