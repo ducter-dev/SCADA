@@ -75,11 +75,14 @@
 <script>
 import { ref } from 'vue'
 import useAuth from '../composables/useAuth'
+import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 export default {
   setup () {
-
     const { signIn } = useAuth()
+    const router = useRouter()
 
     const userForm = ref({
       usuario: '',
@@ -87,7 +90,14 @@ export default {
     })
 
     const onSubmit = async() => {
-      signIn(userForm.value)
+      const { ok, detail } = await signIn(userForm.value)
+      
+      if ( !ok ) {
+        Swal.fire('Error', detail, 'error')
+      } else {
+        Swal.fire('Login Correcto', 'Entrando a la aplicacion', 'success')
+        router.push('/dashboard')
+      }
     }
 
     return {
