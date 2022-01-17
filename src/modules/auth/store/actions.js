@@ -8,10 +8,12 @@ export const loginUser = async ({ commit }, user) => {
   }
   try {
     const { data } = await scadaApi.post('/auth/login', dataForm )
-    console.log(data)
-
+    const { token } = data
+    delete user.password
+    commit('loginUser', { user, token })
+    return data
   } catch (error) {
-    return { ok: false, message: '...'}
+    return { ok: false, message: error.response.data}
   }
 }
 
