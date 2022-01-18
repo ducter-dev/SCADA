@@ -4,7 +4,7 @@
       <Sidebar />
     </div>
     <div class="h-full w-full flex-col items-start">
-      <div class="h-10 m-1 sm:m-4 bg-info">
+      <div class="h-10 m-1 sm:m-4">
         <NavBar :userName="userName" />
       </div>
       <div class="m-2 sm:m-4 flex flex-row justify-center">

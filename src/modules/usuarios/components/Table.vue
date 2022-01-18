@@ -70,7 +70,7 @@
     <tbody>
       <tr
         class="odd:bg-white even:bg-gray-50 border-b"
-        v-for="(user, index) in users"
+        v-for="(user, index) in usuarios"
         :key="user.id"
       >
         <td
@@ -139,17 +139,19 @@
 </template>
 
 <script>
-import { useStore } from "vuex"
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
   props: {
-    usuarios: [],
+    usuarios: {
+      type: Array,
+      default: []
+    },
   },
-  setup(props) {
+  setup() {
     const router = useRouter()
     const store = useStore()
-    const users = props.usuarios
 
     function submitUser(user) {
       store.dispatch("user/selectUser", user)
@@ -185,7 +187,6 @@ export default {
     }
 
     return {
-      users,
       submitUser,
       setCategoria,
       setDepartamento,
