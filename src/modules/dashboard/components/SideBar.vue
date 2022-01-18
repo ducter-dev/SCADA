@@ -107,10 +107,10 @@
 </template>
 
 <script setup>
-import IconHome from '../assets/icons/house-fill.svg'
-import IconWait from '../assets/icons/hourglass-bottom.svg'
-import IconService from '../assets/icons/trash-can-solid.svg'
-import IconTruck from '../assets/icons/truck-solid.svg'
-import IconReportes from '../assets/icons/file-arrow-down-solid.svg'
-import IconConfig from '../assets/icons/gear-solid.svg'
+import IconHome from '../../../assets/icons/house-fill.svg'
+import IconWait from '../../../assets/icons/hourglass-bottom.svg'
+import IconService from '../../../assets/icons/trash-can-solid.svg'
+import IconTruck from '../../../assets/icons/truck-solid.svg'
+import IconReportes from '../../../assets/icons/file-arrow-down-solid.svg'
+import IconConfig from '../../../assets/icons/gear-solid.svg'
 </script>

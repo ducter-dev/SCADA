@@ -6,7 +6,7 @@ export const loginUser = (state, { user, token }) => {
 
   if (user) {
     localStorage.setItem('user', user)
-    state.user = user
+    state.user = user.usuario
   }
 
   state.user = user

@@ -1,7 +1,7 @@
 import scadaApi from "../../../api"
 
 export const loginUser = async ({ commit }, user) => {
-  const {usuario, password } = user
+  const { usuario, password } = user
   const dataForm = {
     username: usuario,
     password
