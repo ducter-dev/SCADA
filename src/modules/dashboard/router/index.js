@@ -7,5 +7,10 @@ export default {
       name: 'Dashboard',
       component: () => import('../views/Dashboard.vue')
     },
+    {
+      path: 'registro',
+      name: 'Dashboard',
+      component: () => import('../views/Register.vue')
+    },
   ]
 }

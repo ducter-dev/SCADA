@@ -7,7 +7,7 @@
       <div class="h-10 m-1 sm:m-4 bg-info">
         <NavBar :userName="userName" />
       </div>
-      <div class="m-2 sm:m-4 bg-green-200">
+      <div class="m-2 sm:m-4 flex flex-row justify-center">
         <router-view />
       </div>
     </div>
@@ -27,7 +27,7 @@ export default {
   setup() {
     const store = useStore()
     const token = computed(() => store.state.auth.token) 
-    const userName = computed(() => store.state.auth.user.nombre) 
+    const userName = computed(() => store.state.auth.user ? store.state.auth.user.usuario : '' ) 
     return {
       NavBar,
       Sidebar,
