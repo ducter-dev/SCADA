@@ -1,6 +1,6 @@
 export default {
   name: 'dashboard',
-  component: () => import('../layouts/DashboardLayouts.vue'),
+  component: () => import('../layouts/DashboardLayout.vue'),
   children: [
     {
       path: '',
