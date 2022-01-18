@@ -5,7 +5,7 @@
     </div>
     <div class="h-full w-full flex-col items-start">
       <div class="h-10 m-1 sm:m-4 bg-info">
-        <NavBar />
+        <NavBar :userName="userName" />
       </div>
       <div class="m-2 sm:m-4 bg-green-200">
         <router-view />
@@ -27,11 +27,12 @@ export default {
   setup() {
     const store = useStore()
     const token = computed(() => store.state.auth.token) 
-    console.log(token.value)
+    const userName = computed(() => store.state.auth.user.nombre) 
     return {
       NavBar,
       Sidebar,
       token,
+      userName
     }
   },
 }
