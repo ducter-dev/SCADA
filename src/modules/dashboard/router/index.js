@@ -8,9 +8,14 @@ export default {
       component: () => import('../views/Dashboard.vue')
     },
     {
+      path: 'usuarios',
+      name: 'usuarios',
+      component: () => import('../../usuarios/views/Usuarios.vue')
+    },
+    {
       path: 'registro',
       name: 'Dashboard',
-      component: () => import('../views/Register.vue')
+      component: () => import('../../usuarios/views/Register.vue')
     },
   ]
 }
