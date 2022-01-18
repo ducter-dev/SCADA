@@ -16,7 +16,3 @@ export const loginUser = async ({ commit }, user) => {
     return { ok: false, message: error.response.data}
   }
 }
-
-export const createUser = async ({ commit }, user) => {
-
-}
