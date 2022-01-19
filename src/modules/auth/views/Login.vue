@@ -85,8 +85,8 @@ export default {
     const router = useRouter()
 
     const userForm = ref({
-      usuario: '',
-      password: '',
+      usuario: 'Admin',
+      password: '19ducter2019',
     })
 
     const onSubmit = async() => {

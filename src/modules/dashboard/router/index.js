@@ -13,6 +13,11 @@ export default {
       component: () => import('../../usuarios/views/Usuarios.vue')
     },
     {
+      path: 'usuarios/editar',
+      name: 'editarUsuarios',
+      component: () => import('../../usuarios/views/EditarUser.vue')
+    },
+    {
       path: 'registro',
       name: 'Dashboard',
       component: () => import('../../usuarios/views/Register.vue')
