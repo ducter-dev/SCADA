@@ -48,36 +48,28 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
-import { useStore } from "vuex";
-import Table from "../components/Table.vue"
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import useUser from '../composables/useUser'
+import Table from '../components/Table.vue'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
-import scadaApi from '../../../api'
-import router from "../../../router";
+import router from '../../../router'
 
 export default {
   components: {
     Table,
   },
   setup() {
-    const store = useStore();
+    const store = useStore()
+    const { agregarUsers } = useUser()
 
-    const token = computed(() => store.state.auth.token);
-    const usuarios = computed(() => store.state.user.users);
+    const usuarios = computed(() => store.state.user.users)
     let users = ref(usuarios.value)
 
     async function getUsuarios () {
       try {
-        // Checamos si hay usuarios en la BD y los agregamos al store.
-        const options = {
-          method: "GET",
-          url: "/users",
-          headers: {
-            Authorization: `Bearer ${token.value}`,
-          }
-        }
-        const res = await scadaApi.request(options)
+        const res = await agregarUsers()
         const { data, status } = res
         if (status == 200) {
           users.value = data
@@ -94,6 +86,8 @@ export default {
       if (users.value.length < 1) {
         // No hay usuarios en el store
         getUsuarios()
+      } else {
+        console.log('Ya hay usaurios en el store')
       }
     })
 

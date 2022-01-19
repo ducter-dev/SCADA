@@ -87,7 +87,7 @@
             dark:text-gray-400
           "
         >
-          {{ user.nombre }}
+          {{ user.username }}
         </td>
         <td
           class="
@@ -155,7 +155,7 @@ export default {
 
     function submitUser(user) {
       store.dispatch("user/selectUser", user)
-      router.push('/usuarios/editar')
+      router.push('/dashboard/usuarios/editar')
     }
 
     function setCategoria(categoria) {

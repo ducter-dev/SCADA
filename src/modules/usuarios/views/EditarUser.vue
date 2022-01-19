@@ -1,7 +1,7 @@
 <template>
   <div class="w-3/12">
     <div class="flex justify-center items-center content-center my-8">
-      <h2 class="text-xl font-bold">Registro</h2>
+      <h2 class="text-xl font-bold">Editar usuario</h2>
     </div>
     <form @submit.prevent="onSubmit">
       <div class="mb-6">
@@ -74,7 +74,7 @@
           mb-2
         "
       >
-        Registrar
+        Actualizar
       </button>
     </form>
   </div>
@@ -84,6 +84,8 @@
 import { computed, ref } from 'vue'
 import useUser from '../composables/useUser'
 import { useStore } from 'vuex'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 
 export default {
@@ -107,17 +109,23 @@ export default {
       { id: 5, nombre: 'Exterior'},
     ]
 
-    const { id, nombre, categoria, departamento } = userSToEdit.value
+    const { id, username, categoria, departamento } = userSToEdit.value
 
     const userForm = ref({
       id: id,
-      usuario: nombre,
+      usuario: username,
       categoria: categoria,
       departamento: departamento, 
     })
 
     const onSubmit = async() => {
-      editarUser(userForm.value)
+      const { data, status } = await editarUser(userForm.value)
+      console.log(data)
+      if (status == 200) {
+          Swal.fire('Usuario Editado', `Se edito al usuario ${data.username}`, 'success')
+        } else {
+          Swal.fire('Error', data, 'error')
+        }
     }
     
 

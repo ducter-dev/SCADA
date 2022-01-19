@@ -103,8 +103,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { ref } from 'vue'
 import scadaApi from '../../../api'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -113,8 +112,6 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 export default {
   
   setup () {
-    const store = useStore()
-    const token = computed(() => store.state.auth.token)
 
     const categorias = [
       { id: 1, nombre: 'Administrador'},
@@ -150,10 +147,6 @@ export default {
         const options = {
           method: 'POST',
           url: '/users',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token.value}`
-          },
           data: dataForm
         }
         const { data, status } = await scadaApi.request(options)
