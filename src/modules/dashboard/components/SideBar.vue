@@ -53,7 +53,7 @@
           </div>
         </div>
       </router-link>
-      <router-link to="/dashboard">
+      <router-link to="/dashboard/tanques/servicio">
         <div class="bg-dark sm:px-2 flex justify-center items-center hover:text-blue-100 focus:text-blue-100 hover:bg-gray-500 focus:bg-gray-500 focus:outline-none focus:shadow-outline">
           <div class="sm:w-full sm:my-2 sm:mr-2 flex sm:flex-row justify-center sm:justify-start items-center">
             <div class="w-full sm:w-1/6 flex justify-center items-center m-4 sm:ml-4 sm:my-4">
@@ -109,7 +109,7 @@
 <script setup>
 import IconHome from '../../../assets/icons/house-fill.svg'
 import IconWait from '../../../assets/icons/hourglass-bottom.svg'
-import IconService from '../../../assets/icons/trash-can-solid.svg'
+import IconService from '../../../assets/icons/gas-pump-solid.svg'
 import IconTruck from '../../../assets/icons/truck-solid.svg'
 import IconReportes from '../../../assets/icons/file-arrow-down-solid.svg'
 import IconConfig from '../../../assets/icons/gear-solid.svg'
