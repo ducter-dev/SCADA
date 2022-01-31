@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import authRouter from './modules/auth/router'
-import userRouter from './modules/usuarios/router'
 import dashboardRouter from './modules/dashboard/router'
 
 const routes = [
@@ -12,10 +11,6 @@ const routes = [
   {
     path: '/auth',
     ...authRouter
-  },
-  {
-    path: '/usuarios',
-    ...userRouter
   },
   {
     path: '/dashboard',
