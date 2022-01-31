@@ -7,7 +7,7 @@
       <div class="h-10 m-1 sm:m-4">
         <NavBar :userName="userName" />
       </div>
-      <div class="m-2 sm:m-4 flex flex-row justify-center">
+      <div class="w-full flex flex-row justify-center">
         <router-view />
       </div>
     </div>

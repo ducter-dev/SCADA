@@ -41,7 +41,7 @@
           </div>
         </div>
       </router-link>
-      <router-link to="/dashboard">
+      <router-link to="/dashboard/tanques/espera">
         <div class="bg-dark sm:px-2 flex justify-center items-center hover:text-blue-100 focus:text-blue-100 hover:bg-gray-500 focus:bg-gray-500 focus:outline-none focus:shadow-outline">
           <div class="sm:w-full sm:my-2 sm:mr-2 flex sm:flex-row justify-center sm:justify-start items-center">
             <div class="w-full sm:w-1/6 flex justify-center items-center m-4 sm:ml-4 sm:my-4">

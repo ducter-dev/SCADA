@@ -4,23 +4,28 @@ export default {
   children: [
     {
       path: '',
-      name: 'Dashboard',
+      name: 'Home',
       component: () => import('../views/Dashboard.vue')
     },
     {
       path: 'usuarios',
-      name: 'usuarios',
+      name: 'Usuarios',
       component: () => import('../../usuarios/views/Usuarios.vue')
     },
     {
       path: 'usuarios/editar',
-      name: 'editarUsuarios',
+      name: 'EditarUsuarios',
       component: () => import('../../usuarios/views/EditarUser.vue')
     },
     {
       path: 'registro',
-      name: 'Dashboard',
+      name: 'Registro',
       component: () => import('../../usuarios/views/Register.vue')
+    },
+    {
+      path: 'tanques/espera',
+      name: 'TanquesEspera',
+      component: () => import('../../tanques/views/Espera.vue')
     },
   ]
 }

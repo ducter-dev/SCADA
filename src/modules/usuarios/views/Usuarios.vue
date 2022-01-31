@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="m-4 sm:m-12 w-full flex flex-col">
     <div class="w-full flex flex-row justify-between items-center h-20">
       <div class="flex flex-row justify-center items-center">
         <div class="flex justify-center items-center mr-2">Usuarios</div>
