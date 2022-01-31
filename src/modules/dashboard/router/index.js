@@ -27,5 +27,10 @@ export default {
       name: 'TanquesEspera',
       component: () => import('../../tanques/views/Espera.vue')
     },
+    {
+      path: 'tanques/servicio',
+      name: 'TanquesServicio',
+      component: () => import('../../tanques/views/Servicio.vue')
+    },
   ]
 }
