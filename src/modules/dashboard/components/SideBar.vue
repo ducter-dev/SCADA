@@ -9,7 +9,7 @@
       items-center
       sm:flex-col sm:min-h-screen
       w-full
-      bg-dark
+      bg-gray-800
     "
   >
     <router-link
@@ -40,9 +40,9 @@
     >
       <router-link
         to="/dashboard"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
           sm:px-2
           flex
@@ -50,8 +50,8 @@
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -94,9 +94,9 @@
       </router-link>
       <router-link
         to="/dashboard/tanques/espera"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
           sm:px-2
           flex
@@ -104,8 +104,8 @@
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -148,9 +148,9 @@
       </router-link>
       <router-link
         to="/dashboard/tanques/servicio"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
           sm:px-2
           flex
@@ -158,8 +158,8 @@
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -202,9 +202,9 @@
       </router-link>
       <router-link
         to="/dashboard/salidas"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
           sm:px-2
           flex
@@ -212,8 +212,8 @@
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -256,19 +256,18 @@
       </router-link>
       <router-link
         to="/dashboard/reportes"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
-          bg-dark
           sm:px-2
           flex
           justify-center
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -311,19 +310,18 @@
       </router-link>
       <router-link
         to="/dashboard/usuarios"
-        activeClass="bg-gray-500"
-        inactiveClass="bg-dark"
-        exactActiveClass="bg-gray-500"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
         class="
-          bg-dark
           sm:px-2
           flex
           justify-center
           items-center
           hover:text-blue-100
           focus:text-blue-100
-          hover:bg-gray-500
-          focus:bg-gray-500 focus:outline-none focus:shadow-outline
+          hover:bg-dark
+          focus:bg-dark focus:outline-none focus:shadow-outline
         "
       >
         <div
@@ -369,12 +367,12 @@
 </template>
 
 <script>
-import IconHome from "../../../assets/icons/house-fill.svg";
-import IconWait from "../../../assets/icons/hourglass-bottom.svg";
-import IconService from "../../../assets/icons/gas-pump-solid.svg";
-import IconTruck from "../../../assets/icons/truck-solid.svg";
-import IconReportes from "../../../assets/icons/file-arrow-down-solid.svg";
-import IconConfig from "../../../assets/icons/gear-solid.svg";
+import IconHome from '../../../assets/icons/house-fill.svg'
+import IconWait from '../../../assets/icons/hourglass-bottom.svg'
+import IconService from '../../../assets/icons/gas-pump-solid.svg'
+import IconTruck from '../../../assets/icons/truck-solid.svg'
+import IconReportes from '../../../assets/icons/file-arrow-down-solid.svg'
+import IconConfig from '../../../assets/icons/gear-solid.svg'
 
 export default {
   components: {
@@ -386,5 +384,5 @@ export default {
     IconConfig,
   },
   setup() {},
-};
+}
 </script>
