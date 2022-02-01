@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4 sm:m-12 w-full flex flex-col">
+  <div class="m-2 sm:mx-12 sm:my-2 w-full flex flex-col">
     <ListaLlenaderas />
     <ListaServicio :tanques="tanks" />
   </div>

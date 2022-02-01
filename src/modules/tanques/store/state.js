@@ -18,6 +18,15 @@ export default () => ({
   tanqueInServicioSel: {},
 
   llenaderas: [
-    
+    { id: 1, llenadera: 5, libre: false, pg: 'PG-1501A' },
+    { id: 2, llenadera: 6, libre: false, pg: 'PG-1501B' },
+    { id: 3, llenadera: 7, libre: false, pg: 'PG-1505A' },
+    { id: 4, llenadera: 8, libre: false, pg: 'PG-1505B' },
+    { id: 5, llenadera: 9, libre: false, pg: 'PG-1600A' },
+    { id: 6, llenadera: 10, libre: false, pg: 'PG-1600B' },
+    { id: 7, llenadera: 11, libre: true, pg: 'PG-2100' },
+    { id: 8, llenadera: 12, libre: true, pg: 'PG-3600' },
+    { id: 9, llenadera: 13, libre: true, pg: 'PG-4500' },
+    { id: 10, llenadera: 14, libre: true, pg: 'PG-5005' },
   ],
 })
