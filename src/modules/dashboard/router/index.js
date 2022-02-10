@@ -8,9 +8,9 @@ export default {
       component: () => import('../views/Dashboard.vue')
     },
     {
-      path: 'usuarios',
-      name: 'Usuarios',
-      component: () => import('../../usuarios/views/Usuarios.vue')
+      path: 'configuracion',
+      name: 'configuracion',
+      component: () => import('../../dashboard/views/Configuracion.vue')
     },
     {
       path: 'usuarios/editar',

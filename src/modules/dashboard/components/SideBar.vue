@@ -309,7 +309,7 @@
         </div>
       </router-link>
       <router-link
-        to="/dashboard/usuarios"
+        to="/dashboard/configuracion"
         activeClass="bg-dark"
         inactiveClass="bg-gray-800"
         exactActiveClass="bg-dark"

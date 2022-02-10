@@ -304,22 +304,22 @@ export default {
     function setTipo(categoria) {
       switch (categoria) {
         case 1:
-          return "Sencillo";
+          return "Sencillo"
         case 2:
-          return "Full A";
+          return "Full A"
         case 3:
-          return "Full B";
+          return "Full B"
       }
     }
 
     function setConector(conector) {
       switch (conector) {
         case 1:
-          return "Izquiero";
+          return "Izquiero"
         case 2:
-          return "Derecho";
+          return "Derecho"
         case 3:
-          return "Ambos";
+          return "Ambos"
       }
     }
 
