@@ -2,8 +2,8 @@
   <div class="w-full flex flex-col">
     <div class="w-full flex flex-row justify-between items-center h-20">
       <div class="flex flex-row justify-center items-center">
-        <div class="flex justify-center items-center mr-2">Usuarios</div>
-        <router-link to="/dashboard/registro">
+        <div class="flex justify-center items-center mr-2">Autotanques</div>
+        <router-link to="/dashboard/autotanques/registro">
           <button
             type="button"
             class="
@@ -40,7 +40,7 @@
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
         <div class="overflow-hidden shadow-md sm:rounded-lg">
-          <Table :usuarios="users" />
+          <TableTanques :tanques="tanks"/>
         </div>
       </div>
     </div>
@@ -50,29 +50,29 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import useUser from '../composables/useUser'
-import Table from '../components/Table.vue'
+import useTanque from '../composables/useTanque'
+import TableTanques from '../components/TableTanques.vue'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import router from '../../../router'
 
 export default {
   components: {
-    Table,
+    TableTanques,
   },
   setup() {
     const store = useStore()
-    const { agregarUsers } = useUser()
+    const { agregarTanques } = useTanque()
 
-    const usuarios = computed(() => store.state.user.users)
-    let users = ref(usuarios.value)
+    const tanques = computed(() => store.state.tanques.tanques)
+    let tanks = ref(tanques.value)
 
-    async function getUsuarios () {
+    async function getTanks () {
       try {
-        const res = await agregarUsers()
+        const res = await agregarTanques()
         const { data, status } = res
         if (status == 200) {
-          users.value = data
+          tanques.value = data
         } else {
           Swal.fire("Error", data.message, "error");
         }
@@ -83,17 +83,17 @@ export default {
     }
 
     onMounted(() => {
-      if (users.value.length < 1) {
+      if (tanks.value.length < 1) {
         // No hay usuarios en el store
-        getUsuarios()
+        getTanks()
       } else {
-        console.log('Ya hay usaurios en el store')
+        console.log('Ya hay tanques en el store')
       }
     })
 
 
     return {
-      users,
+      tanks,
     }
   },
 }
