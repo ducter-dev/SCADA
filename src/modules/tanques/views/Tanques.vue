@@ -74,7 +74,7 @@ export default {
         if (status == 200) {
           tanques.value = data
         } else {
-          Swal.fire("Error", data.message, "error");
+          Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
