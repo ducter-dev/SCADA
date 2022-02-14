@@ -7,8 +7,8 @@
       <div class="flex justify-center items center w-3/12">
         <TarjetaVerificacion />
       </div>
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 3
+      <div class="flex justify-center items center w-3/12">
+        <TarjetaSalida />
       </div>
       <div class="flex justify-center items center w-3/12 border border-blue-900">
         Card 4
@@ -37,11 +37,13 @@
 <script>
 import TarjetaEntrada from '../components/TarjetaEntrada.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
+import TarjetaSalida from '../components/TarjetaSalida.vue'
 
 export default {
   components: {
     TarjetaEntrada,
     TarjetaVerificacion,
+    TarjetaSalida,
   },
   setup() {
     return {
