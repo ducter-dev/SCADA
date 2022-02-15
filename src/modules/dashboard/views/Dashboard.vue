@@ -10,8 +10,8 @@
       <div class="flex justify-center items center w-3/12">
         <TarjetaSalida />
       </div>
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 4
+      <div class="flex justify-center items center w-3/12">
+        <TarjetaUltimasCargas />
       </div>
     </div>
     <div class="flex flex-row justify-center items-start border border-red-500">
@@ -38,12 +38,14 @@
 import TarjetaEntrada from '../components/TarjetaEntrada.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
+import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
 
 export default {
   components: {
     TarjetaEntrada,
     TarjetaVerificacion,
     TarjetaSalida,
+    TarjetaUltimasCargas,
   },
   setup() {
     return {
