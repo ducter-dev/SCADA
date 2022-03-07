@@ -9,9 +9,15 @@ const useTanque = () => {
     return resp
   }
 
-  // editar tanque en espera
+  const editarTanque = async ( tanque ) => {
+    console.log('composbale => editarTanque')
+    const resp = await store.dispatch('tanques/editTank', tanque)
+    return resp
+  }
+
   return {
     agregarTanques,
+    editarTanque,
   }
 }
 

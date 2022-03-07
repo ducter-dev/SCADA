@@ -30,51 +30,6 @@ export default () => ({
     { id: 10, llenadera: 14, libre: true, pg: 'PG-5005' },
   ],
 
-  tanques: [
-    {
-      "id": 1,
-      "atId": 1500,
-      "atTipo": 1,
-      "atName": "PG-1500A",
-      "conector": 3,
-      "capacidad90": 40800,
-      "transportadora": 1
-    },
-    {
-      "id": 2,
-      "atId": 1500,
-      "atTipo": 2,
-      "atName": "PG-1500B",
-      "conector": 3,
-      "capacidad90": 39800,
-      "transportadora": 1
-    },
-    {
-      "id": 3,
-      "atId": 6050,
-      "atTipo": 3,
-      "atName": "PG-6050",
-      "conector": 3,
-      "capacidad90": 42800,
-      "transportadora": 1
-    },
-    {
-      "id": 4,
-      "atId": 5480,
-      "atTipo": 1,
-      "atName": "PG-5480A",
-      "conector": 3,
-      "capacidad90": 40800,
-      "transportadora": 1
-    },
-    {
-      "id": 5,
-      "atId": 5480,
-      "atTipo": 2,
-      "atName": "PG-5480B",
-      "conector": 3,
-      "capacidad90": 39500,
-      "transportadora": 1
-    },
-  ]
+  tanques: [],
+  tanqueSelect: {},
 })

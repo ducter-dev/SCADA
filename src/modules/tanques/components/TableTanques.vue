@@ -173,6 +173,9 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 export default {
   props: {
     tanques: {
@@ -181,8 +184,11 @@ export default {
     },
   },
   setup () {
-    function setTipo(categoria) {
-      switch (categoria) {
+    const router = useRouter()
+    const store = useStore()
+    
+    function setTipo(tipo) {
+      switch (tipo) {
         case 1:
           return "Sencillo"
         case 2:
@@ -202,8 +208,11 @@ export default {
           return "Ambos"
       }
     }
+    
     function updateTanque(tanque) {
       console.log(tanque)
+      store.dispatch("tanques/selectTank", tanque)
+      router.push('/dashboard/tanques/editar')
     }
 
     return {

@@ -54,7 +54,7 @@ import useTanque from '../composables/useTanque'
 import TableTanques from '../components/TableTanques.vue'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
-import router from '../../../router'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -62,6 +62,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const { agregarTanques } = useTanque()
 
     const tanques = computed(() => store.state.tanques.tanques)
@@ -72,7 +73,7 @@ export default {
         const res = await agregarTanques()
         const { data, status } = res
         if (status == 200) {
-          tanques.value = data
+          tanks.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
