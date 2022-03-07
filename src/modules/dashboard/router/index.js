@@ -32,5 +32,10 @@ export default {
       name: 'TanquesServicio',
       component: () => import('../../tanques/views/Servicio.vue')
     },
+    {
+      path: 'tanques/editar',
+      name: 'TanquesEditar',
+      component: () => import('../../tanques/views/Editar.vue')
+    },
   ]
 }

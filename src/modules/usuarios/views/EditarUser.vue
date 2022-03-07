@@ -134,7 +134,6 @@ export default {
       onSubmit,
       categorias,
       departamentos,
-      
     }
   }
 }
