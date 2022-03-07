@@ -27,3 +27,9 @@ export const deleteTank = (state, tank) => {
 export const selectTank = ( state, tank ) => {
   state.tanqueSelect = tank
 }
+
+export const addTank = ( state, tank ) => {
+  console.log('mutation => addTank')
+  console.log(tank)
+  state.tanques.push(tank)
+}

@@ -15,9 +15,16 @@ const useTanque = () => {
     return resp
   }
 
+  const registrarTanque = async ( tanque ) => {
+    console.log('composable => registrarTanque')
+    const resp = await store.dispatch('tanques/registerTank', tanque)
+    return resp
+  }
+
   return {
     agregarTanques,
     editarTanque,
+    registrarTanque,
   }
 }
 

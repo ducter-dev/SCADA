@@ -150,7 +150,7 @@
                 mb-2
               "
             >
-              Actualizar
+              Guardar
             </button>
           </div>
           <div class="flex hustify-center items-center">
@@ -172,7 +172,7 @@
                 mr-2
                 mb-2
               "
-              @click="cancelEdit"
+              @click="cancelSave"
             >
               Cancelar
             </button>
@@ -184,23 +184,17 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import useTanque from '../composables/useTanque'
-import { useStore } from 'vuex'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { useRouter } from 'vue-router'
 
 export default {
-  
-  setup () {
-    const store = useStore()
+
+  setup() {
     const router = useRouter()
-    const { editarTanque } = useTanque()
-
-    const tankToEdit = computed(() => store.getters['tanques/currentTanqueSel'])
-    const { id, atId, atName, atTipo, capacidad90, conector, transportadora } = tankToEdit.value
-
+    const { registrarTanque } = useTanque()
 
     const tiposTanque = [
       { id: 1, nombre: 'Sencillo' },
@@ -215,37 +209,36 @@ export default {
     ]
 
     const tankForm = ref({
-      id: id,
-      atId: atId,
-      atName: atName,
-      atTipo: atTipo, 
-      capacidad90: capacidad90,
-      conector: conector,
-      transportadora: transportadora
+      atId: 0,
+      atName: '',
+      atTipo: 3, 
+      capacidad90: 0,
+      conector: 3,
+      transportadora: 0
     })
 
     async function onSubmit () {
-      const { data, status } = await editarTanque(tankForm.value)
+      console.log('function - onSubmit')
+      const { data, status } = await registrarTanque(tankForm.value)
       console.log(data)
       if (status == 200) {
-        Swal.fire('Tanque Editado', `Se edito al autotanque ${data.atName}`, 'success')
-        router.go(-1)
+        Swal.fire('Tanque Agregado', `Se agregó el tanque ${data.atName}`, 'success')
+        router.push('/dashboard/configuracion')
       } else {
         Swal.fire('Error', data, 'error')
       }
     }
 
-
-    function cancelEdit () {
-      router.go(-1)
+    function cancelSave () {
+      router.push('/dashboard/configuracion')
     }
 
     return {
-      tankForm,
       tiposTanque,
       conectorTanque,
-      cancelEdit,
       onSubmit,
+      tankForm,
+      cancelSave,
     }
   }
 }
