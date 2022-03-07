@@ -3,7 +3,7 @@
     <div class="w-full flex flex-row justify-between items-center h-20">
       <div class="flex flex-row justify-center items-center">
         <div class="flex justify-center items-center mr-2">Autotanques</div>
-        <router-link to="/dashboard/autotanques/registro">
+        <router-link to="/dashboard/tanques/nuevo">
           <button
             type="button"
             class="

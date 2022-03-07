@@ -22,7 +22,7 @@ export const editTank = async ({ commit }, tank) => {
     commit('updateTank', data)
     return res
   } catch (error) {
-    
+    return { ok: false, message: error.message }
   }
 }
 
@@ -31,7 +31,20 @@ export const deleteTank = async ({ commit }, tank) => {
   try {
     commit('deleteTank', tank)
   } catch (error) {
-    
+    return { ok: false, message: error.message }
+  }
+}
+
+export const registerTank = async ({ commit }, tank) => {
+  console.log(('action => addTank'))
+  try {
+    const res = await scadaApi.post('tanques', tank)
+    const { data } = res
+    console.log(data)
+    commit('addTank', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
   }
 }
 
