@@ -15,9 +15,16 @@ const useDashboard = () => {
     return resp
   }
 
+  const getAntenaSalida = async () => {
+    console.log('composable - getAntenaSalida')
+    const resp = await store.dispatch('dashboard/getAntenaSalida')
+    return resp
+  }
+
   return {
     getAntenaEntrada,
     getAntenaVerificacion,
+    getAntenaSalida,
   }
 }
 

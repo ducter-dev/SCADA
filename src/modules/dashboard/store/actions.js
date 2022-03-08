@@ -25,3 +25,16 @@ export const getAntenaVerificacion = async ({commit}) => {
     return { ok: false, message: error.message }
   }
 }
+
+export const getAntenaSalida = async ({commit}) => {
+  try {
+    console.log('action => getAntenaSalida')
+    const res = await scadaApi.get('/opc/antena/salida')
+    console.log(res)
+    const { data } = res
+    commit('addAntenaSalida', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}

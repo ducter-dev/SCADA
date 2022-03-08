@@ -8,7 +8,7 @@
         <TarjetaVerificacion :data="antenaVerificacion" />
       </div>
       <div class="flex justify-center items center w-3/12">
-        <TarjetaSalida />
+        <TarjetaSalida :data="antenaSalida" />
       </div>
       <div class="flex justify-center items center w-3/12">
         <TarjetaUltimasCargas />
@@ -53,13 +53,16 @@ export default {
   },
   setup() {
     const store = useStore()
-    const { getAntenaEntrada, getAntenaVerificacion } = useDashboard()
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
 
     const dataAntenaVerificacion = computed(() => store.state.dashboard.antenaVerificacion)
     let antenaVerificacion = ref(dataAntenaVerificacion.value)
+
+    const dataAntenaSalida = computed(() => store.state.dashboard.antenaSalida)
+    let antenaSalida = ref(dataAntenaSalida.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -91,14 +94,30 @@ export default {
       }
     }
 
+    const getDatosAntenaSalida = async () => {
+      try {
+        const res = await getAntenaSalida()
+        const { data, status } = res
+        if (status == 200) {
+          antenaSalida.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
+
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
-        // No hay usuarios en el store
         getDatosAntenaEntrada()
       }
       if (Object.keys(antenaVerificacion.value).length < 1) {
-        // No hay usuarios en el store
         getDatosAntenaVerificacion()
+      }
+      if (Object.keys(antenaSalida.value).length < 1) {
+        getDatosAntenaSalida()
       }
     })
 
@@ -107,6 +126,7 @@ export default {
     return {
       antenaEntrada,
       antenaVerificacion,
+      antenaSalida,
     }
   },
 };

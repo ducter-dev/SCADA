@@ -40,7 +40,7 @@
         font-bold
         mt-1
         mb-1
-      "> 1544</span>
+      "> {{ data.numAT }}</span>
     </div>
       <p></p>
     <div class="flex flex-row justify-around items-start">
@@ -61,7 +61,32 @@
         font-bold
         mt-1
         mb-1
-      "> Ninguno</span>
+      "> {{ setTipo(data.tipoAT) }}</span>
     </div>
   </div>
 </template>
+
+<script>
+
+export default {
+  props: ['data'],
+  setup() {
+
+    const setTipo = (tipo) => {
+      switch (tipo) {
+        case 1:
+          return 'FULL A'
+        case 2:
+          return 'FULL B'
+        case 3:
+          return 'Sencillo'
+      }
+    }
+
+    return {
+      setTipo,
+    }
+  }
+
+}
+</script>
