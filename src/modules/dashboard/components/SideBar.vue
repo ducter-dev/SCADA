@@ -88,7 +88,7 @@
               text-white
             "
           >
-            Inicio
+            Home
           </div>
         </div>
       </router-link>

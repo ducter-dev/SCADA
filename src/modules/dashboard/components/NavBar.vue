@@ -1,8 +1,8 @@
 <template>
-  <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded">
+  <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2 rounded">
     <div class="container flex justify-between items-center mx-auto">
       <div class="flex">
-        <span class="text-dark font-bold text-base">Inicio</span>
+        <span class="text-dark font-bold text-base">Home</span>
       </div>
       <div class="flex items-center">
         <button
