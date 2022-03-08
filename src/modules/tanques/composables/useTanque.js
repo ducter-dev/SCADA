@@ -21,10 +21,17 @@ const useTanque = () => {
     return resp
   }
 
+  const eliminarTanque = async ( tanque ) => {
+    console.log('composable => eliminarTanque')
+    const resp = await store.dispatch('tanques/eliminarTank', tanque)
+    return resp
+  }
+
   return {
     agregarTanques,
     editarTanque,
     registrarTanque,
+    eliminarTanque,
   }
 }
 

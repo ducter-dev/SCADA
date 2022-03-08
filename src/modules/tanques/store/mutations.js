@@ -20,8 +20,12 @@ export const updateTank = (state, tank) => {
 
 export const deleteTank = (state, tank) => {
   console.log('mutation => deleteTank')
-  const tanque = state.tanques.find( t => t.id == tank.id)
-  console.log(tanque)
+  const tanques = state.tanques.filter( t => t.id != tank.id)
+  console.log(tanques)
+  state.tanques = []
+  console.log(state.tanques)
+  state.tanques = tanques
+  console.log(state.tanques)
 }
 
 export const selectTank = ( state, tank ) => {
