@@ -1,5 +1,7 @@
 import scadaApi from '../../../api'
 
+
+// tanque
 export const getTanks = async ({commit}) => {
   try {
     console.log('action => getTanks')
@@ -54,4 +56,20 @@ export const eliminarTank = async ({ commit }, tank) => {
 
 export const selectTank = (context, tank) => {
   context.commit('selectTank', tank)
+}
+
+
+// Tanques de Salidas
+
+export const getTanksSalidas = async ({commit}) => {
+  try {
+    console.log('action => getTanksSalidas')
+    const res = await scadaApi.get('/tanques/salida')
+    console.log(res)
+    const { data } = res
+    commit('addTanksSalida', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
 }

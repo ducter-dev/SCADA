@@ -1,17 +1,17 @@
 <template>
   <div class="m-2 sm:mx-12 sm:my-2 w-full flex flex-col">
-    <div class="flex flex-row justify-center items-start">
-      <div class="flex justify-center items center w-3/12">
+    <div class="flex flex-row justify-between items-start">
+      <div class="flex justify-center items center mx-2">
         <TarjetaEntrada :data="antenaEntrada" />
       </div>
-      <div class="flex justify-center items center w-3/12">
+      <div class="flex justify-center items center mx-2">
         <TarjetaVerificacion :data="antenaVerificacion" />
       </div>
-      <div class="flex justify-center items center w-3/12">
+      <div class="flex justify-center items center mx-2">
         <TarjetaSalida :data="antenaSalida" />
       </div>
-      <div class="flex justify-center items center w-3/12">
-        <TarjetaUltimasCargas />
+      <div class="flex justify-center items center mx-2">
+        <TarjetaUltimasCargas :salidas="tanksSalida" />
       </div>
     </div>
     <div class="flex flex-row justify-center items-start border border-red-500">
@@ -40,6 +40,7 @@ import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
 import useDashboard from '../composables/useDashboard'
+import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -54,6 +55,7 @@ export default {
   setup() {
     const store = useStore()
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
+    const { getTanksSalidas } = useTanqueSalida()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -63,6 +65,9 @@ export default {
 
     const dataAntenaSalida = computed(() => store.state.dashboard.antenaSalida)
     let antenaSalida = ref(dataAntenaSalida.value)
+
+    const listaSalida = computed(() => store.state.tanques.tanquesInSalida)
+    let tanksSalida = ref(listaSalida.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -109,6 +114,21 @@ export default {
       }
     }
 
+    const getTanquesSalida = async () => {
+      try {
+        const res = await getTanksSalidas()
+        const { data, status } = res
+        if (status == 200) {
+          tanksSalida.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
+
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
         getDatosAntenaEntrada()
@@ -119,6 +139,9 @@ export default {
       if (Object.keys(antenaSalida.value).length < 1) {
         getDatosAntenaSalida()
       }
+      if (tanksSalida.value.length == 0) {
+        getTanquesSalida()
+      }
     })
 
 
@@ -127,6 +150,7 @@ export default {
       antenaEntrada,
       antenaVerificacion,
       antenaSalida,
+      tanksSalida,
     }
   },
 };

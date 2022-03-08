@@ -1,3 +1,5 @@
+
+// Tanques
 export const addTanks = (state, tanks) => {
   console.log('mutation => addTanks')
   state.tanques = tanks
@@ -36,4 +38,10 @@ export const addTank = ( state, tank ) => {
   console.log('mutation => addTank')
   console.log(tank)
   state.tanques.push(tank)
+}
+
+// Tanques Salida
+export const addTanksSalida = (state, tanks) => {
+  console.log('mutation => addTanksSalida')
+  state.tanquesInSalida = tanks
 }

@@ -11,7 +11,6 @@
           <IconCaretLeft class="w-4 h-4" />
         </button>
       </div>
-      
     </div>
     <div v-show="!toggle" class="absolute flex justify-center items-center bottom-6 left-0">
       <button 
