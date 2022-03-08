@@ -40,7 +40,7 @@
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
         <div class="overflow-hidden shadow-md sm:rounded-lg">
-          <TableTanques :tanques="tanks"/>
+          <TableTanques :tanques="tanks" @deleteTank="deleteTank" />
         </div>
       </div>
     </div>
@@ -63,17 +63,34 @@ export default {
   setup() {
     const store = useStore()
     const router = useRouter()
-    const { agregarTanques } = useTanque()
+    const { agregarTanques, eliminarTanque } = useTanque()
 
     const tanques = computed(() => store.state.tanques.tanques)
     let tanks = ref(tanques.value)
 
-    async function getTanks () {
+    const getTanks = async () => {
       try {
         const res = await agregarTanques()
         const { data, status } = res
         if (status == 200) {
           tanks.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
+
+    const deleteTank = async (tanque) => {
+      try {
+        const res = await eliminarTanque(tanque)
+        const { data, status } = res
+        if (status == 200) {
+          console.log(data)
+          tanks.value = store.state.tanques.tanques
+          Swal.fire('Eliminado', 'El autotanque ha sido eliminado', 'success')
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -95,6 +112,7 @@ export default {
 
     return {
       tanks,
+      deleteTank,
     }
   },
 }
