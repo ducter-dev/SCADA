@@ -1,3 +1,4 @@
 export default () => ({
-  antenaEntrada: {}
+  antenaEntrada: {},
+  antenaVerificacion: {}
 })
