@@ -5,7 +5,7 @@
         <TarjetaEntrada :data="antenaEntrada" />
       </div>
       <div class="flex justify-center items center w-3/12">
-        <TarjetaVerificacion />
+        <TarjetaVerificacion :data="antenaVerificacion" />
       </div>
       <div class="flex justify-center items center w-3/12">
         <TarjetaSalida />
@@ -53,10 +53,13 @@ export default {
   },
   setup() {
     const store = useStore()
-    const { getAntenaEntrada } = useDashboard()
+    const { getAntenaEntrada, getAntenaVerificacion } = useDashboard()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
+
+    const dataAntenaVerificacion = computed(() => store.state.dashboard.antenaVerificacion)
+    let antenaVerificacion = ref(dataAntenaVerificacion.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -73,12 +76,29 @@ export default {
       }
     }
 
+    const getDatosAntenaVerificacion = async () => {
+      try {
+        const res = await getAntenaVerificacion()
+        const { data, status } = res
+        if (status == 200) {
+          antenaVerificacion.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
+
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
         // No hay usuarios en el store
         getDatosAntenaEntrada()
-      } else {
-        console.log('Ya hay tanques en el store')
+      }
+      if (Object.keys(antenaVerificacion.value).length < 1) {
+        // No hay usuarios en el store
+        getDatosAntenaVerificacion()
       }
     })
 
@@ -86,6 +106,7 @@ export default {
 
     return {
       antenaEntrada,
+      antenaVerificacion,
     }
   },
 };
