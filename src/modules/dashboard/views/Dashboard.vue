@@ -1,35 +1,43 @@
 <template>
   <div class="m-2 sm:mx-12 sm:my-2 w-full flex flex-col">
-    <div class="flex flex-row justify-between items-start">
-      <div class="flex justify-center items center mx-2">
-        <TarjetaEntrada :data="antenaEntrada" />
-      </div>
-      <div class="flex justify-center items center mx-2">
-        <TarjetaVerificacion :data="antenaVerificacion" />
-      </div>
-      <div class="flex justify-center items center mx-2">
-        <TarjetaSalida :data="antenaSalida" />
-      </div>
-      <div class="flex justify-center items center mx-2">
-        <TarjetaUltimasCargas :salidas="tanksSalida" />
+    <div class="w-full flex justify-between items-start">
+      <div class="w-full flex justify-between items-start">
+        <div class="w-full flex flex-col justify-between items-center">
+          <div class="w-full flex justify-around items-start">
+            <div class="flex justify-center items-center">
+              <TarjetaEntrada :data="antenaEntrada" />
+            </div>
+            <div class="flex justify-center items-center">
+              <TarjetaVerificacion :data="antenaVerificacion" />
+            </div>
+            <div class="flex justify-center items-center">
+              <TarjetaSalida :data="antenaSalida" />
+            </div>
+          </div>
+          <div class="w-full flex justify-around items-start">
+            <div class="flex justify-center items-center">
+              <TarjetaUltimaEntrada @openForm="openForm" />
+            </div>
+            <div class="flex justify-center items-center">
+              Última Asignación
+            </div>
+            <div class="flex justify-center items-center">
+              Última Salida
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col justify-center items center">
+          <div class="flex justify-center items-center">
+            <TarjetaUltimasCargas :salidas="tanksSalida" />
+          </div>
+          <div class="flex justify-center items-center">
+            Estado Llenaderas
+          </div>
+        </div>
       </div>
     </div>
-    <div class="flex flex-row justify-center items-start border border-red-500">
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 5
-      </div>
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 6
-      </div>
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 7
-      </div>
-      <div class="flex justify-center items center w-3/12 border border-blue-900">
-        Card 8
-      </div>
-    </div>
-    <div class="flex flex-row justify-center items-start border border-red-500">
-      Lista de Espera
+    <div class="flex justify-center items-center">
+      Lista
     </div>
   </div>
 </template>
@@ -39,8 +47,10 @@ import TarjetaEntrada from '../components/TarjetaEntrada.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
+import TarjetaUltimaEntrada from '../components/TarjetaUltimaEntrada.vue'
 import useDashboard from '../composables/useDashboard'
 import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
+import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -51,9 +61,12 @@ export default {
     TarjetaVerificacion,
     TarjetaSalida,
     TarjetaUltimasCargas,
+    TarjetaUltimaEntrada,
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
+    
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
     const { getTanksSalidas } = useTanqueSalida()
 
@@ -129,6 +142,10 @@ export default {
       }
     }
 
+    const openForm = () => {
+      router.push('/dashboard/entrada/manual')
+    }
+
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
         getDatosAntenaEntrada()
@@ -151,6 +168,7 @@ export default {
       antenaVerificacion,
       antenaSalida,
       tanksSalida,
+      openForm,
     }
   },
 };

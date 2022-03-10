@@ -45,3 +45,12 @@ export const addTanksSalida = (state, tanks) => {
   console.log('mutation => addTanksSalida')
   state.tanquesInSalida = tanks
 }
+
+// Tanques Lista Espera
+
+export const addTankWaitingList = (state, tank) => {
+  console.log('mutation => addTankWaitingList')
+  console.log(tank)
+  state.tanquesInEspera.push(tank)  
+  console.log(state.tanquesInEspera)
+}
