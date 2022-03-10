@@ -18,8 +18,11 @@
             <div class="flex justify-center items-center">
               <TarjetaUltimaEntrada :data="lastEntry" @openForm="openForm" />
             </div>
-            <div class="flex justify-center items-center">
-              Última Asignación
+            <div class="flex flex-col justify-center items-center">
+              <h4>Asignacion</h4>
+              <div class="flex justify-center items-centr">
+                <pre class="text-sm text-dark">{{ lastAsign }}</pre>
+              </div>
             </div>
             <div class="flex justify-center items-center">
               Última Salida
@@ -51,6 +54,7 @@ import TarjetaUltimaEntrada from '../components/TarjetaUltimaEntrada.vue'
 import useDashboard from '../composables/useDashboard'
 import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
+import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
@@ -74,6 +78,7 @@ export default {
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
     const { getTanksSalidas } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
+    const { getUltimaAsignacion } = useTanqueServicio()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -89,6 +94,9 @@ export default {
 
     const dataLastEntry = computed(() => store.state.tanques.lastTankEntry)
     let lastEntry = ref(dataLastEntry.value)
+    
+    const dataLastAsign = computed(() => store.state.tanques.lastTankAsign)
+    let lastAsign = ref(dataLastAsign.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -164,6 +172,21 @@ export default {
         router.push('/auth')
       }
     }
+    
+    const getLastTankAsign = async () => {
+      try {
+        const res = await getUltimaAsignacion()
+        const { data, status } = res
+        if (status == 200) {
+          lastAsign.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
 
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
@@ -185,6 +208,9 @@ export default {
       if (Object.keys(lastEntry.value).length < 1) {
         getLastTankEntry()
       }
+      if (Object.keys(lastAsign.value).length < 1) {
+        getLastTankAsign()
+      }
     })
 
 
@@ -196,6 +222,7 @@ export default {
       tanksSalida,
       openForm,
       lastEntry,
+      lastAsign,
     }
   },
 };

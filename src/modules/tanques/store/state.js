@@ -14,6 +14,7 @@ export default () => ({
   // ----- tanques en servicio ------
   tanquesInServicio: [],
   tanqueInServicioSel: {},
+  lastTankAsign: {},
 
   // ----- tanques en salida ------
   tanquesInSalida: [],

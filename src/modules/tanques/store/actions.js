@@ -6,8 +6,8 @@ export const getTanks = async ({commit}) => {
   try {
     console.log('action => getTanks')
     const res = await scadaApi.get('/tanques')
-    console.log(res)
     const { data } = res
+    console.log(data)
     commit('addTanks', data)
     return res
   } catch (error) {
@@ -64,9 +64,41 @@ export const getUltimaEntrada = async ({commit}) => {
   try {
     console.log('action => getUltimaEntrada')
     const res = await scadaApi.get('/tanques/entrada/ultima')
-    console.log(res)
     const { data } = res
+    console.log(data)
     commit('addTanksLastEntry', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+
+
+// ------ Tanques Espera ------
+
+export const addTankWaitingList = async ({ commit }, tank) => {
+  console.log('action => addTankWaitingList')
+  try {
+    const res = await scadaApi.post('tanques/espera', tank)
+    const { data } = res
+    console.log(data)
+    commit('addTankWaitingList', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+// ------ Tanques de Servicio ------
+
+export const getUltimaAsignacion = async ({commit}) => {
+  console.log('action => getUltimaAsignacion')
+  try {
+    const res = await scadaApi.get('tanques/servicio/ultimo')
+    const { data } = res
+    console.log(data)
+    commit('addTanksLastAsign', data)
     return res
   } catch (error) {
     return { ok: false, message: error.message }
@@ -83,22 +115,6 @@ export const getTanksSalidas = async ({commit}) => {
     console.log(res)
     const { data } = res
     commit('addTanksSalida', data)
-    return res
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
-}
-
-
-// ------ Tanques Espera ------
-
-export const addTankWaitingList = async ({ commit }, tank) => {
-  console.log('action => addTankWaitingList')
-  try {
-    const res = await scadaApi.post('tanques/espera', tank)
-    const { data } = res
-    console.log(data)
-    commit('addTankWaitingList', data)
     return res
   } catch (error) {
     return { ok: false, message: error.message }

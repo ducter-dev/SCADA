@@ -58,6 +58,15 @@ export const addTankWaitingList = (state, tank) => {
   console.log(state.tanquesInEspera)
 }
 
+
+// ----- Tanques Servicio -----
+
+export const addTanksLastAsign = (state, service) => {
+  console.log('mutation => addTanksLastAsign')
+  console.log(service)
+  state.lastTankAsign = (service)  
+}
+
 // ----- Tanques Salidas -----
 
 export const addTanksSalida = (state, tanks) => {
