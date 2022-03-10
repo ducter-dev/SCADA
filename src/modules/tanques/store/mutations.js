@@ -1,5 +1,5 @@
 
-// Tanques
+// ----- Tanques -----
 export const addTanks = (state, tanks) => {
   console.log('mutation => addTanks')
   state.tanques = tanks
@@ -40,17 +40,27 @@ export const addTank = ( state, tank ) => {
   state.tanques.push(tank)
 }
 
-// Tanques Salida
-export const addTanksSalida = (state, tanks) => {
-  console.log('mutation => addTanksSalida')
-  state.tanquesInSalida = tanks
+// ----- Tanques Entradas -----
+
+export const addTanksLastEntry = ( state, entry ) => {
+  console.log('mutation => addTanksLastEntry')
+  console.log(entry)
+  state.lastTankEntry = entry
 }
 
-// Tanques Lista Espera
+
+// ----- Tanques Espera -----
 
 export const addTankWaitingList = (state, tank) => {
   console.log('mutation => addTankWaitingList')
   console.log(tank)
   state.tanquesInEspera.push(tank)  
   console.log(state.tanquesInEspera)
+}
+
+// ----- Tanques Salidas -----
+
+export const addTanksSalida = (state, tanks) => {
+  console.log('mutation => addTanksSalida')
+  state.tanquesInSalida = tanks
 }
