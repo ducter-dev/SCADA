@@ -18,6 +18,7 @@ export default () => ({
 
   // ----- tanques en salida ------
   tanquesInSalida: [],
+  lastTankExit: {},
 
   // ----- llenaderas ------
   llenaderas: [],

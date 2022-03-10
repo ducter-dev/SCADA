@@ -9,10 +9,17 @@ const useTanqueSalida = () => {
     return resp
   }
 
+  const getUltimaSalida = async () => {
+    console.log('composable - getUltimaSalida')
+    const resp = await store.dispatch('tanques/getUltimaSalida')
+    return resp
+  }
+
   // editar tanque de salida
 
   return {
     getTanksSalidas,
+    getUltimaSalida,
   }
 }
 

@@ -73,3 +73,8 @@ export const addTanksSalida = (state, tanks) => {
   console.log('mutation => addTanksSalida')
   state.tanquesInSalida = tanks
 }
+
+export const addTanksLastExit = (state, exit) => {
+  console.log('mutation => addTanksLastExit')
+  state.lastTankExit = exit
+}
