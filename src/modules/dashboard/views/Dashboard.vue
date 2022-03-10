@@ -25,7 +25,7 @@
               </div>
             </div>
             <div class="flex justify-center items-center">
-              Última Salida
+              <TarjetaUltimaSalida :data="lastExit" />
             </div>
           </div>
         </div>
@@ -51,6 +51,7 @@ import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
 import TarjetaUltimaEntrada from '../components/TarjetaUltimaEntrada.vue'
+import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import useDashboard from '../composables/useDashboard'
 import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
@@ -70,13 +71,14 @@ export default {
     TarjetaSalida,
     TarjetaUltimasCargas,
     TarjetaUltimaEntrada,
+    TarjetaUltimaSalida,
   },
   setup() {
     const store = useStore()
     const router = useRouter()
     
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
-    const { getTanksSalidas } = useTanqueSalida()
+    const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
 
@@ -97,6 +99,9 @@ export default {
     
     const dataLastAsign = computed(() => store.state.tanques.lastTankAsign)
     let lastAsign = ref(dataLastAsign.value)
+
+    const dataLastExit = computed(() => store.state.tanques.lastTankExit)
+    let lastExit = ref(dataLastExit.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -188,6 +193,21 @@ export default {
       }
     }
 
+    const getLastTankExit = async () => {
+      try {
+        const res = await getUltimaSalida()
+        const { data, status } = res
+        if (status == 200) {
+          lastExit.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        router.push('/auth')
+      }
+    }
+
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
     }
@@ -211,6 +231,9 @@ export default {
       if (Object.keys(lastAsign.value).length < 1) {
         getLastTankAsign()
       }
+      if (Object.keys(lastExit.value).length < 1) {
+        getLastTankExit()
+      }
     })
 
 
@@ -223,6 +246,7 @@ export default {
       openForm,
       lastEntry,
       lastAsign,
+      lastExit,
     }
   },
 };

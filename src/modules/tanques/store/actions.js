@@ -120,3 +120,16 @@ export const getTanksSalidas = async ({commit}) => {
     return { ok: false, message: error.message }
   }
 }
+
+export const getUltimaSalida = async ({commit}) => {
+  try {
+    console.log('action => getUltimaSalida')
+    const res = await scadaApi.get('tanques/salida/ultima')
+    const { data } = res
+    console.log(data)
+    commit('addTanksLastExit', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
