@@ -5,3 +5,7 @@ export const currentTanqueInEspera = (state) => {
 export const currentTanqueSel = (state) => {
   return state.tanqueSelect
 }
+
+export const countTanquesEspera = (state) => {
+  return state.tanquesInEspera.length + 1
+}

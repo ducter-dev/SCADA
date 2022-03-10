@@ -1,7 +1,7 @@
 <template>
   <div class="w-6/12">
     <div class="flex justify-start items-center content-center my-8">
-      <h2 class="text-xl font-bold">Editar autotanque</h2>
+      <h2 class="text-xl font-bold"> Registrar autotanque</h2>
     </div>
     <div class="w-full flex justify-center items-center">
       <form class="w-full" @submit.prevent="onSubmit">
@@ -137,8 +137,8 @@
               class="
                 w-full
                 text-white
-                bg-dark
-                hover:bg-black
+                bg-black
+                hover:bg-dark
                 focus:ring-4 focus:ring-dark
                 font-medium
                 rounded-lg

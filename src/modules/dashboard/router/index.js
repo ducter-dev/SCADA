@@ -42,5 +42,10 @@ export default {
       name: 'TanquesNuevo',
       component: () => import('../../tanques/views/Nuevo.vue')
     },
+    {
+      path: 'entrada/manual',
+      name: 'entradaManual',
+      component: () => import('../../tanques/views/EntradaManual.vue')
+    },
   ]
 }
