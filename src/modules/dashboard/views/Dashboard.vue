@@ -19,7 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada"/>
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :data="lastAsign" />
+              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion"/>
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :data="lastExit"  />
@@ -79,7 +79,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada } = useDashboard()
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion, changeBarreraVerificacion } = useDashboard()
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
@@ -111,6 +111,9 @@ export default {
 
     const dataBarreraEntrada = computed(() => store.state.dashboard.barreraEntrada)
     let barreraEntrada = ref(dataBarreraEntrada.value)
+
+    const dataBarreraVerificacion = computed(() => store.state.dashboard.barreraVerificacion)
+    let barreraVerificacion = ref(dataBarreraVerificacion.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -248,6 +251,22 @@ export default {
       }
     }
 
+    const getDataBarreraVerificacion = async () => {
+      try {
+        const res = await getBarreraVerificacion()
+        const { data, status } = res
+        if (status == 201) {
+          console.log(`barrera verificacion inicio: ${data.estado}`)
+          barreraVerificacion.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
 
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
@@ -284,6 +303,24 @@ export default {
       }
     }
 
+    const toggleVerificacion = async (toggle) => {
+      try {
+        const res = await changeBarreraVerificacion(toggle)
+        const { data, status } = res
+        if (status == 201) {
+          barreraVerificacion.value = data
+          Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
+    
+
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
         getDatosAntenaEntrada()
@@ -312,6 +349,9 @@ export default {
       if (Object.keys(barreraEntrada.value).length < 1) {
         getDataBarreraEntrada()
       }
+      if (Object.keys(barreraVerificacion.value).length < 1) {
+        getDataBarreraVerificacion()
+      }
     })
 
     return {
@@ -327,6 +367,8 @@ export default {
       desasignarLlenadera,
       toggleEntrada,
       barreraEntrada,
+      barreraVerificacion,
+      toggleVerificacion,
     }
   },
 };

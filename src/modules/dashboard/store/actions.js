@@ -47,7 +47,7 @@ export const getBarreraEntrada = async({commit}) => {
     const res = await scadaApi.get('/barrera/entrada')
     console.log(res)
     const { data } = res
-    commit('changeBarreraEntrada', data.estado)
+    commit('changeBarreraEntrada', data)
     return res
   } catch (error) {
     return { ok: false, message: error.message }
@@ -63,7 +63,37 @@ export const changeBarreraEntrada = async({commit}, toggle) => {
     const res = await scadaApi.post('/barrera/entrada', dataForm)
     console.log(res)
     const { data } = res
-    commit('changeBarreraEntrada', data.estado)
+    commit('changeBarreraEntrada', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+// Barrera de Verificacion
+export const getBarreraVerificacion = async({commit}) => {
+  try {
+    console.log('action => getBarreraVerificacion')
+    const res = await scadaApi.get('/barrera/verificacion')
+    console.log(res)
+    const { data } = res
+    commit('changeBarreraEntrada', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+export const changeBarreraVerificacion = async({commit}, toggle) => {
+  try {
+    console.log('action => changeBarreraVerificacion')
+    const dataForm = {
+      estado: toggle
+    }
+    const res = await scadaApi.post('/barrera/verificacion', dataForm)
+    console.log(res)
+    const { data } = res
+    commit('changeBarreraVerificacion', data)
     return res
   } catch (error) {
     return { ok: false, message: error.message }

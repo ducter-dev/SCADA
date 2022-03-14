@@ -37,12 +37,30 @@ const useDashboard = () => {
     return resp
   }
 
+
+  // Barrera de Verificacion
+
+  const getBarreraVerificacion = async () => {
+    console.log('composable - getBarreraVerificacion')
+    const resp = await store.dispatch('dashboard/getBarreraVerificacion')
+    return resp
+  }
+
+  const changeBarreraVerificacion = async (toggle) => {
+    console.log('composable - changeBarreraVerificacion')
+    const resp = await store.dispatch('dashboard/changeBarreraVerificacion', toggle)
+    return resp
+  }
+
+
   return {
     getAntenaEntrada,
     getAntenaVerificacion,
     getAntenaSalida,
     changeBarreraEntrada,
     getBarreraEntrada,
+    getBarreraVerificacion,
+    changeBarreraVerificacion,
   }
 }
 
