@@ -16,13 +16,13 @@
           </div>
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <TarjetaUltimaEntrada :data="lastEntry" @openForm="openForm" />
+              <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada"/>
             </div>
             <div class="flex flex-col justify-center items-center">
               <TarjetaAsignacion :data="lastAsign" />
             </div>
             <div class="flex justify-center items-center">
-              <TarjetaUltimaSalida :data="lastExit" />
+              <TarjetaUltimaSalida :data="lastExit"  />
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida } = useDashboard()
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada } = useDashboard()
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
@@ -109,6 +109,9 @@ export default {
     const dataLlenaderasLibres = computed(() => store.state.tanques.llenaderasLibres)
     let llenaderasLibres = ref(dataLlenaderasLibres.value)
 
+    const dataBarreraEntrada = computed(() => store.state.dashboard.barreraEntrada)
+    let barreraEntrada = ref(dataBarreraEntrada.value)
+
     const getDatosAntenaEntrada = async () => {
       try {
         const res = await getAntenaEntrada()
@@ -119,7 +122,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -134,7 +137,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -149,7 +152,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -157,21 +160,14 @@ export default {
     const getTanquesSalida = async () => {
       try {
         const res = await getTanksSalidas()
-        console.log(res)
         const { data, status } = res
-        console.log(data)
         if (status == 200) {
-          console.log('status 200')
-          if (data.length == 0) {
-            console.log('debemos salir')
-            return
-          }
           tanksSalida.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -186,7 +182,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -201,7 +197,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -216,7 +212,7 @@ export default {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
     }
@@ -236,18 +232,56 @@ export default {
       }
     }
 
+    const getDataBarreraEntrada = async () => {
+      try {
+        const res = await getBarreraEntrada()
+        const { data, status } = res
+        if (status == 201) {
+          console.log(`barrera entrada inicio: ${data.estado}`)
+          barreraEntrada.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
+
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
     }
 
     const desasignarLlenadera = async (llenadera) => {
-      const res = await resetLlenadera(llenadera)
-      const { data, status } = res
+      try {
+        const res = await resetLlenadera(llenadera)
+        const { data, status } = res
         if (status == 201) {
           Swal.fire("Desasignar", data.message, "success")
         } else {
           Swal.fire("Error", data.message, "error")
-        } 
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
+    const toggleEntrada = async (toggle) => {
+      try {
+        const res = await changeBarreraEntrada(toggle)
+        const { data, status } = res
+        if (status == 201) {
+          barreraEntrada.value = data
+          Swal.fire("Barrera de Entrada", `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
     }
 
     onMounted(() => {
@@ -275,9 +309,10 @@ export default {
       if (Object.keys(llenaderasLibres.value).length < 1) {
         getLlenaderasFrees()
       }
+      if (Object.keys(barreraEntrada.value).length < 1) {
+        getDataBarreraEntrada()
+      }
     })
-
-
 
     return {
       antenaEntrada,
@@ -290,6 +325,8 @@ export default {
       lastExit,
       llenaderasLibres,
       desasignarLlenadera,
+      toggleEntrada,
+      barreraEntrada,
     }
   },
 };
