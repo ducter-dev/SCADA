@@ -17,5 +17,10 @@ export const changeBarreraEntrada = (state, estado) => {
   console.log(estado)
   console.log('mutation => changeBarreraEntrada')
   state.barreraEntrada = estado
-  console.log(state.barreraEntrada)
+}
+
+export const changeBarreraVerificacion = (state, estado) => {
+  console.log(estado)
+  console.log('mutation => changeBarreraVerificacion')
+  state.barreraVerificacion = estado
 }
