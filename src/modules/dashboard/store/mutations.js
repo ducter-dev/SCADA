@@ -24,3 +24,9 @@ export const changeBarreraVerificacion = (state, estado) => {
   console.log('mutation => changeBarreraVerificacion')
   state.barreraVerificacion = estado
 }
+
+export const changeBarreraSalida = (state, estado) => {
+  console.log(estado)
+  console.log('mutation => changeBarreraSalida')
+  state.barreraSalida = estado
+}

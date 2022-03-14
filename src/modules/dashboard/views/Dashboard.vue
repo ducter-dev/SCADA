@@ -16,13 +16,13 @@
           </div>
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada"/>
+              <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion"/>
+              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion" />
             </div>
             <div class="flex justify-center items-center">
-              <TarjetaUltimaSalida :data="lastExit"  />
+              <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
             </div>
           </div>
         </div>
@@ -79,7 +79,8 @@ export default {
     const store = useStore()
     const router = useRouter()
     
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion, changeBarreraVerificacion } = useDashboard()
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, 
+    changeBarreraEntrada, getBarreraVerificacion, changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida } = useDashboard()
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
@@ -114,6 +115,9 @@ export default {
 
     const dataBarreraVerificacion = computed(() => store.state.dashboard.barreraVerificacion)
     let barreraVerificacion = ref(dataBarreraVerificacion.value)
+
+    const dataBarreraSalida = computed(() => store.state.dashboard.barreraSalida)
+    let barreraSalida = ref(dataBarreraSalida.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -267,6 +271,21 @@ export default {
       }
     }
 
+    const getDataBarreraSalida = async () => {
+      try {
+        const res = await getBarreraSalida()
+        const { data, status } = res
+        if (status == 201) {
+          console.log(`barrera verificacion inicio: ${data.estado}`)
+          barreraSalida.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
 
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
@@ -319,6 +338,22 @@ export default {
       }
     }
 
+    const toggleSalida = async (toggle) => {
+      try {
+        const res = await changeBarreraSalida(toggle)
+        const { data, status } = res
+        if (status == 201) {
+          barreraSalida.value = data
+          Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
     
 
     onMounted(() => {
@@ -352,6 +387,9 @@ export default {
       if (Object.keys(barreraVerificacion.value).length < 1) {
         getDataBarreraVerificacion()
       }
+      if (Object.keys(barreraSalida.value).length < 1) {
+        getDataBarreraSalida()
+      }
     })
 
     return {
@@ -369,6 +407,8 @@ export default {
       barreraEntrada,
       barreraVerificacion,
       toggleVerificacion,
+      barreraSalida,
+      toggleSalida
     }
   },
 };
