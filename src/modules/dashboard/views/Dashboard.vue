@@ -19,10 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" @openForm="openForm" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <h4>Asignacion</h4>
-              <div class="flex justify-center items-centr">
-                <pre class="text-sm text-dark">{{ lastAsign }}</pre>
-              </div>
+              <TarjetaAsignacion :data="lastAsign" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :data="lastExit" />
@@ -34,7 +31,7 @@
             <TarjetaUltimasCargas :salidas="tanksSalida" />
           </div>
           <div class="flex justify-center items-center">
-            Estado Llenaderas
+            <TarjetaLlenaderas :data="llenaderasLibres" @desasignarLlenadera="desasignarLlenadera" />
           </div>
         </div>
       </div>
@@ -51,11 +48,14 @@ import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
 import TarjetaUltimaEntrada from '../components/TarjetaUltimaEntrada.vue'
+import TarjetaAsignacion from '../components/TarjetaAsignacion.vue'
 import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
+import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
 import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
+import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
@@ -70,8 +70,10 @@ export default {
     TarjetaVerificacion,
     TarjetaSalida,
     TarjetaUltimasCargas,
+    TarjetaAsignacion,
     TarjetaUltimaEntrada,
     TarjetaUltimaSalida,
+    TarjetaLlenaderas,
   },
   setup() {
     const store = useStore()
@@ -81,6 +83,7 @@ export default {
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
+    const { getLlenaderasLibres, resetLlenadera } = useLlenaderas()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -102,6 +105,9 @@ export default {
 
     const dataLastExit = computed(() => store.state.tanques.lastTankExit)
     let lastExit = ref(dataLastExit.value)
+
+    const dataLlenaderasLibres = computed(() => store.state.tanques.llenaderasLibres)
+    let llenaderasLibres = ref(dataLlenaderasLibres.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -151,8 +157,15 @@ export default {
     const getTanquesSalida = async () => {
       try {
         const res = await getTanksSalidas()
+        console.log(res)
         const { data, status } = res
+        console.log(data)
         if (status == 200) {
+          console.log('status 200')
+          if (data.length == 0) {
+            console.log('debemos salir')
+            return
+          }
           tanksSalida.value = data
         } else {
           Swal.fire("Error", data.message, "error")
@@ -208,8 +221,33 @@ export default {
       }
     }
 
+    const getLlenaderasFrees = async () => {
+      try {
+        const res = await getLlenaderasLibres()
+        const { data, status } = res
+        if (status == 200) {
+          llenaderasLibres.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
+    }
+
+    const desasignarLlenadera = async (llenadera) => {
+      const res = await resetLlenadera(llenadera)
+      const { data, status } = res
+        if (status == 201) {
+          Swal.fire("Desasignar", data.message, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        } 
     }
 
     onMounted(() => {
@@ -234,6 +272,9 @@ export default {
       if (Object.keys(lastExit.value).length < 1) {
         getLastTankExit()
       }
+      if (Object.keys(llenaderasLibres.value).length < 1) {
+        getLlenaderasFrees()
+      }
     })
 
 
@@ -247,6 +288,8 @@ export default {
       lastEntry,
       lastAsign,
       lastExit,
+      llenaderasLibres,
+      desasignarLlenadera,
     }
   },
 };

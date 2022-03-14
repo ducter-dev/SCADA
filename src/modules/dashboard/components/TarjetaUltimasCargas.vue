@@ -15,7 +15,7 @@
         Últimas Salidas
       </h5>
     </div>
-    <div class="p-1
+    <div v-show="salidas.length > 0" class="p-1
             m-1
             max-w-sm
             bg-white
@@ -134,5 +134,5 @@
 <script>
 export default {
   props: ["salidas"],
-};
+}
 </script>

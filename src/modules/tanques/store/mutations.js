@@ -71,10 +71,21 @@ export const addTanksLastAsign = (state, service) => {
 
 export const addTanksSalida = (state, tanks) => {
   console.log('mutation => addTanksSalida')
+  if (tanks.length < 1) {
+    return console.log('Salimos')
+  }
   state.tanquesInSalida = tanks
 }
 
 export const addTanksLastExit = (state, exit) => {
   console.log('mutation => addTanksLastExit')
   state.lastTankExit = exit
+}
+
+
+// ----- Llenaderas -----
+
+export const addLlenaderasLibres = (state, llenaderas) => {
+  console.log('mutation => addTanksLastExit')
+  state.llenaderasLibres = llenaderas
 }
