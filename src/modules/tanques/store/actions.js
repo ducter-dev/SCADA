@@ -112,8 +112,8 @@ export const getTanksSalidas = async ({commit}) => {
   try {
     console.log('action => getTanksSalidas')
     const res = await scadaApi.get('/tanques/salida')
-    console.log(res)
     const { data } = res
+    console.log(data)
     commit('addTanksSalida', data)
     return res
   } catch (error) {
@@ -128,6 +128,35 @@ export const getUltimaSalida = async ({commit}) => {
     const { data } = res
     console.log(data)
     commit('addTanksLastExit', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+
+// ------ Llenaderas ------
+
+export const getLlenaderasLibres = async ({commit}) => {
+  try {
+    console.log('action => getLlenaderasLibres')
+    const res = await scadaApi.get('llenaderas/libres')
+    const { data } = res
+    console.log(data)
+    commit('addLlenaderasLibres', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+export const desasignLlenadera = async ({commit}, llenadera) => {
+  try {
+    console.log('action => desasignLlenadera')
+    const res = await scadaApi.post(`llenaderas/desasignar/${llenadera}`)
+    const { data } = res
+    console.log(data)
+    commit('addLlenaderasLibres', data)
     return res
   } catch (error) {
     return { ok: false, message: error.message }

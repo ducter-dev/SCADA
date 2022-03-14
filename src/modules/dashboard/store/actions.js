@@ -38,3 +38,34 @@ export const getAntenaSalida = async ({commit}) => {
     return { ok: false, message: error.message }
   }
 }
+
+
+// Barrera de Entrada
+export const getBarreraEntrada = async({commit}) => {
+  try {
+    console.log('action => getBarreraEntrada')
+    const res = await scadaApi.get('/barrera/entrada')
+    console.log(res)
+    const { data } = res
+    commit('changeBarreraEntrada', data.estado)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+export const changeBarreraEntrada = async({commit}, toggle) => {
+  try {
+    console.log('action => changeBarreraEntrada')
+    const dataForm = {
+      estado: toggle
+    }
+    const res = await scadaApi.post('/barrera/entrada', dataForm)
+    console.log(res)
+    const { data } = res
+    commit('changeBarreraEntrada', data.estado)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}

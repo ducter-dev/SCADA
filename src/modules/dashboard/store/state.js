@@ -1,5 +1,6 @@
 export default () => ({
   antenaEntrada: {},
   antenaVerificacion: {},
-  antenaSalida: {}
+  antenaSalida: {},
+  barreraEntrada: {},
 })

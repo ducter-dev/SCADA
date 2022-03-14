@@ -22,5 +22,6 @@ export default () => ({
 
   // ----- llenaderas ------
   llenaderas: [],
+  llenaderasLibres: [],
 
 })
