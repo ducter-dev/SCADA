@@ -17,11 +17,26 @@ const useLlenaderas = () => {
     return resp
   }
 
+  // Despacho
+
+  const getEstadoLlenadera = async () => {
+    console.log('composable - getEstadoLlenadera')
+    const resp = await store.dispatch('tanques/getEstadoLlenadera', toggle)
+    return resp
+  }
+
+  const changeEstadoLlenadera = async (toggle) => {
+    console.log('composable - changeEstadoLlenadera')
+    const resp = await store.dispatch('tanques/changeEstadoLlenadera', toggle)
+    return resp
+  }
+
   return {
     getLlenaderasLibres,
     resetLlenadera,
+    getEstadoLlenadera,
+    changeEstadoLlenadera,
   }
-
 }
 
 export default useLlenaderas

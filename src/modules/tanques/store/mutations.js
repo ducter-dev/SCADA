@@ -89,3 +89,8 @@ export const addLlenaderasLibres = (state, llenaderas) => {
   console.log('mutation => addTanksLastExit')
   state.llenaderasLibres = llenaderas
 }
+
+export const changeEstadoLlenadera = (state, estado) => {
+  console.log('mutation => changeEstadoLlenadera')
+  state.llenaderasEstado = estado
+}
