@@ -52,6 +52,20 @@ const useDashboard = () => {
     return resp
   }
 
+  // Barrera de Salida
+
+  const getBarreraSalida = async () => {
+    console.log('composable - getBarreraSalida')
+    const resp = await store.dispatch('dashboard/getBarreraSalida')
+    return resp
+  }
+
+  const changeBarreraSalida = async (toggle) => {
+    console.log('composable - changeBarreraSalida')
+    const resp = await store.dispatch('dashboard/changeBarreraSalida', toggle)
+    return resp
+  }
+
 
   return {
     getAntenaEntrada,
@@ -61,6 +75,8 @@ const useDashboard = () => {
     getBarreraEntrada,
     getBarreraVerificacion,
     changeBarreraVerificacion,
+    getBarreraSalida,
+    changeBarreraSalida,
   }
 }
 

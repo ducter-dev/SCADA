@@ -4,4 +4,5 @@ export default () => ({
   antenaSalida: {},
   barreraEntrada: { estado: true },
   barreraVerificacion: { estado: true },
+  barreraSalida: { estado: true },
 })
