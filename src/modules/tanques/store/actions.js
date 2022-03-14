@@ -162,3 +162,35 @@ export const desasignLlenadera = async ({commit}, llenadera) => {
     return { ok: false, message: error.message }
   }
 }
+
+
+// Despacho Llenaderas
+
+export const getDespacho = async ({commit}, estado) => {
+  try {
+    console.log('action => getDespacho')
+    const res = await scadaApi.get('/llenaderas/estado', estado)
+    console.log(res)
+    const { data } = res
+    commit('changeEstadoLlenadera', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
+export const changeEstadoLlenadera = async({commit}, estado) => {
+  try {
+    console.log('action => changeEstadoLlenadera')
+    const dataForm = {
+      estado
+    }
+    const res = await scadaApi.post('/llenaderas/estado', dataForm)
+    console.log(res)
+    const { data } = res
+    commit('changeEstadoLlenadera', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}

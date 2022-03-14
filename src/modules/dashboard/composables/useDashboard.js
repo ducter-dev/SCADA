@@ -66,7 +66,6 @@ const useDashboard = () => {
     return resp
   }
 
-
   return {
     getAntenaEntrada,
     getAntenaVerificacion,

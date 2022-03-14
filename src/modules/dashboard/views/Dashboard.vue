@@ -19,7 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion" />
+              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion" @despachar="setDespacho" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
@@ -84,7 +84,7 @@ export default {
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getUltimaAsignacion } = useTanqueServicio()
-    const { getLlenaderasLibres, resetLlenadera } = useLlenaderas()
+    const { getLlenaderasLibres, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera } = useLlenaderas()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -118,6 +118,9 @@ export default {
 
     const dataBarreraSalida = computed(() => store.state.dashboard.barreraSalida)
     let barreraSalida = ref(dataBarreraSalida.value)
+    
+    const dataEstadoLlenadera = computed(() => store.state.tanques.llenaderasEstado)
+    let estadoLlenadera = ref(dataEstadoLlenadera.value)
 
     const getDatosAntenaEntrada = async () => {
       try {
@@ -271,6 +274,20 @@ export default {
       }
     }
 
+    const getDataEstadoLlenadera = async () => {
+      try {
+        const res = await getEstadoLlenadera()
+        const { data, status } = res
+        if (status == 201) {
+          estadoLlenadera.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
     const getDataBarreraSalida = async () => {
       try {
         const res = await getBarreraSalida()
@@ -354,6 +371,21 @@ export default {
       }
     }
 
+    const setDespacho = async (orden) => {
+      try {
+        const res = await changeEstadoLlenadera(orden)
+        const { data, status } = res
+        if (status == 201) {
+          estadoLlenadera.value = data
+          Swal.fire("Estado Llenadera", `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
     
 
     onMounted(() => {
@@ -390,6 +422,9 @@ export default {
       if (Object.keys(barreraSalida.value).length < 1) {
         getDataBarreraSalida()
       }
+      if (Object.keys(estadoLlenadera.value).length < 1) {
+        getDataEstadoLlenadera()
+      }
     })
 
     return {
@@ -408,7 +443,9 @@ export default {
       barreraVerificacion,
       toggleVerificacion,
       barreraSalida,
-      toggleSalida
+      toggleSalida,
+      setDespacho,
+      estadoLlenadera
     }
   },
 };

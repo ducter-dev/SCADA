@@ -30,6 +30,31 @@
           {{ data }}
         </pre>
       </div>
+      <div class="flex justify-center items-center mx-2">
+          <div class="flex justify-center items-center">
+            <span class="text-dark font-semibold text-sm pb-1">Despacho</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <button 
+              type="button"
+              class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-2 mb-2"
+              @click="$emit('despachar', 1)"
+              >
+              <IconPause class="mr-2 -ml-1 w-4 h-4" />
+              Detener
+            </button>
+          </div>
+          <div class="flex justify-between items-center">
+            <button
+              type="button"
+              class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-2 mb-2"
+              @click="$emit('despachar', 0)"
+              >
+              <IconTimes class="mr-2 -ml-1 w-4 h-4" />
+              Liberar
+            </button>
+          </div>
+        </div>
       <div class="flex justify-center items-center">
         <div class="flex justify-center items-center mx-2">
           Barrera de Verificación
@@ -59,10 +84,15 @@
 <script>
 import { ref } from 'vue'
 import Toggle from '@vueform/toggle'
+import IconPause from '../../../assets/icons/pause.svg'
+import IconTimes from '../../../assets/icons/xmark-solid.svg'
+
 export default {
   props: ['data', 'barrera'],
   components: {
     Toggle,
+    IconPause,
+    IconTimes,
   },
   setup(props){
     console.log(props.barrera.estado)
