@@ -26,35 +26,54 @@
     </h5>
     <div class="flex flex-col justify-center items-center">
       <div class="flex justify-center items-center">
-        <pre class="text-sm text-dark">
-          {{ data }}
-        </pre>
+        Select
       </div>
-      <div class="flex justify-center items-center mx-2">
-          <div class="flex justify-center items-center">
-            <span class="text-dark font-semibold text-sm pb-1">Despacho</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <button 
-              type="button"
-              class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-2 mb-2"
-              @click="$emit('despachar', 1)"
-              >
-              <IconPause class="mr-2 -ml-1 w-4 h-4" />
-              Detener
-            </button>
-          </div>
-          <div class="flex justify-between items-center">
-            <button
-              type="button"
-              class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-2 mb-2"
-              @click="$emit('despachar', 0)"
-              >
-              <IconTimes class="mr-2 -ml-1 w-4 h-4" />
-              Liberar
-            </button>
-          </div>
+      <div class="flex justify-center items-center">
+        Estado Llenadera
+      </div>
+      <div class="flex flex-col justify-start items-start">
+        <div class="w-full flex justify-between items-start">
+          <span class="font-semibold text-dark text-sm mx-2">Num. AT:</span>
+          <span class="font-semibold text-dark text-sm mx-2">{{ data.atName }}</span>
         </div>
+        <div class="w-full flex justify-between items-center">
+          <span class="font-semibold text-dark text-sm mx-2">Vol Prog.:</span>
+          <span class="font-semibold text-dark text-sm mx-2">{{ data.capacidad }}</span>
+        </div>
+        <div class="w-full flex justify-between items-center">
+          <span class="font-semibold text-dark text-sm mx-2">Tipo:</span>
+          <span class="font-semibold text-dark text-sm mx-2">{{ data.atTipo }}</span>
+        </div>
+        <div class="w-full flex justify-between items-center">
+          <span class="font-semibold text-dark text-sm mx-2">Conector:</span>
+          <span class="font-semibold text-dark text-sm mx-2">{{ data.conector }}</span>
+        </div>
+      </div>
+      <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center">
+          <span class="text-dark font-semibold text-sm pb-1">Despacho</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <button 
+            type="button"
+            class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-1 mb-2"
+            @click="$emit('despachar', 1)"
+            >
+            <IconPause class="mr-2 -ml-1 w-4 h-4" />
+            Detener
+          </button>
+        </div>
+        <div class="flex justify-between items-center">
+          <button
+            type="button"
+            class="text-dark bg-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-300/50 font-medium rounded-lg text-sm px-2.5 py-2.5 text-center inline-flex items-center mx-1 mb-2"
+            @click="$emit('despachar', 0)"
+            >
+            <IconTimes class="mr-2 -ml-1 w-4 h-4" />
+            Liberar
+          </button>
+        </div>
+      </div>
       <div class="flex justify-center items-center">
         <div class="flex justify-center items-center mx-2">
           Barrera de Verificación

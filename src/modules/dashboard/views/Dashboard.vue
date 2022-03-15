@@ -19,7 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :barrera="barreraVerificacion" :data="lastAsign" @toggleChange="toggleVerificacion" @despachar="setDespacho" />
+              <TarjetaAsignacion :barrera="barreraVerificacion" :data="tanksEspera[0]" @toggleChange="toggleVerificacion" @despachar="setDespacho" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
@@ -31,7 +31,7 @@
             <TarjetaUltimasCargas :salidas="tanksSalida" />
           </div>
           <div class="flex justify-center items-center">
-            <TarjetaLlenaderas :data="llenaderasLibres" @desasignarLlenadera="desasignarLlenadera" />
+            <TarjetaLlenaderas :data="llenaderas" @desasignarLlenadera="desasignarLlenadera" />
           </div>
         </div>
       </div>
@@ -54,6 +54,7 @@ import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
 import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
+import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import { useRouter } from 'vue-router'
@@ -83,8 +84,9 @@ export default {
     changeBarreraEntrada, getBarreraVerificacion, changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida } = useDashboard()
     const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
+    const { getTanksEspera } = useTanqueEspera()
     const { getUltimaAsignacion } = useTanqueServicio()
-    const { getLlenaderasLibres, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera } = useLlenaderas()
+    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera } = useLlenaderas()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -94,6 +96,9 @@ export default {
 
     const dataAntenaSalida = computed(() => store.state.dashboard.antenaSalida)
     let antenaSalida = ref(dataAntenaSalida.value)
+
+    const listaEspera = computed(() => store.state.tanques.tanquesInEspera)
+    let tanksEspera = ref(listaEspera.value)
 
     const listaSalida = computed(() => store.state.tanques.tanquesInSalida)
     let tanksSalida = ref(listaSalida.value)
@@ -107,8 +112,8 @@ export default {
     const dataLastExit = computed(() => store.state.tanques.lastTankExit)
     let lastExit = ref(dataLastExit.value)
 
-    const dataLlenaderasLibres = computed(() => store.state.tanques.llenaderasLibres)
-    let llenaderasLibres = ref(dataLlenaderasLibres.value)
+    const dataLlenaderas = computed(() => store.state.tanques.llenaderas)
+    let llenaderas = ref(dataLlenaderas.value)
 
     const dataBarreraEntrada = computed(() => store.state.dashboard.barreraEntrada)
     let barreraEntrada = ref(dataBarreraEntrada.value)
@@ -227,12 +232,12 @@ export default {
       }
     }
 
-    const getLlenaderasFrees = async () => {
+    const getDataLlenaderas = async () => {
       try {
-        const res = await getLlenaderasLibres()
+        const res = await getLlenaderas()
         const { data, status } = res
         if (status == 200) {
-          llenaderasLibres.value = data
+          llenaderas.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -288,6 +293,7 @@ export default {
         router.push('/auth')
       }
     }
+
     const getDataBarreraSalida = async () => {
       try {
         const res = await getBarreraSalida()
@@ -386,8 +392,22 @@ export default {
         router.push('/auth')
       }
     }
-    
 
+    const getTanquesEspera = async () => {
+      try {
+        const res = await getTanksEspera()
+        const { data, status } = res
+        if (status == 200) {
+          tanksEspera.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+    
     onMounted(() => {
       if (Object.keys(antenaEntrada.value).length < 1) {
         getDatosAntenaEntrada()
@@ -410,8 +430,8 @@ export default {
       if (Object.keys(lastExit.value).length < 1) {
         getLastTankExit()
       }
-      if (Object.keys(llenaderasLibres.value).length < 1) {
-        getLlenaderasFrees()
+      if (llenaderas.value.length < 1) {
+        getDataLlenaderas()
       }
       if (Object.keys(barreraEntrada.value).length < 1) {
         getDataBarreraEntrada()
@@ -425,6 +445,9 @@ export default {
       if (Object.keys(estadoLlenadera.value).length < 1) {
         getDataEstadoLlenadera()
       }
+      if (tanksEspera.value.length == 0) {
+        getTanquesEspera()
+      }
     })
 
     return {
@@ -436,7 +459,7 @@ export default {
       lastEntry,
       lastAsign,
       lastExit,
-      llenaderasLibres,
+      llenaderas,
       desasignarLlenadera,
       toggleEntrada,
       barreraEntrada,
@@ -445,7 +468,8 @@ export default {
       barreraSalida,
       toggleSalida,
       setDespacho,
-      estadoLlenadera
+      estadoLlenadera,
+      tanksEspera,
     }
   },
 };
