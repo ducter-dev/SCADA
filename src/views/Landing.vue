@@ -1,5 +1,5 @@
 <template>
   <div class="container mx-auto h-full flex justify-center items-center">
-    SCADA v2.
+    <router-link to="/auth">SCADA v2.</router-link>
   </div>
 </template>
