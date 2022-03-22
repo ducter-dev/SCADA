@@ -5,6 +5,12 @@ const useLlenaderas = () => {
 
   // ----- Llenaderas -----
 
+  const getLlenaderas = async () => {
+    console.log('composable => getLlenaderas')
+    const resp = await store.dispatch('tanques/getLlenaderas')
+    return resp
+  }
+
   const getLlenaderasLibres = async () => {
     console.log('composable => getLlenaderasLibres')
     const resp = await store.dispatch('tanques/getLlenaderasLibres')
@@ -32,6 +38,7 @@ const useLlenaderas = () => {
   }
 
   return {
+    getLlenaderas,
     getLlenaderasLibres,
     resetLlenadera,
     getEstadoLlenadera,

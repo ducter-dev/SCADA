@@ -42,6 +42,12 @@ export const addTank = ( state, tank ) => {
 
 // ----- Tanques Entradas -----
 
+export const getTanksEspera = ( state, tanques ) => {
+  console.log('mutation => getTanksEspera')
+  console.log(tanques)
+  state.tanquesInEspera = tanques
+}
+
 export const addTanksLastEntry = ( state, entry ) => {
   console.log('mutation => addTanksLastEntry')
   console.log(entry)
@@ -84,6 +90,11 @@ export const addTanksLastExit = (state, exit) => {
 
 
 // ----- Llenaderas -----
+
+export const addLlenaderas = (state, llenaderas) => {
+  console.log('mutation => addLlenaderas')
+  state.llenaderas = llenaderas
+}
 
 export const addLlenaderasLibres = (state, llenaderas) => {
   console.log('mutation => addTanksLastExit')
