@@ -25,13 +25,20 @@
       Asignación
     </h5>
     <div class="flex flex-col justify-center items-center">
-      <div class="flex justify-center items-center">
-        Select
+      <div class="w-10/12 flex justify-between items-center">
+        <div class="w-6/12 flex justify-start items-center">
+          <label for="llenaderas" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Llenadera</label>
+        </div>
+        <div class="w-6/12 flex justify-end items-center">
+          <select id="llenaderas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+            <option v-for="llen in llenaderasFilter" :key="llen.id">{{ llen.numero }}</option>
+          </select>
+        </div>
       </div>
-      <div class="flex justify-center items-center">
-        Estado Llenadera
+      <div class="w-8/12 flex justify-center items-center">
+        <p class="font-semibold text-dark">Estado: {{ barrera.estado ? 'Libre' : 'Detenida'}}</p>
       </div>
-      <div class="flex flex-col justify-start items-start">
+      <div class="w-10/12 flex flex-col justify-start items-start">
         <div class="w-full flex justify-between items-start">
           <span class="font-semibold text-dark text-sm mx-2">Num. AT:</span>
           <span class="font-semibold text-dark text-sm mx-2">{{ data.atName }}</span>
@@ -107,17 +114,26 @@ import IconPause from '../../../assets/icons/pause.svg'
 import IconTimes from '../../../assets/icons/xmark-solid.svg'
 
 export default {
-  props: ['data', 'barrera'],
+  props: ['llenaderas', 'data', 'barrera'],
   components: {
     Toggle,
     IconPause,
     IconTimes,
   },
   setup(props){
-    console.log(props.barrera.estado)
+    console.log(props)
     const toggle = ref(props.barrera.estado)
+    const llenaderasFilter = ref([])
+
+    if (props.data.conector == 3) {
+      llenaderasFilter.value = props.llenaderas
+    } else {
+      llenaderasFilter.value = props.llenaderas.filter( llen => llen.conector == data.conector)
+    }
+    console.log(llenaderasFilter.value)
     return {
       toggle,
+      llenaderasFilter,
     }
   }
 }

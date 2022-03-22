@@ -19,7 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :barrera="barreraVerificacion" :data="tanksEspera[0]" @toggleChange="toggleVerificacion" @despachar="setDespacho" />
+              <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}"  @toggleChange="toggleVerificacion" @despachar="setDespacho" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
@@ -31,7 +31,7 @@
             <TarjetaUltimasCargas :salidas="tanksSalida" />
           </div>
           <div class="flex justify-center items-center">
-            <TarjetaLlenaderas :data="llenaderas" @desasignarLlenadera="desasignarLlenadera" />
+            <TarjetaLlenaderas :data="estadoLlenadera" @desasignarLlenadera="desasignarLlenadera" />
           </div>
         </div>
       </div>
