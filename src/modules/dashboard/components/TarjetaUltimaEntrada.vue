@@ -57,7 +57,7 @@
         <div class="flex justify-center items-center mx-2">
           <Toggle v-model="toggle" offLabel="Cerrada" onLabel="Abierta" :classes="{
             toggle: 'flex w-14 h-8 rounded-full relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
-            toggleOn: 'bg-dark border-gray-500 justify-start text-white',
+            toggleOn: 'bg-gray-900 border-gray-800 justify-start text-white',
             toggleOff: 'bg-gray-200 border-gray-200 justify-end text-gray-700',
             toggleOnDisabled: 'bg-gray-300 border-gray-300 justify-start text-gray-400 cursor-not-allowed',
             toggleOffDisabled: 'bg-gray-200 border-gray-200 justify-end text-gray-400 cursor-not-allowed',

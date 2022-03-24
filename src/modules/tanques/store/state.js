@@ -23,6 +23,6 @@ export default () => ({
   // ----- llenaderas ------
   llenaderas: [],
   llenaderasLibres: [],
-  llenaderasEstado: { estado: 1 }
-
+  llenaderasEstado: { estado: 1 },
+  llenaderaAceptaAsignacion: 0,
 })
