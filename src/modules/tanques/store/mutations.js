@@ -64,6 +64,12 @@ export const addTankWaitingList = (state, tank) => {
   console.log(state.tanquesInEspera)
 }
 
+export const deleteTankIWaitingList = ( state, idTankWaiting ) => {
+  console.log('mutation => deleteTankIWaitingList')
+  console.log(idTankWaiting)
+  state.tanquesInEspera = state.tanquesInEspera.filter( tanks => tanks.id !== idTankWaiting)
+}
+
 
 // ----- Tanques Servicio -----
 
@@ -104,4 +110,19 @@ export const addLlenaderasLibres = (state, llenaderas) => {
 export const changeEstadoLlenadera = (state, estado) => {
   console.log('mutation => changeEstadoLlenadera')
   state.llenaderasEstado = estado
+}
+
+export const aceptarAsignacion = (state, toggle) => {
+  console.log('mutation => aceptarAsignacion')
+  state.llenaderaAceptaAsignacion = toggle
+}
+
+export const asignarLlenadera = (state, llenadera) => {
+  console.log('mutation => asignarLlenadera')
+  state.llenaderas.map( llen => {
+    if (llen.numero == llenadera) {
+      llen.estado = 0
+      console.log(`Llenadera: ${llen.numero}, estado: ${llen.estado == 1 ? 'Libre' : 'Ocupada'}`)
+    }
+  })
 }

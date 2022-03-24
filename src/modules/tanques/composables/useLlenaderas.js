@@ -37,12 +37,19 @@ const useLlenaderas = () => {
     return resp
   }
 
+  const asignarLlenadera = async (form) => {
+    console.log('composable - asignarLlenadera')
+    const resp = await store.dispatch('tanques/asignarLlenadera', form)
+    return resp
+  }
+
   return {
     getLlenaderas,
     getLlenaderasLibres,
     resetLlenadera,
     getEstadoLlenadera,
     changeEstadoLlenadera,
+    asignarLlenadera,
   }
 }
 

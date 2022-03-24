@@ -19,7 +19,7 @@
               <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}"  @toggleChange="toggleVerificacion" @despachar="setDespacho" />
+              <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}" :estado="estadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
@@ -86,7 +86,7 @@ export default {
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getTanksEspera } = useTanqueEspera()
     const { getUltimaAsignacion } = useTanqueServicio()
-    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera } = useLlenaderas()
+    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera } = useLlenaderas()
 
     const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
     let antenaEntrada = ref(dataAntenaEntrada.value)
@@ -407,31 +407,43 @@ export default {
         router.push('/auth')
       }
     }
+
+    const asignarTanque = async (asign) => {
+      try {
+        const { llenaderaSelected, assignated, tanque } = asign
+        if (!assignated) {
+          return
+        }
+        const form = {
+          tanque: tanque.atName,
+          llenadera: llenaderaSelected.numero
+        }
+        const res = await asignarLlenadera(form)
+        const { data, status } = res
+        if (status == 201) {
+          llenaderas.value = store.state.tanques.llenaderas
+          store.commit('tanques/deleteTankIWaitingList',tanque.id)
+          tanksEspera.value = store.state.tanquesInEspera
+          // Pendiente refrescar lista de salida
+          Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
     
     onMounted(() => {
-      if (Object.keys(antenaEntrada.value).length < 1) {
-        getDatosAntenaEntrada()
-      }
-      if (Object.keys(antenaVerificacion.value).length < 1) {
-        getDatosAntenaVerificacion()
-      }
-      if (Object.keys(antenaSalida.value).length < 1) {
-        getDatosAntenaSalida()
-      }
-      if (tanksSalida.value.length == 0) {
-        getTanquesSalida()
-      }
-      if (Object.keys(lastEntry.value).length < 1) {
-        getLastTankEntry()
-      }
-      if (Object.keys(lastAsign.value).length < 1) {
-        getLastTankAsign()
-      }
-      if (Object.keys(lastExit.value).length < 1) {
-        getLastTankExit()
+      if (tanksEspera.value.length == 0) {
+        getTanquesEspera()
       }
       if (llenaderas.value.length < 1) {
         getDataLlenaderas()
+      }
+      if (Object.keys(estadoLlenadera.value).length < 1) {
+        getDataEstadoLlenadera()
       }
       if (Object.keys(barreraEntrada.value).length < 1) {
         getDataBarreraEntrada()
@@ -442,11 +454,27 @@ export default {
       if (Object.keys(barreraSalida.value).length < 1) {
         getDataBarreraSalida()
       }
-      if (Object.keys(estadoLlenadera.value).length < 1) {
-        getDataEstadoLlenadera()
+      if (Object.keys(antenaEntrada.value).length < 1) {
+        getDatosAntenaEntrada()
       }
-      if (tanksEspera.value.length == 0) {
-        getTanquesEspera()
+      if (Object.keys(antenaVerificacion.value).length < 1) {
+        getDatosAntenaVerificacion()
+      }
+      if (Object.keys(antenaSalida.value).length < 1) {
+        getDatosAntenaSalida()
+      }
+      
+      if (Object.keys(lastEntry.value).length < 1) {
+        getLastTankEntry()
+      }
+      if (Object.keys(lastAsign.value).length < 1) {
+        getLastTankAsign()
+      }
+      if (Object.keys(lastExit.value).length < 1) {
+        getLastTankExit()
+      }
+      if (tanksSalida.value.length == 0) {
+        getTanquesSalida()
       }
     })
 
@@ -470,6 +498,7 @@ export default {
       setDespacho,
       estadoLlenadera,
       tanksEspera,
+      asignarTanque,
     }
   },
 };

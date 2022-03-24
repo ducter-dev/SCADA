@@ -176,6 +176,20 @@ export const desasignLlenadera = async ({commit}, llenadera) => {
   }
 }
 
+export const asignarLlenadera = async ({commit}, form) => {
+  try {
+    console.log('action => asignarLlenadera')
+    const res = await scadaApi.post('llenaderas/asignacion/aceptar', form)
+    const { data } = res
+    console.log(data)
+    commit('asignarLlenadera', form.llenadera)
+    commit('aceptarAsignacion', 0)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
 
 // Despacho Llenaderas
 
@@ -207,3 +221,4 @@ export const changeEstadoLlenadera = async({commit}, estado) => {
     return { ok: false, message: error.message }
   }
 }
+
