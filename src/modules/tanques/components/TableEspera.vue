@@ -140,7 +140,7 @@
             uppercase
           "
         >
-          Utilerías
+          Acciones
         </th>
       </tr>
     </thead>
@@ -163,17 +163,17 @@
           {{ tanque.posicion }}
         </td>
         <td class="py-2 px-6 text-sm text-gray-500 text-center whitespace-nowrap">
-          {{ tanque.numAt }}
+          {{ tanque.atName }}
         </td>
         <td
           class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
         >
-          {{ setTipo(tanque.tipo) }}
+          {{ setTipo(tanque.atTipo) }}
         </td>
         <td
           class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
         >
-          {{ tanque.clave }}
+          {{ tanque.atId }}
         </td>
         <td
           class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
@@ -193,12 +193,12 @@
         <td
           class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
         >
-          {{ tanque.hora }}
+          {{ tanque.horaEntrada }}
         </td>
         <td
           class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
         >
-          {{ tanque.fecha }}
+          {{ tanque.fechaEntrada }}
         </td>
         <td class="py-2 px-6 text-sm font-medium text-right whitespace-nowrap">
           <div class="flex justify-between items-center">
