@@ -62,9 +62,14 @@ export const deleteTankIWaitingList = ( state, idTankWaiting ) => {
 
 // ----- Tanques Servicio -----
 
+export const addTanksInService = (state, tanks) => {
+  console.log('mutation => addTanksInService')
+  state.tanquesInServicio = tanks
+}
+
 export const addTanksLastAsign = (state, service) => {
   console.log('mutation => addTanksLastAsign')
-  state.lastTankAsign = (service)  
+  state.lastTankAsign = service
 }
 
 // ----- Tanques Salidas -----
