@@ -37,7 +37,9 @@
       </div>
     </div>
     <div class="flex justify-center items-center">
-      Lista
+      <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md">
+        <TablaEspera :tanques="tanksEspera" />
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +59,7 @@ import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
+import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
@@ -75,6 +78,7 @@ export default {
     TarjetaUltimaEntrada,
     TarjetaUltimaSalida,
     TarjetaLlenaderas,
+    TablaEspera,
   },
   setup() {
     const store = useStore()
