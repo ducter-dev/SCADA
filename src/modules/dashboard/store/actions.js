@@ -4,7 +4,6 @@ export const getAntenaEntrada = async ({commit}) => {
   try {
     console.log('action => getAntenaEntrada')
     const res = await scadaApi.get('/opc/antena/entrada')
-    console.log(res)
     const { data } = res
     commit('addAntenaEntrada', data)
     return res
@@ -17,7 +16,6 @@ export const getAntenaVerificacion = async ({commit}) => {
   try {
     console.log('action => getAntenaVerificacion')
     const res = await scadaApi.get('/opc/antena/verificacion')
-    console.log(res)
     const { data } = res
     commit('addAntenaVerificacion', data)
     return res
@@ -30,7 +28,6 @@ export const getAntenaSalida = async ({commit}) => {
   try {
     console.log('action => getAntenaSalida')
     const res = await scadaApi.get('/opc/antena/salida')
-    console.log(res)
     const { data } = res
     commit('addAntenaSalida', data)
     return res
@@ -45,7 +42,6 @@ export const getBarreraEntrada = async({commit}) => {
   try {
     console.log('action => getBarreraEntrada')
     const res = await scadaApi.get('/barrera/entrada')
-    console.log(res)
     const { data } = res
     commit('changeBarreraEntrada', data)
     return res
@@ -61,7 +57,6 @@ export const changeBarreraEntrada = async({commit}, toggle) => {
       estado: toggle
     }
     const res = await scadaApi.post('/barrera/entrada', dataForm)
-    console.log(res)
     const { data } = res
     commit('changeBarreraEntrada', data)
     return res
@@ -75,7 +70,6 @@ export const getBarreraVerificacion = async({commit}) => {
   try {
     console.log('action => getBarreraVerificacion')
     const res = await scadaApi.get('/barrera/verificacion')
-    console.log(res)
     const { data } = res
     commit('changeBarreraEntrada', data)
     return res
@@ -91,7 +85,6 @@ export const changeBarreraVerificacion = async({commit}, toggle) => {
       estado: toggle
     }
     const res = await scadaApi.post('/barrera/verificacion', dataForm)
-    console.log(res)
     const { data } = res
     commit('changeBarreraVerificacion', data)
     return res
@@ -105,7 +98,6 @@ export const getBarreraSalida = async({commit}) => {
   try {
     console.log('action => getBarreraSalida')
     const res = await scadaApi.get('/barrera/salida')
-    console.log(res)
     const { data } = res
     commit('changeBarreraEntrada', data)
     return res
@@ -121,7 +113,6 @@ export const changeBarreraSalida = async({commit}, toggle) => {
       estado: toggle
     }
     const res = await scadaApi.post('/barrera/salida', dataForm)
-    console.log(res)
     const { data } = res
     commit('changeBarreraSalida', data)
     return res

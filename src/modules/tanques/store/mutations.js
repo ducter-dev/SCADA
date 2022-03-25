@@ -9,7 +9,6 @@ export const updateTank = (state, tank) => {
   console.log('mutation => updateTank')
   const { atId, atTipo, atName, conector, capacidad90, transportadora } = tank
   const tanque = state.tanques.find( t => t.id == tank.id)
-  console.log(tanque)
   tanque.atId = atId
   tanque.atTipo = atTipo
   tanque.atName = atName
@@ -17,17 +16,13 @@ export const updateTank = (state, tank) => {
   tanque.capacidad90 = capacidad90
   tanque.transportadora = transportadora
   state.tanqueSelect = {}
-  console.log(tanque)
 }
 
 export const deleteTank = (state, tank) => {
   console.log('mutation => deleteTank')
   const tanques = state.tanques.filter( t => t.id != tank.id)
-  console.log(tanques)
   state.tanques = []
-  console.log(state.tanques)
   state.tanques = tanques
-  console.log(state.tanques)
 }
 
 export const selectTank = ( state, tank ) => {
@@ -36,7 +31,6 @@ export const selectTank = ( state, tank ) => {
 
 export const addTank = ( state, tank ) => {
   console.log('mutation => addTank')
-  console.log(tank)
   state.tanques.push(tank)
 }
 
@@ -44,13 +38,11 @@ export const addTank = ( state, tank ) => {
 
 export const getTanksEspera = ( state, tanques ) => {
   console.log('mutation => getTanksEspera')
-  console.log(tanques)
   state.tanquesInEspera = tanques
 }
 
 export const addTanksLastEntry = ( state, entry ) => {
   console.log('mutation => addTanksLastEntry')
-  console.log(entry)
   state.lastTankEntry = entry
 }
 
@@ -59,14 +51,11 @@ export const addTanksLastEntry = ( state, entry ) => {
 
 export const addTankWaitingList = (state, tank) => {
   console.log('mutation => addTankWaitingList')
-  console.log(tank)
   state.tanquesInEspera.push(tank)  
-  console.log(state.tanquesInEspera)
 }
 
 export const deleteTankIWaitingList = ( state, idTankWaiting ) => {
   console.log('mutation => deleteTankIWaitingList')
-  console.log(idTankWaiting)
   state.tanquesInEspera = state.tanquesInEspera.filter( tanks => tanks.id !== idTankWaiting)
 }
 
@@ -75,7 +64,6 @@ export const deleteTankIWaitingList = ( state, idTankWaiting ) => {
 
 export const addTanksLastAsign = (state, service) => {
   console.log('mutation => addTanksLastAsign')
-  console.log(service)
   state.lastTankAsign = (service)  
 }
 
