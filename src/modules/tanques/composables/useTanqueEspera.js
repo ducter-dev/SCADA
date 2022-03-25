@@ -9,9 +9,16 @@ const useTanqueEspera = () => {
     return resp
   }
 
+  const agregarTanqueEspera = async (tank) => {
+    console.log('composable - agregarTanqueEspera')
+    const resp = await store.dispatch('tanques/agregarTanqueEspera', tank)
+    return resp
+  }
+
   // editar tanque en espera
   return {
     getTanksEspera,
+    agregarTanqueEspera,
   }
 }
 
