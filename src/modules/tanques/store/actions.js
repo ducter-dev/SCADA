@@ -99,6 +99,18 @@ export const agregarTanqueEspera = async ({ commit }, tank) => {
 
 // ------ Tanques de Servicio ------
 
+export const getTanksInServicio = async ({commit}, fecha) => {
+  console.log('action => getTanksInServicio')
+  try {
+    const res = await scadaApi.get(`tanques/servicio/fecha/${fecha}`)
+    const { data } = res
+    commit('addTanksInService', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
 export const getUltimaAsignacion = async ({commit}) => {
   console.log('action => getUltimaAsignacion')
   try {

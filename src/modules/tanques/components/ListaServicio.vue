@@ -31,6 +31,7 @@
           inline-flex
           items-center
         "
+        @click="updateTanks"
       >
         <UpdateIcon class="w-3 h-3" />
       </button>
@@ -60,30 +61,30 @@
   <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
       <div class="overflow-hidden shadow-md sm:rounded-lg">
-        <TableServicio :tanques="tanques" />
+        <TableServicio :tanques="tanks" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref,computed, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
+import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+
 import TableServicio from './TableServicio.vue'
 import UpdateIcon from '../../../assets/icons/update.svg'
 import DeleteIcon from '../../../assets/icons/trash-can-solid.svg'
 import ArrowsIcon from '../../../assets/icons/arrows.svg'
 import AlarmIcon from '../../../assets/icons/alarm.svg'
 import FilterIcon from '../../../assets/icons/filter.svg'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+
 
 export default {
-  props: {
-    tanques: {
-      type: Array,
-      default: [],
-    },
-  },
   components: {
     TableServicio,
     UpdateIcon,
@@ -93,15 +94,53 @@ export default {
     FilterIcon,
   },
   setup() {
+    const store = useStore()
     const date = ref(new Date())
+    const { getTanksInServicio } = useTanqueServicio()
+    const tanques = computed(() => store.state.tanques.tanquesInServicio)
+    const fecha = computed(() => format(date.value, 'yyyy-MM-dd'))
+    let tanks = ref(tanques.value)
+
+    const getTanquesServicio = async(fecha) => {
+      try {
+        console.log(fecha)
+        const res = await getTanksInServicio(fecha)
+        const { data, status } = res
+        if (status == 200) {
+          tanks.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
+
     const formatPicker = () => {
       return format(date.value, 'dd-MM-yyyy')
     }
+
+    const updateTanks = () => {
+      getTanquesServicio(fecha.value)
+    }
+
+    watch(date, () => {
+      getTanquesServicio(fecha.value)
+    })
+
+    onMounted(() => {
+      if (tanks.value.length == 0) {
+        getTanquesServicio(fecha.value)
+      }
+    })
 
     return {
       date,
       es,
       formatPicker,
+      tanks,
+      updateTanks,
     }
   },
 }

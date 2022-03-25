@@ -16,7 +16,7 @@ export default {
     const store = useStore()
 
     const llenaderas = computed(() => store.state.tanques.llenaderas)
-    let llenaders = ref(llenaderas.value)
+    const llenaders = ref(llenaderas.value)
 
     return {
       llenaders
