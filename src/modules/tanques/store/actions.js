@@ -90,6 +90,19 @@ export const getTanksEspera = async ({ commit }) => {
   }
 }
 
+export const agregarTanqueEspera = async ({ commit }, tank) => {
+  console.log('action => agregarTanqueEspera')
+  try {
+    const res = await scadaApi.post('tanques/espera', tank)
+    const { data } = res
+    console.log(data)
+    commit('addTankWaitingList', data)
+    return res
+  } catch (error) {
+    return { ok: false, message: error.message }
+  }
+}
+
 // ------ Tanques de Servicio ------
 
 export const getUltimaAsignacion = async ({commit}) => {
