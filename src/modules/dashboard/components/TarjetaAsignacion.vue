@@ -173,6 +173,10 @@ export default {
     }
     const asignarTanque = () => {
       console.log('Asignar tanque')
+      if (Object.keys(props.data).length == 0) {
+        context.emit('asignar', 'noData')
+        return
+      }
       const objAsign = {
         llenaderaSelected: llenaderaSel.value,
         tanque: props.data,

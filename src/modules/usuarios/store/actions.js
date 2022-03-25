@@ -27,7 +27,6 @@ export const getUsers = async ({commit}) => {
   try {
     console.log('action => getUsers')
     const res = await scadaApi.get('/users')
-    console.log(res)
     const { data } = res
     commit('addUsers', data)
     return res

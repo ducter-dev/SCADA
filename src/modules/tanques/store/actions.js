@@ -20,7 +20,6 @@ export const editTank = async ({ commit }, tank) => {
   try {
     const res = await scadaApi.put(`/tanques/${tank.id}`, tank )
     const { data } = res
-    console.log(data)
     commit('updateTank', data)
     return res
   } catch (error) {
@@ -33,7 +32,6 @@ export const registerTank = async ({ commit }, tank) => {
   try {
     const res = await scadaApi.post('tanques', tank)
     const { data } = res
-    console.log(data)
     commit('addTank', data)
     return res
   } catch (error) {
@@ -46,7 +44,6 @@ export const eliminarTank = async ({ commit }, tank) => {
   try {
     const res = await scadaApi.delete(`/tanques/${tank.id}`, tank.id)
     const { data } = res
-    console.log(data)
     commit('deleteTank', data)
     return res
   } catch (error) {
@@ -65,7 +62,6 @@ export const getUltimaEntrada = async ({commit}) => {
     console.log('action => getUltimaEntrada')
     const res = await scadaApi.get('/tanques/entrada/ultima')
     const { data } = res
-    console.log(data)
     commit('addTanksLastEntry', data)
     return res
   } catch (error) {
@@ -82,7 +78,6 @@ export const getTanksEspera = async ({ commit }) => {
   try {
     const res = await scadaApi.get('tanques/espera')
     const { data } = res
-    console.log(data)
     commit('getTanksEspera', data)
     return res
   } catch (error) {
@@ -95,7 +90,6 @@ export const agregarTanqueEspera = async ({ commit }, tank) => {
   try {
     const res = await scadaApi.post('tanques/espera', tank)
     const { data } = res
-    console.log(data)
     commit('addTankWaitingList', data)
     return res
   } catch (error) {
@@ -110,7 +104,6 @@ export const getUltimaAsignacion = async ({commit}) => {
   try {
     const res = await scadaApi.get('tanques/servicio/ultimo')
     const { data } = res
-    console.log(data)
     commit('addTanksLastAsign', data)
     return res
   } catch (error) {
@@ -126,7 +119,6 @@ export const getTanksSalidas = async ({commit}) => {
     console.log('action => getTanksSalidas')
     const res = await scadaApi.get('/tanques/salida')
     const { data } = res
-    console.log(data)
     commit('addTanksSalida', data)
     return res
   } catch (error) {
@@ -139,7 +131,6 @@ export const getUltimaSalida = async ({commit}) => {
     console.log('action => getUltimaSalida')
     const res = await scadaApi.get('tanques/salida/ultima')
     const { data } = res
-    console.log(data)
     commit('addTanksLastExit', data)
     return res
   } catch (error) {
@@ -155,7 +146,6 @@ export const getLlenaderas = async ({commit}) => {
     console.log('action => getLlenaderas')
     const res = await scadaApi.get('llenaderas')
     const { data } = res
-    console.log(data)
     commit('addLlenaderas', data)
     return res
   } catch (error) {
@@ -168,7 +158,6 @@ export const getLlenaderasLibres = async ({commit}) => {
     console.log('action => getLlenaderasLibres')
     const res = await scadaApi.get('llenaderas/libres')
     const { data } = res
-    console.log(data)
     commit('addLlenaderasLibres', data)
     return res
   } catch (error) {
@@ -181,7 +170,6 @@ export const desasignLlenadera = async ({commit}, llenadera) => {
     console.log('action => desasignLlenadera')
     const res = await scadaApi.post(`llenaderas/desasignar/${llenadera}`)
     const { data } = res
-    console.log(data)
     commit('addLlenaderasLibres', data)
     return res
   } catch (error) {
@@ -194,7 +182,6 @@ export const asignarLlenadera = async ({commit}, form) => {
     console.log('action => asignarLlenadera')
     const res = await scadaApi.post('llenaderas/asignacion/aceptar', form)
     const { data } = res
-    console.log(data)
     commit('asignarLlenadera', form.llenadera)
     commit('aceptarAsignacion', 0)
     return res

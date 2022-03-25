@@ -116,7 +116,7 @@ export default {
     const dataLastExit = computed(() => store.state.tanques.lastTankExit)
     let lastExit = ref(dataLastExit.value)
 
-    const dataLlenaderas = computed(() => store.state.tanques.llenaderas)
+    const dataLlenaderas = computed(() => store.getters['tanques/llenaderasFiltradas'])
     let llenaderas = ref(dataLlenaderas.value)
 
     const dataBarreraEntrada = computed(() => store.state.dashboard.barreraEntrada)
@@ -241,7 +241,7 @@ export default {
         const res = await getLlenaderas()
         const { data, status } = res
         if (status == 200) {
-          llenaderas.value = data
+          llenaderas.value = store.getters['tanques/llenaderasFiltradas']
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -414,6 +414,16 @@ export default {
 
     const asignarTanque = async (asign) => {
       try {
+        if (asign === 'noData') {
+          Swal.fire("Error", 'No existe un tanque para asignar.', "error")
+          return
+        }
+
+        if (store.state.tanques.llenaderasEstado.estado == 1) {
+          Swal.fire("Info", 'No se puede realizar la asignación, compruebe el estado de la llenadera', "error")
+          return
+        }
+
         const { llenaderaSelected, assignated, tanque } = asign
         if (!assignated) {
           return
@@ -427,7 +437,7 @@ export default {
         if (status == 201) {
           llenaderas.value = store.state.tanques.llenaderas
           store.commit('tanques/deleteTankIWaitingList',tanque.id)
-          tanksEspera.value = store.state.tanquesInEspera
+          getTanquesEspera()
           // Pendiente refrescar lista de salida
           Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
         } else {
