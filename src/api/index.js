@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const scadaApi = axios.create({
-  baseURL: 'http://10.122.50.91/api/v1'
+  baseURL: import.meta.env.VITE_APIURL
 })
 
 scadaApi.interceptors.request.use((config) => {
