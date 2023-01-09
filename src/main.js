@@ -4,8 +4,8 @@ import router from './router'
 import store from './store'
 import './index.css'
 
-import Datepicker from 'vue3-date-time-picker'
-import 'vue3-date-time-picker/dist/main.css'
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 createApp(App)
   .component('Datepicker', Datepicker)
