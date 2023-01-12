@@ -81,12 +81,14 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 
 export default {
   setup () {
+    const USERDB = import.meta.env.VITE_USERDB
+    const PASSDB = import.meta.env.VITE_PASSDB
     const { signIn } = useAuth()
     const router = useRouter()
 
     const userForm = ref({
-      usuario: 'Admin',
-      password: '19ducter2019',
+      usuario: USERDB,
+      password: PASSDB
     })
 
     const onSubmit = async() => {
