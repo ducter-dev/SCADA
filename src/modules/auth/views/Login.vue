@@ -83,7 +83,7 @@ export default {
   setup () {
     const USERDB = import.meta.env.VITE_USERDB
     const PASSDB = import.meta.env.VITE_PASSDB
-    const { signIn } = useAuth()
+    const { login } = useAuth()
     const router = useRouter()
 
     const userForm = ref({
@@ -92,7 +92,7 @@ export default {
     })
 
     const onSubmit = async() => {
-      const { ok, detail } = await signIn(userForm.value)
+      const { ok, detail } = await login(userForm.value)
       
       if ( !ok ) {
         Swal.fire('Error', detail, 'error')

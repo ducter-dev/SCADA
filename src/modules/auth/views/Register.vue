@@ -104,12 +104,12 @@
 
 <script>
 import { ref } from 'vue'
-import useAuth from '../composables/useAuth'
+import useUsuario from '../../usuarios/composables/useUser'
 
 export default {
   setup () {
 
-    const { createUser } = useAuth()
+    const { insertUsuario } = useUsuario()
 
     const categorias = [
       { id: 1, nombre: 'Administrador'},
@@ -134,7 +134,7 @@ export default {
     })
 
     const onSubmit = async() => {
-      const { ok }  = await createUser(userForm.value)
+      const { ok }  = await insertUsuario(userForm.value)
     }
 
     return {

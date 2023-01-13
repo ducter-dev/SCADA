@@ -1,24 +1,44 @@
-import { useStore } from 'vuex'
+import { useUsuarioStore } from '../store/usuarioStore'
 
-const useUser = () => {
+const useUsuario = () => {
+  const store = useUsuarioStore()
   
-  const store = useStore()
-
-  const agregarUsers = async () => {
-    console.log('composable => agregarUsers')
-    const resp = await store.dispatch('user/getUsers')
+  const fetchUsuarios = async() => {
+    const resp = await store.get()
     return resp
   }
 
-  const editarUser = async ( user ) => {
-    console.log('composbale => editarUser')
-    const resp = await store.dispatch('user/editUser', user)
+  const insertUsuario = async(usuario) => {
+    const resp = await store.insert(usuario)
     return resp
   }
+
+  const updateUsuario = async(usuario) => {
+    const resp = await store.update(usuario)
+    return resp
+  }
+
+  const deleteUsuario = async(usuario) => {
+    const resp = await store.delete(usuario)
+    return resp
+  }
+
+  const selectUsuario = (usuario) => {
+    store.select(usuario)
+  }
+
+  const getSelectedUsuario = () => {
+    return store.usuarioSelected
+  }
+
   return {
-    editarUser,
-    agregarUsers,
+    fetchUsuarios,
+    insertUsuario,
+    updateUsuario,
+    deleteUsuario,
+    selectUsuario,
+    getSelectedUsuario,
   }
 }
 
-export default useUser
+export default useUsuario
