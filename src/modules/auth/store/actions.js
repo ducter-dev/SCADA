@@ -16,3 +16,8 @@ export const loginUser = async ({ commit }, user) => {
     return { ok: false, message: error.response.data}
   }
 }
+
+export const logoutUser = async ({ commit }) => {
+  commit('logoutUser')
+  return true
+}
