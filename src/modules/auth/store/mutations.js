@@ -12,3 +12,11 @@ export const loginUser = (state, { user, token }) => {
   state.user = user
   state.status = 'authenticated'
 }
+
+export const logoutUser = (state) => {
+  localStorage.setItem('token', '')
+  state.token = null
+  state.user = null
+  state.status = 'No authenticated'
+}
+

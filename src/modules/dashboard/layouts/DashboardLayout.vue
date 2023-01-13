@@ -23,7 +23,7 @@
     </div>
     <div class="h-full w-full flex-col items-start">
       <div class="h-10 m-1 sm:m-4">
-        <NavBar :userName="userName" />
+        <NavBar :userName="userName" @exitApp="exitApp"/>
       </div>
       <div class="w-full flex flex-row justify-center">
         <router-view />
@@ -34,7 +34,8 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import useAuth from '../../auth/composables/useAuth'
 
 import NavBar from '../components/NavBar.vue'
 import Sidebar from '../components/SideBar.vue'
@@ -45,15 +46,23 @@ export default {
   components: { NavBar, Sidebar, IconCaretLeft, IconCaretRight },
 
   setup() {
-    const store = useStore()
-    const token = computed(() => store.state.auth.token) 
-    const userName = computed(() => store.state.auth.user ? store.state.auth.user.usuario : '' ) 
+    const { logout, getToken, getUserName } = useAuth()
+    const router = useRouter() 
+    const token = computed(() => getToken()) 
+    const userName = computed(() => getUserName()) 
     const toggle = ref(true)
 
-    function toggleSidebar(){
-      console.log(toggle.value)
+    const toggleSidebar = () => {
       toggle.value = !toggle.value
     }
+
+    const exitApp = async () => {
+      const resp = await logout()
+      if (resp) {
+        router.push('/')
+      }
+    }
+
     return {
       NavBar,
       Sidebar,
@@ -61,6 +70,7 @@ export default {
       userName,
       toggle,
       toggleSidebar,
+      exitApp,
     }
   },
 }
