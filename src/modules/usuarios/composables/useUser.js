@@ -4,7 +4,7 @@ const useUsuario = () => {
   const store = useUsuarioStore()
   
   const fetchUsuarios = async() => {
-    const resp = await store.get()
+    const resp = await store.fetch()
     return resp
   }
 
@@ -23,6 +23,10 @@ const useUsuario = () => {
     return resp
   }
 
+  const getUsuarios = () => {
+    return store.usuarios
+  }
+
   const selectUsuario = (usuario) => {
     store.select(usuario)
   }
@@ -38,6 +42,7 @@ const useUsuario = () => {
     deleteUsuario,
     selectUsuario,
     getSelectedUsuario,
+    getUsuarios,
   }
 }
 

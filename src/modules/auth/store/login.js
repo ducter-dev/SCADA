@@ -15,13 +15,11 @@ export const useLoginStore = defineStore('login', {
     async login(user) {
       try {
         const { usuario, password } = user
-        console.log("🚀 ~ file: login.js:18 ~ login ~ user", user)
         const dataForm = {
           username: usuario,
           password
         }
         const { data, status } = await scadaApi.post('/auth/login', dataForm )
-        console.log("🚀 ~ file: login.js:24 ~ login ~ data", data)
         const { token } = data
         delete user.password
         this.user = data.user
@@ -33,7 +31,6 @@ export const useLoginStore = defineStore('login', {
         }
         return obj
       } catch (error) {
-        console.log("🚀 ~ file: login.js:36 ~ login ~ error", error)
         const obj = {
           ok: false, detail: error.response.data, status: error.response.status 
         }

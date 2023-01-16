@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia'
-import scada from '@/'
+import scada from '@/api'
 
 export const useUsuarioStore = defineStore('usuario', {
   id: 'usuario',
@@ -9,15 +9,12 @@ export const useUsuarioStore = defineStore('usuario', {
   }),
   getters: {},
   actions: {
-    async get () {
+    async fetch () {
       try {
         const res = await scada.get('/users')
         const { data } = res
         this.usuarios = data
-        const obj = {
-          ok: true, data: this.usuarios
-        }
-        return obj
+        return res
       } catch (error) {
         return { ok: false, data: error.message}
       }
@@ -31,10 +28,7 @@ export const useUsuarioStore = defineStore('usuario', {
       const { data } = await scada.post('/auth/register', userForm)
       const user = data
       this.usuarios.push(user)
-      const obj = {
-        ok: true, data: user
-      }
-      return obj
+      return res
     },
 
     async update(user) {
@@ -52,14 +46,11 @@ export const useUsuarioStore = defineStore('usuario', {
         console.log(userUpdate)
         const usuarioStore = state.users.find( u => u.id == userUpdate.id)
 
-        usuario.username = userUpdate.username
-        usuario.categoria = userUpdate.categoria
-        usuario.departamento = userUpdate.departamento
+        usuarioStore.username = userUpdate.username
+        usuarioStore.categoria = userUpdate.categoria
+        usuarioStore.departamento = userUpdate.departamento
         this.usuarioSelected = {}
-        const obj = {
-          ok: true, data: res
-        }
-        return obj
+        return res
         
       } catch (error) {
         return { ok: false, message: error.message}
@@ -69,10 +60,7 @@ export const useUsuarioStore = defineStore('usuario', {
     async delete(usuario) {
       const { data } = await scada.delete(`/users/${usuario.id}`)
       this.usuarios = this.usuarios.filter(user => user.id != usuario.id)
-      const obj = {
-        ok: true, data: data.data
-      }
-      return obj
+      return res
     },
 
     select(usuario) {
