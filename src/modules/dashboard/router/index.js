@@ -23,6 +23,11 @@ export default {
       component: () => import('../../usuarios/views/Register.vue')
     },
     {
+      path: 'tanques/entrada',
+      name: 'TanquesEntrada',
+      component: () => import('../../tanques/views/Espera.vue')
+    },
+    {
       path: 'tanques/espera',
       name: 'TanquesEspera',
       component: () => import('../../tanques/views/Espera.vue')
@@ -46,6 +51,16 @@ export default {
       path: 'entrada/manual',
       name: 'entradaManual',
       component: () => import('../../tanques/views/EntradaManual.vue')
+    },
+    {
+      path: 'salidas',
+      name: 'salidas',
+      component: () => import('../../dashboard/views/Configuracion.vue')
+    },
+    {
+      path: 'reportes',
+      name: 'reportes',
+      component: () => import('../../dashboard/views/Configuracion.vue')
     },
   ]
 }

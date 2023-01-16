@@ -5,7 +5,6 @@ const useAuth = () => {
   const store = useLoginStore()
   
   const login = async( formUser ) => {
-    console.log("🚀 ~ file: useAuth.js:8 ~ login ~ formUser", formUser)
     const resp = await store.login(formUser)
     return resp
   }
@@ -21,10 +20,9 @@ const useAuth = () => {
   }
 
   const getUserName = () => {
-    const userName = store.user ? store.user : '' 
+    const userName = store.user ? store.user.username : '' 
     return userName
   }
-
 
   return {
     login,
@@ -32,8 +30,6 @@ const useAuth = () => {
     getToken,
     getUserName,
   }
-
-  
 }
 
 export default useAuth
