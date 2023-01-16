@@ -5,13 +5,13 @@
         <div class="w-full flex flex-col justify-between items-center">
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <TarjetaEntrada :data="antenaEntrada" />
+              <TarjetaEntrada :data="dataAntenaEntrada" />
             </div>
             <div class="flex justify-center items-center">
-              <TarjetaVerificacion :data="antenaVerificacion" />
+              <TarjetaVerificacion :data="dataAntenaVerificacion" />
             </div>
             <div class="flex justify-center items-center">
-              <TarjetaSalida :data="antenaSalida" />
+              <TarjetaSalida :data="dataAntenaSalida" />
             </div>
           </div>
           <div class="w-full flex justify-around items-start">
@@ -54,6 +54,7 @@ import TarjetaAsignacion from '../components/TarjetaAsignacion.vue'
 import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
+import useUsuario from '../../usuarios/composables/useUser'
 /* import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
@@ -64,7 +65,6 @@ import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
-/* import { useStore } from 'vuex' */
 
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -82,30 +82,33 @@ export default {
     TablaEspera,
   },
   setup() {
-    /* const store = useStore() */
     const router = useRouter()
     
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion, 
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
       fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion } = useDashboard()
+
+    const { fetchUsuarios, getUsuarios } = useUsuario()
     /* const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getTanksEspera } = useTanqueEspera()
     const { getUltimaAsignacion } = useTanqueServicio()
     const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera } = useLlenaderas() */
 
-    const dataAntenaEntrada = computed(() => getAntenaEntrada())
-    let antenaEntrada = ref(dataAntenaEntrada.value)
-    console.log("🚀 ~ file: Dashboard.vue:99 ~ setup ~ antenaEntrada", antenaEntrada.value)
-
-    const dataAntenaVerificacion = computed(() => getAntenaVerificacion())
-    let antenaVerificacion = ref(dataAntenaVerificacion.value)
-    console.log("🚀 ~ file: Dashboard.vue:103 ~ setup ~ antenaVerificacion", antenaVerificacion.value)
-
-    const dataAntenaSalida = computed(() => getAntenaSalida())
-    let antenaSalida = ref(dataAntenaSalida.value)
-      console.log("🚀 ~ file: Dashboard.vue:107 ~ setup ~ antenaSalida", antenaSalida.value)
-      
+    const antenaEntrada = computed(() => getAntenaEntrada())
+    const antenaVerificacion = computed(() => getAntenaVerificacion())
+    const antenaSalida = computed(() => getAntenaSalida())
+    const usuarios = computed(() => getUsuarios())
+    const barreraEntrada = computed(() => getBarreraEntrada())
+    const barreraVerificacion = computed(() => getBarreraVerificacion())
+    const barreraSalida = computed(() => getBarreraSalida())
+    
+    const dataAntenaEntrada = ref({})
+    const dataAntenaVerificacion = ref({})
+    const dataAntenaSalida = ref({})
+    const dataBarreraEntrada = ref({})
+    const dataBarreraVerificacion = ref({})
+    const dataBarreraSalida = ref({})
     /* const listaEspera = computed(() => store.state.tanques.tanquesInEspera)
     let tanksEspera = ref(listaEspera.value)
 
@@ -124,28 +127,17 @@ export default {
     const dataLlenaderas = computed(() => store.getters['tanques/llenaderasFiltradas'])
     let llenaderas = ref(dataLlenaderas.value) */
 
-    const dataBarreraEntrada = computed(() => getBarreraEntrada())
-    let barreraEntrada = ref(dataBarreraEntrada.value)
-    console.log("🚀 ~ file: Dashboard.vue:129 ~ setup ~ barreraEntrada", barreraEntrada.value)
-
-    const dataBarreraVerificacion = computed(() => getBarreraVerificacion())
-    let barreraVerificacion = ref(dataBarreraVerificacion.value)
-    console.log("🚀 ~ file: Dashboard.vue:133 ~ setup ~ barreraVerificacion", barreraVerificacion.value)
-
-    const dataBarreraSalida = computed(() => getBarreraSalida())
-    let barreraSalida = ref(dataBarreraSalida.value)
-    console.log("🚀 ~ file: Dashboard.vue:137 ~ setup ~ barreraSalida", barreraSalida.value)
+    
     
     /* const dataEstadoLlenadera = computed(() => store.state.tanques.llenaderasEstado)
     let estadoLlenadera = ref(dataEstadoLlenadera.value) */
 
-    const getDatosAntenaEntrada = async () => {
+    const fetchDatosAntenaEntrada = async () => {
       try {
         const res = await fetchAntenaEntrada()
-        console.log("🚀 ~ file: Dashboard.vue:145 ~ getDatosAntenaEntrada ~ res", res)
         const { data, status } = res
         if (status == 200) {
-          antenaEntrada.value = data
+          dataAntenaEntrada.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -155,13 +147,12 @@ export default {
       }
     }
 
-    const getDatosAntenaVerificacion = async () => {
+    const fetchDatosAntenaVerificacion = async () => {
       try {
         const res = await fetchAntenaVerificacion()
-        console.log("🚀 ~ file: Dashboard.vue:161 ~ getDatosAntenaVerificacion ~ res", res)
         const { data, status } = res
         if (status == 200) {
-          antenaVerificacion.value = data
+          dataAntenaVerificacion.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -171,13 +162,12 @@ export default {
       }
     }
 
-    const getDatosAntenaSalida = async () => {
+    const fetchDatosAntenaSalida = async () => {
       try {
         const res = await fetchAntenaSalida()
-        console.log("🚀 ~ file: Dashboard.vue:177 ~ getDatosAntenaSalida ~ res", res)
         const { data, status } = res
         if (status == 200) {
-          antenaSalida.value = data
+          dataAntenaSalida.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -262,14 +252,12 @@ export default {
       }
     } */
 
-    const getDataBarreraEntrada = async () => {
+    const fetchDataBarreraEntrada = async () => {
       try {
         const res = await fetchBarreraEntrada()
-        console.log("🚀 ~ file: Dashboard.vue:265 ~ getDataBarreraEntrada ~ res", res)
         const { data, status } = res
         if (status == 201) {
-          console.log(`barrera entrada inicio: ${data.estado}`)
-          barreraEntrada.value = data
+          dataBarreraEntrada.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -279,14 +267,12 @@ export default {
       }
     }
 
-    const getDataBarreraVerificacion = async () => {
+    const fetchDataBarreraVerificacion = async () => {
       try {
         const res = await fetchBarreraVerificacion()
-        console.log("🚀 ~ file: Dashboard.vue:282 ~ getDataBarreraVerificacion ~ res", res)
         const { data, status } = res
         if (status == 201) {
-          console.log(`barrera verificacion inicio: ${data.estado}`)
-          barreraVerificacion.value = data
+          dataBarreraVerificacion.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -311,14 +297,12 @@ export default {
       }
     } */
 
-    const getDataBarreraSalida = async () => {
+    const fetchDataBarreraSalida = async () => {
       try {
         const res = await fetchBarreraSalida()
-        console.log("🚀 ~ file: Dashboard.vue:314 ~ getDataBarreraSalida ~ res", res)
         const { data, status } = res
         if (status == 201) {
-          console.log(`barrera verificacion inicio: ${data.estado}`)
-          barreraSalida.value = data
+          dataBarreraSalida.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
@@ -350,7 +334,6 @@ export default {
     const toggleEntrada = async (toggle) => {
       try {
         const res = await changeBarreraEntrada(toggle)
-        console.log("🚀 ~ file: Dashboard.vue:350 ~ toggleEntrada ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraEntrada.value = data
@@ -367,7 +350,6 @@ export default {
     const toggleVerificacion = async (toggle) => {
       try {
         const res = await changeBarreraVerificacion(toggle)
-        console.log("🚀 ~ file: Dashboard.vue:367 ~ toggleVerificacion ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraVerificacion.value = data
@@ -384,7 +366,6 @@ export default {
     const toggleSalida = async (toggle) => {
       try {
         const res = await changeBarreraSalida(toggle)
-        console.log("🚀 ~ file: Dashboard.vue:384 ~ toggleSalida ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraSalida.value = data
@@ -465,6 +446,16 @@ export default {
         router.push('/auth')
       }
     } */
+
+    const fetchUsers = async () => {
+      try {
+        const res = await fetchUsuarios()
+        const { data, status } = res
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        router.push('/auth')
+      }
+    }
     
     onMounted(() => {
       /* if (tanksEspera.value.length == 0) {
@@ -476,29 +467,32 @@ export default {
       if (Object.keys(estadoLlenadera.value).length < 1) {
         getDataEstadoLlenadera()
       } */
-      console.log("🚀 ~ file: Dashboard.vue:471 ~ onMounted ~ barreraEntrada", barreraEntrada.value)
-      if (Object.keys(barreraEntrada.value).length < 1) {
-        getDataBarreraEntrada()
+      if (barreraEntrada.value || Object.keys(barreraEntrada.value).length < 1) {
+        fetchDataBarreraEntrada()
       }
-      console.log("🚀 ~ file: Dashboard.vue:475 ~ onMounted ~ barreraVerificacion.value", barreraVerificacion.value)
-      if (Object.keys(barreraVerificacion.value).length < 1) {
-        getDataBarreraVerificacion()
+
+      if (barreraVerificacion.value || Object.keys(barreraVerificacion.value).length < 1) {
+        fetchDataBarreraVerificacion()
       }
-      console.log("🚀 ~ file: Dashboard.vue:479 ~ onMounted ~ barreraSalida.value", barreraSalida.value)
-      if (Object.keys(barreraSalida.value).length < 1) {
-        getDataBarreraSalida()
+
+      if (barreraSalida.value || Object.keys(barreraSalida.value).length < 1) {
+        fetchDataBarreraSalida()
       }
-      console.log("🚀 ~ file: Dashboard.vue:483 ~ onMounted ~ antenaEntrada.value", antenaEntrada.value)
-      if (Object.keys(antenaEntrada.value).length < 1) {
-        getDatosAntenaEntrada()
+
+      if (antenaEntrada.value || Object.keys(antenaEntrada.value).length < 1) {
+        fetchDatosAntenaEntrada()
       }
-      console.log("🚀 ~ file: Dashboard.vue:487 ~ onMounted ~ antenaVerificacion.value", antenaVerificacion.value)
+
       if (Object.keys(antenaVerificacion.value).length < 1) {
-        getDatosAntenaVerificacion()
+        fetchDatosAntenaVerificacion()
       }
-      console.log("🚀 ~ file: Dashboard.vue:491 ~ onMounted ~ antenaSalida.value", antenaSalida.value)
-      if (Object.keys(antenaSalida.value).length < 1) {
-        getDatosAntenaSalida()
+
+      if (antenaSalida.value || Object.keys(antenaSalida.value).length < 1) {
+        fetchDatosAntenaSalida()
+      }
+
+      if (usuarios.value || usuarios.value.length < 1 ) {
+        fetchUsers()
       }
       
       /* if (Object.keys(lastEntry.value).length < 1) {
@@ -516,27 +510,27 @@ export default {
     })
 
     return {
-      antenaEntrada,
-      antenaVerificacion,
-      antenaSalida,
-      /* tanksSalida, */
+      dataAntenaEntrada,
+      dataAntenaVerificacion,
+      dataAntenaSalida,
       openForm,
+      dataBarreraEntrada,
+      dataBarreraVerificacion,
+      dataBarreraSalida,
+      toggleEntrada,
+      toggleVerificacion,
+      toggleSalida,
+      /* tanksSalida, */
       /* lastEntry,
       lastAsign,
       lastExit,
       llenaderas,
       desasignarLlenadera, */
-      barreraEntrada,
-      barreraVerificacion,
-      barreraSalida,
-      toggleEntrada,
-      toggleVerificacion,
-      toggleSalida,
       /* setDespacho,
       estadoLlenadera,
       tanksEspera,
       asignarTanque, */
     }
   },
-};
+}
 </script>

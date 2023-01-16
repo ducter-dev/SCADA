@@ -56,8 +56,8 @@ export default {
       toggle.value = !toggle.value
     }
 
-    const exitApp = async () => {
-      const resp = await logout()
+    const exitApp = () => {
+      const resp = logout()
       if (resp) {
         router.push('/')
       }

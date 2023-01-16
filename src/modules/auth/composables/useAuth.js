@@ -9,8 +9,8 @@ const useAuth = () => {
     return resp
   }
 
-  const logout = async () => {
-    const resp = await store.logout()
+  const logout = () => {
+    const resp = store.logout()
     return resp
   }
 
