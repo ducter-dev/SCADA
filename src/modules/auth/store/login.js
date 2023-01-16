@@ -43,9 +43,9 @@ export const useLoginStore = defineStore('login', {
 
     async logout () {
       localStorage.setItem('token', '')
-      state.token = null
-      state.user = null
-      state.status = 'No authenticated'
+      this.token = null
+      this.user = null
+      this.status = 'No authenticated'
     }
   },
 

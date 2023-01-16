@@ -1,81 +1,97 @@
-import { useStore } from "vuex"
+import { useDashboardStore } from '../store/dashboardStore'
 
 const useDashboard = () => {
-  const store = useStore()
 
-  const getAntenaEntrada = async () => {
-    console.log('composable - getAntenaEntrada')
-    const resp = await store.dispatch('dashboard/getAntenaEntrada')
-    return resp
+  const store = useDashboardStore()
+  
+  const fetchAntenaEntrada = async () => {
+    const res = await store.fetchAntenaEntrada()
+    return res
   }
 
-  const getAntenaVerificacion = async () => {
-    console.log('composable - getAntenaVerificacion')
-    const resp = await store.dispatch('dashboard/getAntenaVerificacion')
-    return resp
+  const fetchAntenaVerificacion = async () => {
+    const res = await store.fetchAntenaVerificacion()
+    return res
   }
 
-  const getAntenaSalida = async () => {
-    console.log('composable - getAntenaSalida')
-    const resp = await store.dispatch('dashboard/getAntenaSalida')
-    return resp
+  const fetchAntenaSalida = async () => {
+    const res = await store.fetchAntenaSalida()
+    return res
   }
-
-
-
+  
   // Barrera de Entrada
-
-  const getBarreraEntrada = async () => {
-    console.log('composable - getBarreraEntrada')
-    const resp = await store.dispatch('dashboard/getBarreraEntrada')
+  const fetchBarreraEntrada = async () => {
+    const resp = await store.fetchBarreraEntrada()
     return resp
   }
 
   const changeBarreraEntrada = async (toggle) => {
-    console.log('composable - changeBarreraEntrada')
-    const resp = await store.dispatch('dashboard/changeBarreraEntrada', toggle)
+    const resp = await store.changeBarreraEntrada(toggle)
     return resp
   }
 
-
-  // Barrera de Verificacion
-
-  const getBarreraVerificacion = async () => {
-    console.log('composable - getBarreraVerificacion')
-    const resp = await store.dispatch('dashboard/getBarreraVerificacion')
+  // Barrera de Verificación
+  const fetchBarreraVerificacion = async () => {
+    const resp = await store.fetchBarreraEntrada()
     return resp
   }
 
   const changeBarreraVerificacion = async (toggle) => {
-    console.log('composable - changeBarreraVerificacion')
-    const resp = await store.dispatch('dashboard/changeBarreraVerificacion', toggle)
+    const resp = await store.changeBarreraVerificacion(toggle)
     return resp
   }
 
-  // Barrera de Salida
-
-  const getBarreraSalida = async () => {
-    console.log('composable - getBarreraSalida')
-    const resp = await store.dispatch('dashboard/getBarreraSalida')
+  // Barrera de Verificación
+  const fetchBarreraSalida = async () => {
+    const resp = await store.fetchBarreraSalida()
     return resp
   }
 
   const changeBarreraSalida = async (toggle) => {
-    console.log('composable - changeBarreraSalida')
-    const resp = await store.dispatch('dashboard/changeBarreraSalida', toggle)
+    const resp = await store.changeBarreraSalida(toggle)
     return resp
   }
 
+  const getAntenaEntrada = () => {
+    return store.antenaEntrada
+  }
+
+  const getAntenaVerificacion = () => {
+    return store.antenaVerificacion
+  }
+  
+  const getAntenaSalida = () => {
+    return store.antenaSalida
+  }
+
+  const getBarreraEntrada = () => {
+    return store.barreraEntrada
+  }
+
+  const getBarreraVerificacion = () => {
+    return store.barreraVerificacion
+  }
+
+  const getBarreraSalida = () => {
+    return store.barreraSalida
+  }
+
   return {
+    fetchAntenaEntrada,
+    fetchAntenaVerificacion,
+    fetchAntenaSalida,
+    fetchBarreraEntrada,
+    fetchBarreraVerificacion,
+    fetchBarreraSalida,
+    changeBarreraEntrada,
+    changeBarreraVerificacion,
+    changeBarreraSalida,
     getAntenaEntrada,
     getAntenaVerificacion,
     getAntenaSalida,
-    changeBarreraEntrada,
     getBarreraEntrada,
     getBarreraVerificacion,
-    changeBarreraVerificacion,
     getBarreraSalida,
-    changeBarreraSalida,
   }
 }
 

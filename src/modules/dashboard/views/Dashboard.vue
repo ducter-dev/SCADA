@@ -16,29 +16,29 @@
           </div>
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
+              <!-- <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" /> -->
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}" :estado="estadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
+              <!-- <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}" :estado="estadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" /> -->
             </div>
             <div class="flex justify-center items-center">
-              <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" />
+              <!-- <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" /> -->
             </div>
           </div>
         </div>
         <div class="flex flex-col justify-center items center">
           <div class="flex justify-center items-center">
-            <TarjetaUltimasCargas :salidas="tanksSalida" />
+            <!-- <TarjetaUltimasCargas :salidas="tanksSalida" /> -->
           </div>
           <div class="flex justify-center items-center">
-            <TarjetaLlenaderas :data="estadoLlenadera" @desasignarLlenadera="desasignarLlenadera" />
+            <!-- <TarjetaLlenaderas :data="estadoLlenadera" @desasignarLlenadera="desasignarLlenadera" /> -->
           </div>
         </div>
       </div>
     </div>
     <div class="flex justify-center items-center">
       <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md">
-        <TablaEspera :tanques="tanksEspera" />
+        <!-- <TablaEspera :tanques="tanksEspera" /> -->
       </div>
     </div>
   </div>
@@ -54,16 +54,17 @@ import TarjetaAsignacion from '../components/TarjetaAsignacion.vue'
 import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
-import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
+/* import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
+*/
 import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
 
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+/* import { useStore } from 'vuex' */
 
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -81,27 +82,31 @@ export default {
     TablaEspera,
   },
   setup() {
-    const store = useStore()
+    /* const store = useStore() */
     const router = useRouter()
     
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, 
-    changeBarreraEntrada, getBarreraVerificacion, changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida } = useDashboard()
-    const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion, 
+      changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
+      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion } = useDashboard()
+    /* const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
     const { getUltimaEntrada } = useTanqueEntrada()
     const { getTanksEspera } = useTanqueEspera()
     const { getUltimaAsignacion } = useTanqueServicio()
-    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera } = useLlenaderas()
+    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera } = useLlenaderas() */
 
-    const dataAntenaEntrada = computed(() => store.state.dashboard.antenaEntrada)
+    const dataAntenaEntrada = computed(() => getAntenaEntrada())
     let antenaEntrada = ref(dataAntenaEntrada.value)
+    console.log("🚀 ~ file: Dashboard.vue:99 ~ setup ~ antenaEntrada", antenaEntrada.value)
 
-    const dataAntenaVerificacion = computed(() => store.state.dashboard.antenaVerificacion)
+    const dataAntenaVerificacion = computed(() => getAntenaVerificacion())
     let antenaVerificacion = ref(dataAntenaVerificacion.value)
+    console.log("🚀 ~ file: Dashboard.vue:103 ~ setup ~ antenaVerificacion", antenaVerificacion.value)
 
-    const dataAntenaSalida = computed(() => store.state.dashboard.antenaSalida)
+    const dataAntenaSalida = computed(() => getAntenaSalida())
     let antenaSalida = ref(dataAntenaSalida.value)
-
-    const listaEspera = computed(() => store.state.tanques.tanquesInEspera)
+      console.log("🚀 ~ file: Dashboard.vue:107 ~ setup ~ antenaSalida", antenaSalida.value)
+      
+    /* const listaEspera = computed(() => store.state.tanques.tanquesInEspera)
     let tanksEspera = ref(listaEspera.value)
 
     const listaSalida = computed(() => store.state.tanques.tanquesInSalida)
@@ -117,23 +122,27 @@ export default {
     let lastExit = ref(dataLastExit.value)
 
     const dataLlenaderas = computed(() => store.getters['tanques/llenaderasFiltradas'])
-    let llenaderas = ref(dataLlenaderas.value)
+    let llenaderas = ref(dataLlenaderas.value) */
 
-    const dataBarreraEntrada = computed(() => store.state.dashboard.barreraEntrada)
+    const dataBarreraEntrada = computed(() => getBarreraEntrada())
     let barreraEntrada = ref(dataBarreraEntrada.value)
+    console.log("🚀 ~ file: Dashboard.vue:129 ~ setup ~ barreraEntrada", barreraEntrada.value)
 
-    const dataBarreraVerificacion = computed(() => store.state.dashboard.barreraVerificacion)
+    const dataBarreraVerificacion = computed(() => getBarreraVerificacion())
     let barreraVerificacion = ref(dataBarreraVerificacion.value)
+    console.log("🚀 ~ file: Dashboard.vue:133 ~ setup ~ barreraVerificacion", barreraVerificacion.value)
 
-    const dataBarreraSalida = computed(() => store.state.dashboard.barreraSalida)
+    const dataBarreraSalida = computed(() => getBarreraSalida())
     let barreraSalida = ref(dataBarreraSalida.value)
+    console.log("🚀 ~ file: Dashboard.vue:137 ~ setup ~ barreraSalida", barreraSalida.value)
     
-    const dataEstadoLlenadera = computed(() => store.state.tanques.llenaderasEstado)
-    let estadoLlenadera = ref(dataEstadoLlenadera.value)
+    /* const dataEstadoLlenadera = computed(() => store.state.tanques.llenaderasEstado)
+    let estadoLlenadera = ref(dataEstadoLlenadera.value) */
 
     const getDatosAntenaEntrada = async () => {
       try {
-        const res = await getAntenaEntrada()
+        const res = await fetchAntenaEntrada()
+        console.log("🚀 ~ file: Dashboard.vue:145 ~ getDatosAntenaEntrada ~ res", res)
         const { data, status } = res
         if (status == 200) {
           antenaEntrada.value = data
@@ -148,7 +157,8 @@ export default {
 
     const getDatosAntenaVerificacion = async () => {
       try {
-        const res = await getAntenaVerificacion()
+        const res = await fetchAntenaVerificacion()
+        console.log("🚀 ~ file: Dashboard.vue:161 ~ getDatosAntenaVerificacion ~ res", res)
         const { data, status } = res
         if (status == 200) {
           antenaVerificacion.value = data
@@ -163,7 +173,8 @@ export default {
 
     const getDatosAntenaSalida = async () => {
       try {
-        const res = await getAntenaSalida()
+        const res = await fetchAntenaSalida()
+        console.log("🚀 ~ file: Dashboard.vue:177 ~ getDatosAntenaSalida ~ res", res)
         const { data, status } = res
         if (status == 200) {
           antenaSalida.value = data
@@ -176,7 +187,7 @@ export default {
       }
     }
 
-    const getTanquesSalida = async () => {
+    /* const getTanquesSalida = async () => {
       try {
         const res = await getTanksSalidas()
         const { data, status } = res
@@ -249,11 +260,12 @@ export default {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
-    }
+    } */
 
     const getDataBarreraEntrada = async () => {
       try {
-        const res = await getBarreraEntrada()
+        const res = await fetchBarreraEntrada()
+        console.log("🚀 ~ file: Dashboard.vue:265 ~ getDataBarreraEntrada ~ res", res)
         const { data, status } = res
         if (status == 201) {
           console.log(`barrera entrada inicio: ${data.estado}`)
@@ -269,7 +281,8 @@ export default {
 
     const getDataBarreraVerificacion = async () => {
       try {
-        const res = await getBarreraVerificacion()
+        const res = await fetchBarreraVerificacion()
+        console.log("🚀 ~ file: Dashboard.vue:282 ~ getDataBarreraVerificacion ~ res", res)
         const { data, status } = res
         if (status == 201) {
           console.log(`barrera verificacion inicio: ${data.estado}`)
@@ -283,7 +296,7 @@ export default {
       }
     }
 
-    const getDataEstadoLlenadera = async () => {
+    /* const getDataEstadoLlenadera = async () => {
       try {
         const res = await getEstadoLlenadera()
         const { data, status } = res
@@ -296,11 +309,12 @@ export default {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
-    }
+    } */
 
     const getDataBarreraSalida = async () => {
       try {
-        const res = await getBarreraSalida()
+        const res = await fetchBarreraSalida()
+        console.log("🚀 ~ file: Dashboard.vue:314 ~ getDataBarreraSalida ~ res", res)
         const { data, status } = res
         if (status == 201) {
           console.log(`barrera verificacion inicio: ${data.estado}`)
@@ -318,7 +332,7 @@ export default {
       router.push('/dashboard/entrada/manual')
     }
 
-    const desasignarLlenadera = async (llenadera) => {
+    /* const desasignarLlenadera = async (llenadera) => {
       try {
         const res = await resetLlenadera(llenadera)
         const { data, status } = res
@@ -331,11 +345,12 @@ export default {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
-    }
+    } */
 
     const toggleEntrada = async (toggle) => {
       try {
         const res = await changeBarreraEntrada(toggle)
+        console.log("🚀 ~ file: Dashboard.vue:350 ~ toggleEntrada ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraEntrada.value = data
@@ -352,6 +367,7 @@ export default {
     const toggleVerificacion = async (toggle) => {
       try {
         const res = await changeBarreraVerificacion(toggle)
+        console.log("🚀 ~ file: Dashboard.vue:367 ~ toggleVerificacion ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraVerificacion.value = data
@@ -368,6 +384,7 @@ export default {
     const toggleSalida = async (toggle) => {
       try {
         const res = await changeBarreraSalida(toggle)
+        console.log("🚀 ~ file: Dashboard.vue:384 ~ toggleSalida ~ res", res)
         const { data, status } = res
         if (status == 201) {
           barreraSalida.value = data
@@ -381,7 +398,7 @@ export default {
       }
     }
 
-    const setDespacho = async (orden) => {
+    /* const setDespacho = async (orden) => {
       try {
         const res = await changeEstadoLlenadera(orden)
         const { data, status } = res
@@ -447,10 +464,10 @@ export default {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
         router.push('/auth')
       }
-    }
+    } */
     
     onMounted(() => {
-      if (tanksEspera.value.length == 0) {
+      /* if (tanksEspera.value.length == 0) {
         getTanquesEspera()
       }
       if (llenaderas.value.length < 1) {
@@ -458,27 +475,33 @@ export default {
       }
       if (Object.keys(estadoLlenadera.value).length < 1) {
         getDataEstadoLlenadera()
-      }
+      } */
+      console.log("🚀 ~ file: Dashboard.vue:471 ~ onMounted ~ barreraEntrada", barreraEntrada.value)
       if (Object.keys(barreraEntrada.value).length < 1) {
         getDataBarreraEntrada()
       }
+      console.log("🚀 ~ file: Dashboard.vue:475 ~ onMounted ~ barreraVerificacion.value", barreraVerificacion.value)
       if (Object.keys(barreraVerificacion.value).length < 1) {
         getDataBarreraVerificacion()
       }
+      console.log("🚀 ~ file: Dashboard.vue:479 ~ onMounted ~ barreraSalida.value", barreraSalida.value)
       if (Object.keys(barreraSalida.value).length < 1) {
         getDataBarreraSalida()
       }
+      console.log("🚀 ~ file: Dashboard.vue:483 ~ onMounted ~ antenaEntrada.value", antenaEntrada.value)
       if (Object.keys(antenaEntrada.value).length < 1) {
         getDatosAntenaEntrada()
       }
+      console.log("🚀 ~ file: Dashboard.vue:487 ~ onMounted ~ antenaVerificacion.value", antenaVerificacion.value)
       if (Object.keys(antenaVerificacion.value).length < 1) {
         getDatosAntenaVerificacion()
       }
+      console.log("🚀 ~ file: Dashboard.vue:491 ~ onMounted ~ antenaSalida.value", antenaSalida.value)
       if (Object.keys(antenaSalida.value).length < 1) {
         getDatosAntenaSalida()
       }
       
-      if (Object.keys(lastEntry.value).length < 1) {
+      /* if (Object.keys(lastEntry.value).length < 1) {
         getLastTankEntry()
       }
       if (Object.keys(lastAsign.value).length < 1) {
@@ -489,30 +512,30 @@ export default {
       }
       if (tanksSalida.value.length == 0) {
         getTanquesSalida()
-      }
+      } */
     })
 
     return {
       antenaEntrada,
       antenaVerificacion,
       antenaSalida,
-      tanksSalida,
+      /* tanksSalida, */
       openForm,
-      lastEntry,
+      /* lastEntry,
       lastAsign,
       lastExit,
       llenaderas,
-      desasignarLlenadera,
-      toggleEntrada,
+      desasignarLlenadera, */
       barreraEntrada,
       barreraVerificacion,
-      toggleVerificacion,
       barreraSalida,
+      toggleEntrada,
+      toggleVerificacion,
       toggleSalida,
-      setDespacho,
+      /* setDespacho,
       estadoLlenadera,
       tanksEspera,
-      asignarTanque,
+      asignarTanque, */
     }
   },
 };
