@@ -194,14 +194,12 @@ export default {
 
     watch(
       () => tankForm.atId, (id) => {
-        console.log("🚀 ~ file: EntradaManual.vue:197 ~ setup ~ id", id)
         const { sufijo } = tiposTanque.find( t => t.id == tankForm.atTipo)
         tankForm.atName = `PG-${id}${sufijo}`
       },
     )
     watch(
       () => tankForm.atTipo, (tipo) => {
-        console.log("🚀 ~ file: EntradaManual.vue:197 ~ setup ~ tipo", tipo)
         const { sufijo } = tiposTanque.find( t => t.id == tipo)
         tankForm.atName = `PG-${tankForm.atId}${sufijo}`
       }
