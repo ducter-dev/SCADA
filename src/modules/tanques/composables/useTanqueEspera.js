@@ -1,24 +1,39 @@
-import { useStore } from 'vuex'
+import { useTanqueStore } from '../store/tanquesStore'
 
 const useTanqueEspera = () => {
-  const store = useStore()
+  const store = useTanqueStore()
 
-  const getTanksEspera = async () => {
-    console.log('composable - getTanksEspera')
-    const resp = await store.dispatch('tanques/getTanksEspera')
+  const fetchTanksInEspera = async () => {
+    const resp = await store.fetchTanksEspera()
     return resp
   }
 
   const agregarTanqueEspera = async (tank) => {
-    console.log('composable - agregarTanqueEspera')
-    const resp = await store.dispatch('tanques/agregarTanqueEspera', tank)
+    const resp = await store.agregarTanqueEspera(tank)
     return resp
   }
 
-  // editar tanque en espera
+  const deleteTanqueEspera = async (tank) => {
+    const resp = await store.borrarTanqueEspera(tank)
+    return resp
+  }
+
+  const getTanquesInEspera = () => {
+    return store.tanquesInEspera
+  }
+
+  const getTanqueInEspereaSel = () => {
+    return store.tanqueInEspereaSel
+  }
+
+
+  
   return {
-    getTanksEspera,
+    fetchTanksInEspera,
     agregarTanqueEspera,
+    deleteTanqueEspera,
+    getTanquesInEspera,
+    getTanqueInEspereaSel,
   }
 }
 

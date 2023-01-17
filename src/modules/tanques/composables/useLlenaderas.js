@@ -1,55 +1,71 @@
-import { useStore } from 'vuex'
+import { useTanqueStore } from '../store/tanquesStore'
 
 const useLlenaderas = () => {
-  const store = useStore()
+  const store = useTanqueStore()
 
   // ----- Llenaderas -----
 
-  const getLlenaderas = async () => {
-    console.log('composable => getLlenaderas')
-    const resp = await store.dispatch('tanques/getLlenaderas')
+  const fetchLlenaderas = async () => {
+    const resp = await store.fetchLlenaderas()
     return resp
   }
 
-  const getLlenaderasLibres = async () => {
-    console.log('composable => getLlenaderasLibres')
-    const resp = await store.dispatch('tanques/getLlenaderasLibres')
+  const fetchLlenaderasLibres = async () => {
+    const resp = await store.fetchLlenaderasLibres()
     return resp
   }
 
   const resetLlenadera = async (llenadera) => {
-    console.log('composable => closeLlenadera')
-    const resp = await store.dispatch('tanques/desasignLlenadera', llenadera)
+    const resp = await store.desasignLlenadera(llenadera)
     return resp
   }
 
   // Despacho
 
-  const getEstadoLlenadera = async () => {
-    console.log('composable - getEstadoLlenadera')
-    const resp = await store.dispatch('tanques/getEstadoLlenadera', toggle)
+  const fetchEstadoLlenadera = async () => {
+    const resp = await store.fetchEstadoLlenadera()
     return resp
   }
 
   const changeEstadoLlenadera = async (toggle) => {
-    console.log('composable - changeEstadoLlenadera')
-    const resp = await store.dispatch('tanques/changeEstadoLlenadera', toggle)
+    const resp = await store.changeEstadoLlenadera(toggle)
     return resp
   }
 
   const asignarLlenadera = async (form) => {
-    console.log('composable - asignarLlenadera')
-    const resp = await store.dispatch('tanques/asignarLlenadera', form)
+    const resp = await store.asignarLlenadera(form)
     return resp
   }
 
+  const getLlenaderas = () => {
+    return store.llenaderas
+  }
+  const getLlenaderasLibres = () => {
+    return store.llenaderasLibres
+  }
+  const getLlenaderasEstado = () => {
+    return store.llenaderasEstado
+  }
+  const getLlenaderaAceptaAsignacion = () => {
+    return store.llenaderaAceptaAsignacion
+  }
+
+  const getLlenaderasFiltradas = () => {
+    return store.llenaderasFiltradas
+  }
+
   return {
-    getLlenaderas,
-    getLlenaderasLibres,
+    fetchLlenaderas,
+    fetchLlenaderasLibres,
     resetLlenadera,
-    getEstadoLlenadera,
+    fetchEstadoLlenadera,
     changeEstadoLlenadera,
     asignarLlenadera,
+    getLlenaderas,
+    getLlenaderasLibres,
+    getLlenaderasEstado,
+    getLlenaderaAceptaAsignacion,
+    getLlenaderasFiltradas,
   }
 }
 

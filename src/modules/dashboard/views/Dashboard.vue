@@ -16,29 +16,29 @@
           </div>
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <!-- <TarjetaUltimaEntrada :data="lastEntry" :barrera="barreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" /> -->
+              <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <!-- <TarjetaAsignacion :llenaderas="llenaderas" :barrera="barreraVerificacion" :data="tanksEspera.length > 0 ? tanksEspera[0] : {}" :estado="estadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" /> -->
+              <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion" :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
             </div>
             <div class="flex justify-center items-center">
-              <!-- <TarjetaUltimaSalida :barrera="barreraSalida" :data="lastExit" @toggleChange="toggleSalida" /> -->
+              <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
             </div>
           </div>
         </div>
         <div class="flex flex-col justify-center items center">
           <div class="flex justify-center items-center">
-            <!-- <TarjetaUltimasCargas :salidas="tanksSalida" /> -->
+            <TarjetaUltimasCargas :salidas="dataTanksSalida" />
           </div>
           <div class="flex justify-center items-center">
-            <!-- <TarjetaLlenaderas :data="estadoLlenadera" @desasignarLlenadera="desasignarLlenadera" /> -->
+            <TarjetaLlenaderas :data="dataEstadoLlenadera" @desasignarLlenadera="desasignarLlenadera" />
           </div>
         </div>
       </div>
     </div>
     <div class="flex justify-center items-center">
       <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md">
-        <!-- <TablaEspera :tanques="tanksEspera" /> -->
+        <TablaEspera :tanques="dataTanksEspera" />
       </div>
     </div>
   </div>
@@ -55,12 +55,11 @@ import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
 import useUsuario from '../../usuarios/composables/useUser'
-/* import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
+import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
-*/
 import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
 
@@ -68,6 +67,7 @@ import { ref, computed, onMounted } from 'vue'
 
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import { useStore } from 'vuex';
 
 export default {
   components: {
@@ -89,11 +89,12 @@ export default {
       fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
-    /* const { getTanksSalidas, getUltimaSalida } = useTanqueSalida()
-    const { getUltimaEntrada } = useTanqueEntrada()
-    const { getTanksEspera } = useTanqueEspera()
-    const { getUltimaAsignacion } = useTanqueServicio()
-    const { getLlenaderas, resetLlenadera, getEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera } = useLlenaderas() */
+    const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
+    const { fetchUltimaEntrada, getLastTankEntry } = useTanqueEntrada()
+    const { fetchTanksInEspera, getTanquesInEspera } = useTanqueEspera()
+    const { fetchUltimaAsignacion, getLastTankAsign } = useTanqueServicio()
+    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderas, getLlenaderasLibres, 
+      getLlenaderasEstado, getLlenaderaAceptaAsignacion, getLlenaderasFiltradas } = useLlenaderas()
 
     const antenaEntrada = computed(() => getAntenaEntrada())
     const antenaVerificacion = computed(() => getAntenaVerificacion())
@@ -102,6 +103,14 @@ export default {
     const barreraEntrada = computed(() => getBarreraEntrada())
     const barreraVerificacion = computed(() => getBarreraVerificacion())
     const barreraSalida = computed(() => getBarreraSalida())
+    const estadoLlenadera = computed(() => getLlenaderasEstado())
+    const listaEspera = computed(() => getTanquesInEspera())
+    const listaSalida = computed(() => getTanquesInSalida())
+
+    const lastEntry = computed(() => getLastTankEntry())
+    const lastAsign = computed(() => getLastTankAsign())
+    const lastExit = computed(() => getLastTankExit())
+    const llenaderas = computed(() => getLlenaderasFiltradas())
     
     const dataAntenaEntrada = ref({})
     const dataAntenaVerificacion = ref({})
@@ -109,28 +118,13 @@ export default {
     const dataBarreraEntrada = ref({})
     const dataBarreraVerificacion = ref({})
     const dataBarreraSalida = ref({})
-    /* const listaEspera = computed(() => store.state.tanques.tanquesInEspera)
-    let tanksEspera = ref(listaEspera.value)
-
-    const listaSalida = computed(() => store.state.tanques.tanquesInSalida)
-    let tanksSalida = ref(listaSalida.value)
-
-    const dataLastEntry = computed(() => store.state.tanques.lastTankEntry)
-    let lastEntry = ref(dataLastEntry.value)
-    
-    const dataLastAsign = computed(() => store.state.tanques.lastTankAsign)
-    let lastAsign = ref(dataLastAsign.value)
-
-    const dataLastExit = computed(() => store.state.tanques.lastTankExit)
-    let lastExit = ref(dataLastExit.value)
-
-    const dataLlenaderas = computed(() => store.getters['tanques/llenaderasFiltradas'])
-    let llenaderas = ref(dataLlenaderas.value) */
-
-    
-    
-    /* const dataEstadoLlenadera = computed(() => store.state.tanques.llenaderasEstado)
-    let estadoLlenadera = ref(dataEstadoLlenadera.value) */
+    let dataEstadoLlenadera = ref({})
+    let dataTanksEspera = ref([])
+    let dataTanksSalida = ref([])
+    let dataLastEntry = ref({})
+    let dataLastAsign = ref({})
+    let dataLastExit = ref({})
+    let dataLlenaderas = ref([])
 
     const fetchDatosAntenaEntrada = async () => {
       try {
@@ -143,7 +137,7 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -158,7 +152,7 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -173,84 +167,9 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
-
-    /* const getTanquesSalida = async () => {
-      try {
-        const res = await getTanksSalidas()
-        const { data, status } = res
-        if (status == 200) {
-          tanksSalida.value = data
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    }
-
-    const getLastTankEntry = async () => {
-      try {
-        const res = await getUltimaEntrada()
-        const { data, status } = res
-        if (status == 200) {
-          lastEntry.value = data
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    }
-    
-    const getLastTankAsign = async () => {
-      try {
-        const res = await getUltimaAsignacion()
-        const { data, status } = res
-        if (status == 200) {
-          lastAsign.value = data
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    }
-
-    const getLastTankExit = async () => {
-      try {
-        const res = await getUltimaSalida()
-        const { data, status } = res
-        if (status == 200) {
-          lastExit.value = data
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    }
-
-    const getDataLlenaderas = async () => {
-      try {
-        const res = await getLlenaderas()
-        const { data, status } = res
-        if (status == 200) {
-          llenaderas.value = store.getters['tanques/llenaderasFiltradas']
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    } */
 
     const fetchDataBarreraEntrada = async () => {
       try {
@@ -263,7 +182,7 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -278,24 +197,24 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
-    /* const getDataEstadoLlenadera = async () => {
+    const fetchDataEstadoLlenadera = async () => {
       try {
-        const res = await getEstadoLlenadera()
+        const res = await fetchEstadoLlenadera()
         const { data, status } = res
         if (status == 201) {
-          estadoLlenadera.value = data
+          dataEstadoLlenadera.value = data
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
-    } */
+    }
 
     const fetchDataBarreraSalida = async () => {
       try {
@@ -308,7 +227,7 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -316,34 +235,19 @@ export default {
       router.push('/dashboard/entrada/manual')
     }
 
-    /* const desasignarLlenadera = async (llenadera) => {
-      try {
-        const res = await resetLlenadera(llenadera)
-        const { data, status } = res
-        if (status == 201) {
-          Swal.fire("Desasignar", data.message, "success")
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    } */
-
     const toggleEntrada = async (toggle) => {
       try {
         const res = await changeBarreraEntrada(toggle)
         const { data, status } = res
         if (status == 201) {
-          barreraEntrada.value = data
+          dataBarreraEntrada.value = data
           Swal.fire("Barrera de Entrada", `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -352,14 +256,14 @@ export default {
         const res = await changeBarreraVerificacion(toggle)
         const { data, status } = res
         if (status == 201) {
-          barreraVerificacion.value = data
+          dataBarreraVerificacion.value = data
           Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
@@ -368,47 +272,130 @@ export default {
         const res = await changeBarreraSalida(toggle)
         const { data, status } = res
         if (status == 201) {
-          barreraSalida.value = data
+          dataBarreraSalida.value = data
           Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
-    /* const setDespacho = async (orden) => {
+    const fetchDataTanksInEspera = async () => {
+      try {
+        const res = await fetchTanksInEspera()
+        const { data, status } = res
+        if (status == 200) {
+          dataTanksEspera.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const fetchDataTanksSalida = async () => {
+      try {
+        const res = await fetchTanksSalidas()
+        const { data, status } = res
+        if (status == 200) {
+          dataTanksSalida.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const fetchDataLastEntry = async () => {
+      try {
+        const res = await fetchUltimaEntrada()
+        const { data, status } = res
+        if (status == 200) {
+          dataLastEntry.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const fetchDataLastAsign = async () => {
+      try {
+        const res = await fetchUltimaAsignacion()
+        const { data, status } = res
+        if (status == 200) {
+          dataLastAsign.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const fetchDataLastExit = async () => {
+      try {
+        const res = await fetchUltimaSalida()
+        const { data, status } = res
+        if (status == 200) {
+          dataLastExit.value = data
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const fetchDataLlenaderas = async () => {
+      try {
+        const res = await fetchLlenaderas()
+        const { data, status } = res
+        dataLlenaderas.value = getLlenaderasFiltradas()
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    } 
+    
+
+    const fetchUsers = async () => {
+      try {
+        const res = await fetchUsuarios()
+        const { data, status } = res
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        // router.push('/auth') //
+      }
+    }
+
+    const setDespacho = async (orden) => {
       try {
         const res = await changeEstadoLlenadera(orden)
         const { data, status } = res
         if (status == 201) {
-          estadoLlenadera.value = data
+          dataEstadoLlenadera.value = data
           Swal.fire("Estado Llenadera", `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`, "success")
         } else {
           Swal.fire("Error", data.message, "error")
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
 
-    const getTanquesEspera = async () => {
-      try {
-        const res = await getTanksEspera()
-        const { data, status } = res
-        if (status == 200) {
-          tanksEspera.value = data
-        } else {
-          Swal.fire("Error", data.message, "error")
-        }
-      } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
-      }
-    }
 
     const asignarTanque = async (asign) => {
       try {
@@ -417,7 +404,7 @@ export default {
           return
         }
 
-        if (store.state.tanques.llenaderasEstado.estado == 1) {
+        if (dataEstadoLlenadera.value == 1) {
           Swal.fire("Info", 'No se puede realizar la asignación, compruebe el estado de la llenadera', "error")
           return
         }
@@ -433,8 +420,9 @@ export default {
         const res = await asignarLlenadera(form)
         const { data, status } = res
         if (status == 201) {
-          llenaderas.value = store.state.tanques.llenaderas
+          dataLlenaderas.value = store.state.tanques.llenaderas
           store.commit('tanques/deleteTankIWaitingList',tanque.id)
+
           getTanquesEspera()
           // Pendiente refrescar lista de salida
           Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
@@ -443,30 +431,63 @@ export default {
         }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
-    } */
+    }
 
-    const fetchUsers = async () => {
+    const desasignarLlenadera = async (llenadera) => {
       try {
-        const res = await fetchUsuarios()
+        const res = await resetLlenadera(llenadera)
         const { data, status } = res
+        if (status == 201) {
+          Swal.fire("Desasignar", data.message, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
       } catch (error) {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
-        router.push('/auth')
+        // router.push('/auth') //
       }
     }
     
     onMounted(() => {
-      /* if (tanksEspera.value.length == 0) {
-        getTanquesEspera()
+      
+      if (listaEspera.value || listaEspera.value.length == 0) {
+        fetchDataTanksInEspera()
+      } else {
+        dataTanksEspera.value = listaEspera.value
       }
-      if (llenaderas.value.length < 1) {
-        getDataLlenaderas()
+
+      if (listaSalida.value || listaSalida.value.length == 0) {
+        fetchDataTanksSalida()
+      } else {
+        dataTanksSalida.value = listaSalida.value
       }
-      if (Object.keys(estadoLlenadera.value).length < 1) {
-        getDataEstadoLlenadera()
-      } */
+
+      if (lastEntry.value || Object.keys(lastEntry.value).length == 0) {
+        fetchDataLastEntry()
+      } else {
+        dataLastEntry.value = lastEntry.value
+      }
+
+      if (lastAsign.value || Object.keys(lastAsign.value).length == 0) {
+        fetchDataLastAsign()
+      } else {
+        dataLastAsign.value = lastAsign.value
+      }
+      
+      if (lastExit.value || Object.keys(lastExit.value).length == 0) {
+        fetchDataLastExit()
+      } else {
+        dataLastExit.value = lastExit.value
+      }
+
+      if (estadoLlenadera.value || Object.keys(estadoLlenadera.value).length < 1) {
+        fetchDataEstadoLlenadera()
+      } else {
+        dataEstadoLlenadera.value = estadoLlenadera.value
+      }
+      
       if (barreraEntrada.value || Object.keys(barreraEntrada.value).length < 1) {
         fetchDataBarreraEntrada()
       }
@@ -494,19 +515,10 @@ export default {
       if (usuarios.value || usuarios.value.length < 1 ) {
         fetchUsers()
       }
-      
-      /* if (Object.keys(lastEntry.value).length < 1) {
-        getLastTankEntry()
+
+      if (llenaderas.value || llenaderas.value.length < 1) {
+        fetchDataLlenaderas()
       }
-      if (Object.keys(lastAsign.value).length < 1) {
-        getLastTankAsign()
-      }
-      if (Object.keys(lastExit.value).length < 1) {
-        getLastTankExit()
-      }
-      if (tanksSalida.value.length == 0) {
-        getTanquesSalida()
-      } */
     })
 
     return {
@@ -520,16 +532,16 @@ export default {
       toggleEntrada,
       toggleVerificacion,
       toggleSalida,
-      /* tanksSalida, */
-      /* lastEntry,
-      lastAsign,
-      lastExit,
-      llenaderas,
-      desasignarLlenadera, */
-      /* setDespacho,
-      estadoLlenadera,
-      tanksEspera,
-      asignarTanque, */
+      dataEstadoLlenadera,
+      dataTanksEspera,
+      dataTanksSalida,
+      dataLastEntry,
+      dataLastAsign,
+      dataLastExit,
+      dataLlenaderas,
+      setDespacho,
+      asignarTanque,
+      desasignarLlenadera,
     }
   },
 }

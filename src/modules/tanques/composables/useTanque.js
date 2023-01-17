@@ -1,37 +1,54 @@
-import { useStore } from 'vuex'
+import { useTanqueStore } from '../store/tanquesStore'
 
 const useTanque = () => {
-  const store = useStore()
+  const store = useTanqueStore()
 
-  const agregarTanques = async () => {
-    console.log('composable => agregarTanques')
-    const resp = await store.dispatch('tanques/getTanks')
+  const fetchTanques = async () => {
+    const resp = await store.fetchTanks()
     return resp
   }
 
   const editarTanque = async ( tanque ) => {
-    console.log('composbale => editarTanque')
-    const resp = await store.dispatch('tanques/editTank', tanque)
+    const resp = await store.editTank(tanque)
     return resp
   }
 
   const registrarTanque = async ( tanque ) => {
-    console.log('composable => registrarTanque')
-    const resp = await store.dispatch('tanques/registerTank', tanque)
+    const resp = await store.registerTank(tanque)
     return resp
   }
 
   const eliminarTanque = async ( tanque ) => {
-    console.log('composable => eliminarTanque')
-    const resp = await store.dispatch('tanques/eliminarTank', tanque)
+    const resp = await store.eliminarTank(tanque)
     return resp
   }
 
+  const getTanques = () => {
+    return store.tanques
+  }
+  const getTanqueSelect = () => {
+    return store.tanqueSelect
+  }
+  const getTanquesInEntrada = () => {
+    return store.tanquesInEntrada
+  }
+  const getTanquesInEntradaSel = () => {
+    return store.tanquesInEntradaSel
+  }
+  const getLastTankEntry = () => {
+    return store.lastTankEntry
+  }
+
   return {
-    agregarTanques,
+    fetchTanques,
     editarTanque,
     registrarTanque,
     eliminarTanque,
+    getTanques,
+    getTanqueSelect,
+    getTanquesInEntrada,
+    getTanquesInEntradaSel,
+    getLastTankEntry,
   }
 }
 
