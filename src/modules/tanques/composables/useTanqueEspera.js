@@ -26,7 +26,9 @@ const useTanqueEspera = () => {
     return store.tanqueInEspereaSel
   }
 
-
+  const getCountTanquesEspera = () => {
+    return store.countTanquesEspera
+  }
   
   return {
     fetchTanksInEspera,
@@ -34,6 +36,7 @@ const useTanqueEspera = () => {
     deleteTanqueEspera,
     getTanquesInEspera,
     getTanqueInEspereaSel,
+    getCountTanquesEspera,
   }
 }
 
