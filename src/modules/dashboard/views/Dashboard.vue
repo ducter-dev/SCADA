@@ -236,6 +236,7 @@ export default {
     }
 
     const toggleEntrada = async (toggle) => {
+      return
       try {
         const res = await changeBarreraEntrada(toggle)
         const { data, status } = res
@@ -252,6 +253,7 @@ export default {
     }
 
     const toggleVerificacion = async (toggle) => {
+      return
       try {
         const res = await changeBarreraVerificacion(toggle)
         const { data, status } = res
@@ -268,6 +270,7 @@ export default {
     }
 
     const toggleSalida = async (toggle) => {
+      return
       try {
         const res = await changeBarreraSalida(toggle)
         const { data, status } = res

@@ -8,11 +8,12 @@
         <div class="flex flex-col justify-center items-center">
           <div class="w-full mb-6 mx-2">
             <label for="user" class="block mb-2 text-base font-bold text-dark"
-              >id PG</label
+              >PG</label
             >
             <input
               type="text"
               v-model.number="tankForm.atId"
+              maxlength="4"
               class="
                 bg-gray-50
                 border border-gray-300
@@ -163,14 +164,12 @@ import useTanqueEspera from '../composables/useTanqueEspera'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 
 export default {
 
   setup() {
     const router = useRouter()
-    const store = useStore()
-    const { agregarTanqueEspera } = useTanqueEspera()
+    const { agregarTanqueEspera, getCountTanquesEspera } = useTanqueEspera()
 
     const tiposTanque = [
       { id: 1, nombre: 'Sencillo', sufijo: '' },
@@ -194,21 +193,24 @@ export default {
     })
 
     watch(
-      () => tankForm.atTipo,
-      (tipo) => {
+      () => tankForm.atId, (id) => {
+        console.log("🚀 ~ file: EntradaManual.vue:197 ~ setup ~ id", id)
+        const { sufijo } = tiposTanque.find( t => t.id == tankForm.atTipo)
+        tankForm.atName = `PG-${id}${sufijo}`
+      },
+    )
+    watch(
+      () => tankForm.atTipo, (tipo) => {
+        console.log("🚀 ~ file: EntradaManual.vue:197 ~ setup ~ tipo", tipo)
         const { sufijo } = tiposTanque.find( t => t.id == tipo)
         tankForm.atName = `PG-${tankForm.atId}${sufijo}`
       }
-    )
+
+    ) 
 
     async function onSubmit () {
-      const tipoSel = tiposTanque.find( t => t.id == tankForm.atTipo)
-      console.log(tipoSel)
-      tankForm.atName = `${tankForm.atId}${tipoSel.sufijo}`
-      tankForm.posicion = store.getters['tanques/countTanquesEspera']
-      console.log(tankForm)
+      tankForm.posicion = getCountTanquesEspera()
       const { data, status } = await agregarTanqueEspera(tankForm)
-      console.log(data)
       if (status == 200) {
         Swal.fire('Tanque Agregado', `Se agregó el tanque ${data.atName} a la lista de espera.`, 'success')
         router.go(-1)
