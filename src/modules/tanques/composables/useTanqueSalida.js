@@ -1,25 +1,31 @@
-import { useStore } from 'vuex'
+import { useTanqueStore } from '../store/tanquesStore'
 
 const useTanqueSalida = () => {
-  const store = useStore()
+  const store = useTanqueStore()
 
-  const getTanksSalidas = async () => {
-    console.log('composable - getTanksSalidas')
-    const resp = await store.dispatch('tanques/getTanksSalidas')
+  const fetchTanksSalidas = async () => {
+    const resp = await store.fetchTanksSalidas()
     return resp
   }
 
-  const getUltimaSalida = async () => {
-    console.log('composable - getUltimaSalida')
-    const resp = await store.dispatch('tanques/getUltimaSalida')
+  const fetchUltimaSalida = async () => {
+    const resp = await store.fetchUltimaSalida()
     return resp
   }
 
+  const getTanquesInSalida = () => {
+    return store.tanquesInSalida
+  }
+  const getLastTankExit = () => {
+    return store.lastTankExit
+  }
   // editar tanque de salida
 
   return {
-    getTanksSalidas,
-    getUltimaSalida,
+    fetchTanksSalidas,
+    fetchUltimaSalida,
+    getTanquesInSalida,
+    getLastTankExit,
   }
 }
 

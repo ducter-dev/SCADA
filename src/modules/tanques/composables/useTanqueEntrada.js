@@ -1,16 +1,19 @@
-import { useStore } from 'vuex'
+import { useTanqueStore } from '../store/tanquesStore'
 
 const useTanqueEntrada = () => {
-  const store = useStore()
+  const store = useTanqueStore()
   
-  const getUltimaEntrada = async () => {
-    console.log('composable - getUltimaEntrada')
-    const resp = await store.dispatch('tanques/getUltimaEntrada')
+  const fetchUltimaEntrada = async () => {
+    const resp = await store.fetchUltimaEntrada()
     return resp
   }
 
+  const getLastTankEntry = () => {
+    return store.lastTankEntry  }
+
   return {
-    getUltimaEntrada,
+    fetchUltimaEntrada,
+    getLastTankEntry,
   }
 
 }

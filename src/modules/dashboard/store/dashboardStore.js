@@ -17,7 +17,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchAntenaEntrada() {
       try {
         const res = await scadaApi.get('/opc/antena/entrada')
-        console.log("🚀 ~ file: dashboardStore.js:20 ~ fetchAntenaEntrada ~ res", res)
         const { data } = res
         this.antenaEntrada = data
         return res
@@ -29,7 +28,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchAntenaVerificacion() {
       try {
         const res = await scadaApi.get('/opc/antena/verificacion')
-        console.log("🚀 ~ file: dashboardStore.js:32 ~ fetchAntenaVerificacion ~ res", res)
         const { data } = res
         this.antenaVerificacion = data
         return res
@@ -41,7 +39,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchAntenaSalida() {
       try {
         const res = await scadaApi.get('/opc/antena/salida')
-        console.log("🚀 ~ file: dashboardStore.js:44 ~ fetchAntenaSalida ~ res", res)
         const { data } = res
         this.antenaSalida= data
         return res
@@ -54,7 +51,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchBarreraEntrada() {
       try {
         const res = await scadaApi.get('/barrera/entrada')
-        console.log("🚀 ~ file: dashboardStore.js:57 ~ fetchBarreraEntrada ~ res", res)
         const { data } = res
         this.barreraEntrada = data
         return res
@@ -69,7 +65,6 @@ export const useDashboardStore = defineStore('dashboard', {
           estado: toggle
         }
         const res = await scadaApi.post('/barrera/entrada', dataForm)
-        console.log("🚀 ~ file: dashboardStore.js:72 ~ changeBarreraEntrada ~ res", res)
         const { data } = res
         this.barreraVerificacion = data
         return res
@@ -82,7 +77,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchBarreraVerificacion() {
       try {
         const res = await scadaApi.get('/barrera/verificacion')
-        console.log("🚀 ~ file: dashboardStore.js:85 ~ fetchBarreraVerificacion ~ res", res)
         const { data } = res
         this.barreraVerificacion = data
         return res
@@ -97,7 +91,6 @@ export const useDashboardStore = defineStore('dashboard', {
           estado: toggle
         }
         const res = await scadaApi.post('/barrera/verificacion', dataForm)
-        console.log("🚀 ~ file: dashboardStore.js:100 ~ changeBarreraVerificacion ~ res", res)
         const { data } = res
         this.barreraVerificacion = data
         return res
@@ -110,7 +103,6 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchBarreraSalida() {
       try {
         const res = await scadaApi.get('/barrera/salida')
-        console.log("🚀 ~ file: dashboardStore.js:113 ~ fetchBarreraSalida ~ res", res)
         const { data } = res
         this.barreraSalida = data
         return res
@@ -125,7 +117,6 @@ export const useDashboardStore = defineStore('dashboard', {
           estado: toggle
         }
         const res = await scadaApi.post('/barrera/salida', dataForm)
-        console.log("🚀 ~ file: dashboardStore.js:128 ~ changeBarreraSalida ~ res", res)
         const { data } = res
         this.barreraSalida = data
         return res

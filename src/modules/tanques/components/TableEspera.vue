@@ -264,7 +264,6 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import EditIcon from '../../../assets/icons/edit.svg'
 import DeleteIcon from '../../../assets/icons/trash-can-solid.svg'
@@ -284,7 +283,6 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const store = useStore();
 
     function editTanque(tanque) {
       // editar tanque
@@ -309,6 +307,8 @@ export default {
           return "Full A"
         case 3:
           return "Full B"
+        case 4:
+          return ""
       }
     }
 
@@ -319,6 +319,8 @@ export default {
         case 2:
           return "Derecho"
         case 3:
+          return "Ambos"
+        case 4:
           return "Ambos"
       }
     }

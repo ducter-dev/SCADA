@@ -88,8 +88,7 @@ export default {
     Toggle,
   },
   setup(props){
-    console.log(props.barrera.estado)
-    const toggle = ref(props.barrera.estado)
+    let toggle = ref(props.barrera.estado) 
     return {
       toggle,
     }
