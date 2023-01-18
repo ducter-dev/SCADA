@@ -62,9 +62,9 @@ export default {
   },
   setup() {
     const store = useStore()
-    const { agregarUsers } = useUser()
+    const { agregarUsers, getUsuarios } = useUser()
 
-    const usuarios = computed(() => store.state.user.users)
+    const usuarios = computed(() => getUsuarios())
     let users = ref(usuarios.value)
 
     async function getUsuarios () {

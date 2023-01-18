@@ -120,7 +120,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import useTanqueEspera from '../composables/useTanqueEspera'
 import TableEspera from '../components/TableEspera.vue'
 import UpdateIcon from '../../../assets/icons/update.svg'
 import DeleteIcon from '../../../assets/icons/trash-can-solid.svg'
@@ -138,13 +138,12 @@ export default {
     FilterIcon,
   },
   setup() {
-    const store = useStore()
-    const tanques = computed(() => store.state.tanques.tanquesInEspera)
+    const { getTanquesInEspera } = useTanqueEspera()
+    const tanques = computed(() => getTanquesInEspera())
     let tanks = ref(tanques.value)
-
     return {
-      tanks,
+      tanks
     }
   },
-};
+}
 </script>
