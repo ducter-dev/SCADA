@@ -6,16 +6,16 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import useLlenaderas  from '../composables/useLlenaderas'
 import CardLlenadera from './CardLlenadera.vue'
 export default {
   components: {
     CardLlenadera
   },
   setup() {
-    const store = useStore()
+    const { getLlenaderas } = useLlenaderas()
 
-    const llenaderas = computed(() => store.state.tanques.llenaderas)
+    const llenaderas = computed(() => getLlenaderas())
     const llenaders = ref(llenaderas.value)
 
     return {

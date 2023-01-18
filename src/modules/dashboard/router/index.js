@@ -18,23 +18,23 @@ export default {
       component: () => import('../../usuarios/views/EditarUser.vue')
     },
     {
-      path: 'registro',
+      path: 'entrada/registro',
       name: 'Registro',
       component: () => import('../../usuarios/views/Register.vue')
     },
     {
-      path: 'tanques/entrada',
-      name: 'TanquesEntrada',
+      path: 'entradas',
+      name: 'ListaEntrada',
+      component: () => import('../../dashboard/views/Configuracion.vue')
+    },
+    {
+      path: 'espera',
+      name: 'ListaEspera',
       component: () => import('../../tanques/views/Espera.vue')
     },
     {
-      path: 'tanques/espera',
-      name: 'TanquesEspera',
-      component: () => import('../../tanques/views/Espera.vue')
-    },
-    {
-      path: 'tanques/servicio',
-      name: 'TanquesServicio',
+      path: 'servicio',
+      name: 'ListaServicio',
       component: () => import('../../tanques/views/Servicio.vue')
     },
     {

@@ -154,7 +154,6 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -166,7 +165,6 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const store = useStore()
 
     function setTipo(categoria) {
       switch (categoria) {

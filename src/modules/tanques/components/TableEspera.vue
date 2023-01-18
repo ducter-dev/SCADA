@@ -39,7 +39,7 @@
             font-medium
             tracking-wider
             text-center text-gray-700
-            dark:text-gray-400
+            uppercase
           "
         >
           Tipo

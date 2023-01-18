@@ -36,8 +36,8 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center items-center">
-      <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md">
+    <div class="flex justify-center items-center h-56 overflow-y-scroll">
+      <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md mt-24">
         <TablaEspera :tanques="dataTanksEspera" />
       </div>
     </div>
@@ -67,7 +67,6 @@ import { ref, computed, onMounted } from 'vue'
 
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
-import { useStore } from 'vuex';
 
 export default {
   components: {
@@ -467,23 +466,9 @@ export default {
         dataTanksSalida.value = listaSalida.value
       }
 
-      if (lastEntry.value || Object.keys(lastEntry.value).length == 0) {
-        fetchDataLastEntry()
-      } else {
-        dataLastEntry.value = lastEntry.value
-      }
-
-      if (lastAsign.value || Object.keys(lastAsign.value).length == 0) {
-        fetchDataLastAsign()
-      } else {
-        dataLastAsign.value = lastAsign.value
-      }
-      
-      if (lastExit.value || Object.keys(lastExit.value).length == 0) {
-        fetchDataLastExit()
-      } else {
-        dataLastExit.value = lastExit.value
-      }
+      fetchDataLastEntry()
+      fetchDataLastAsign()
+      fetchDataLastExit()
 
       if (estadoLlenadera.value || Object.keys(estadoLlenadera.value).length < 1) {
         fetchDataEstadoLlenadera()

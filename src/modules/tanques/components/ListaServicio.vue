@@ -69,7 +69,7 @@
 
 <script>
 import { ref,computed, onMounted, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -94,17 +94,17 @@ export default {
     FilterIcon,
   },
   setup() {
-    const store = useStore()
+    const router = useRouter()
+    const { fetchTanksInServicio, getTanquesInServicio } = useTanqueServicio()
     const date = ref(new Date())
-    const { getTanksInServicio } = useTanqueServicio()
-    const tanques = computed(() => store.state.tanques.tanquesInServicio)
+    const tanques = computed(() => getTanquesInServicio())
     const fecha = computed(() => format(date.value, 'yyyy-MM-dd'))
     let tanks = ref(tanques.value)
 
     const getTanquesServicio = async(fecha) => {
       try {
         console.log(fecha)
-        const res = await getTanksInServicio(fecha)
+        const res = await fetchTanksInServicio(fecha)
         const { data, status } = res
         if (status == 200) {
           tanks.value = data
