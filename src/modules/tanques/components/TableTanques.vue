@@ -39,7 +39,7 @@
             font-medium
             tracking-wider
             text-center text-gray-700
-            dark:text-gray-400
+            uppercase
           "
         >
           Tipo
@@ -151,7 +151,7 @@
               type="button"
               class="
                 text-white
-                bg-black
+                bg-yellow-500
                 hover:bg-dark
                 focus:ring-4 focus:ring-gray-300
                 font-medium
@@ -195,8 +195,8 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import useTanque from '../composables/useTanque'
 
 export default {
   props: {
@@ -207,15 +207,15 @@ export default {
   },
   setup () {
     const router = useRouter()
-    const store = useStore()
+    const { setSelectTank } = useTanque()
     
     function setTipo(tipo) {
       switch (tipo) {
-        case 1:
+        case 0:
           return "Sencillo"
-        case 2:
+        case 1:
           return "Full A"
-        case 3:
+        case 2:
           return "Full B"
       }
     }
@@ -232,8 +232,7 @@ export default {
     }
     
     function updateTanque(tanque) {
-      console.log(tanque)
-      store.dispatch("tanques/selectTank", tanque)
+      setSelectTank(tanque)
       router.push('/dashboard/tanques/editar')
     }
 

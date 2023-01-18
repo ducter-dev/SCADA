@@ -49,7 +49,6 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import useTanque from '../composables/useTanque'
 import TableTanques from '../components/TableTanques.vue'
 import Swal from 'sweetalert2'
@@ -61,16 +60,15 @@ export default {
     TableTanques,
   },
   setup() {
-    const store = useStore()
     const router = useRouter()
-    const { agregarTanques, eliminarTanque } = useTanque()
+    const { fetchTanques, eliminarTanque, getTanques } = useTanque()
 
-    const tanques = computed(() => store.state.tanques.tanques)
-    let tanks = ref(tanques.value)
+    const tanques = computed(() => getTanques())
+    let tanks = ref([])
 
-    const getTanks = async () => {
+    const obtenerTanques = async () => {
       try {
-        const res = await agregarTanques()
+        const res = await fetchTanques()
         const { data, status } = res
         if (status == 200) {
           tanks.value = data
@@ -89,7 +87,7 @@ export default {
         const { data, status } = res
         if (status == 200) {
           console.log(data)
-          tanks.value = store.state.tanques.tanques
+          tanks.value = getTanques()
           Swal.fire('Eliminado', 'El autotanque ha sido eliminado', 'success')
         } else {
           Swal.fire("Error", data.message, "error")
@@ -101,11 +99,10 @@ export default {
     }
 
     onMounted(() => {
-      if (tanks.value.length < 1) {
-        // No hay usuarios en el store
-        getTanks()
+      if (tanques.value || tanques.value.length < 1) {
+        obtenerTanques()
       } else {
-        console.log('Ya hay tanques en el store')
+        tanks.value = tanques.value
       }
     })
 

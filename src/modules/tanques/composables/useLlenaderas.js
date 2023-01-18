@@ -37,6 +37,10 @@ const useLlenaderas = () => {
     return resp
   }
 
+  const selectTanque = (tank) => {
+    store.selectTank()
+  }
+
   const getLlenaderas = () => {
     return store.llenaderas
   }
@@ -66,6 +70,7 @@ const useLlenaderas = () => {
     getLlenaderasEstado,
     getLlenaderaAceptaAsignacion,
     getLlenaderasFiltradas,
+    selectTanque
   }
 }
 

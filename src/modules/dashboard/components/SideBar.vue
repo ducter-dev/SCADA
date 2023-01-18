@@ -42,6 +42,21 @@
           </div>
         </div>
       </router-link>
+      <router-link
+        to="/dashboard/configuracion"
+        activeClass="bg-dark"
+        inactiveClass="bg-gray-800"
+        exactActiveClass="bg-dark"
+        class="sm:px-2 flex justify-center items-center hover:text-blue-100 focus:text-blue-100 hover:bg-dark focus:bg-dark focus:outline-none focus:shadow-outline">
+        <div class="sm:w-full sm:my-2 sm:mr-2 flex sm:flex-row justify-center sm:justify-start items-center">
+          <div class="w-full sm:w-1/6 flex justify-center items-center m-4 sm:ml-4 sm:my-4">
+            <IconConfig class="text-white w-4 h-4" />
+          </div>
+          <div class="hidden w-5/6 sm:flex justify-center text-base font-normal text-white">
+            Configuración
+          </div>
+        </div>
+      </router-link>
     </nav>
   </div>
 </template>
