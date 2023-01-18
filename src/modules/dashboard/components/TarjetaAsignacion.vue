@@ -134,6 +134,7 @@ export default {
     const llenaderasFilter = ref([])
     const llenaderaSel = ref({})
 
+    /* 1. Obtener llenaderas por conector */
     const filterLlenaderas = () => {
       console.log('filterLlenaderas')
       if (Object.keys(props.data).length == 0) {
@@ -146,6 +147,8 @@ export default {
           llenaderasFilter.value = props.llenaderas.filter( llen => llen.conector == props.data.conector && llen.estado == 1)
         }
       }
+
+      /* 2. Seleccionar la primera llenadera de la lista */
       llenaderaSel.value = llenaderasFilter.value[0]
       console.log(llenaderaSel.value)
     }
