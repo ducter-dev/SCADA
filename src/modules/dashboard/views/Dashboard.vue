@@ -90,7 +90,7 @@ export default {
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
     const { fetchUltimaEntrada, getLastTankEntry } = useTanqueEntrada()
-    const { fetchTanksInEspera, getTanquesInEspera } = useTanqueEspera()
+    const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera } = useTanqueEspera()
     const { fetchUltimaAsignacion, getLastTankAsign } = useTanqueServicio()
     const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderas, getLlenaderasLibres, 
       getLlenaderasEstado, getLlenaderaAceptaAsignacion, getLlenaderasFiltradas } = useLlenaderas()
@@ -105,10 +105,6 @@ export default {
     const estadoLlenadera = computed(() => getLlenaderasEstado())
     const listaEspera = computed(() => getTanquesInEspera())
     const listaSalida = computed(() => getTanquesInSalida())
-
-    const lastEntry = computed(() => getLastTankEntry())
-    const lastAsign = computed(() => getLastTankAsign())
-    const lastExit = computed(() => getLastTankExit())
     const llenaderas = computed(() => getLlenaderasFiltradas())
     
     const dataAntenaEntrada = ref({})
@@ -401,11 +397,14 @@ export default {
 
     const asignarTanque = async (asign) => {
       try {
+        /* 3. Revisar que se haya seleccionado un tanque para asignar */
         if (asign === 'noData') {
           Swal.fire("Error", 'No existe un tanque para asignar.', "error")
           return
         }
-
+        
+        /* 4. Revisar el estado de la llenadera */
+        console.log("🚀 ~ file: Dashboard.vue:410 ~ asignarTanque ~ dataEstadoLlenadera.value", dataEstadoLlenadera.value)
         if (dataEstadoLlenadera.value == 1) {
           Swal.fire("Info", 'No se puede realizar la asignación, compruebe el estado de la llenadera', "error")
           return
@@ -419,13 +418,14 @@ export default {
           tanque: tanque.atName,
           llenadera: llenaderaSelected.numero
         }
+        
+        /* 5. Realizar la asignación del autotanque */
         const res = await asignarLlenadera(form)
         const { data, status } = res
         if (status == 201) {
-          dataLlenaderas.value = store.state.tanques.llenaderas
-          store.commit('tanques/deleteTankIWaitingList',tanque.id)
-
-          getTanquesEspera()
+          
+          dataLlenaderas.value = getLlenaderasFiltradas()
+          deleteTanqueEspera(tanque)
           // Pendiente refrescar lista de salida
           Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
         } else {
