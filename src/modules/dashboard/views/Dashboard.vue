@@ -426,7 +426,7 @@ export default {
           
           dataLlenaderas.value = getLlenaderasFiltradas()
           deleteTanqueEspera(tanque)
-          // Pendiente refrescar lista de salida
+          /* Pendiente refrescar lista de salida */
           Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
         } else {
           Swal.fire("Error", data.message, "error")
