@@ -5,6 +5,7 @@ const useTanque = () => {
 
   const fetchTanques = async () => {
     const resp = await store.fetchTanks()
+    console.log("🚀 ~ file: useTanque.js:8 ~ fetchTanques ~ resp", resp)
     return resp
   }
 
@@ -21,6 +22,10 @@ const useTanque = () => {
   const eliminarTanque = async ( tanque ) => {
     const resp = await store.eliminarTank(tanque)
     return resp
+  }
+
+  const setSelectTank = (tank) => {
+    store.selectTank(tank)
   }
 
   const getTanques = () => {
@@ -49,6 +54,7 @@ const useTanque = () => {
     getTanquesInEntrada,
     getTanquesInEntradaSel,
     getLastTankEntry,
+    setSelectTank,
   }
 }
 

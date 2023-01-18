@@ -31,12 +31,12 @@ export const useTanqueStore = defineStore('tanques', {
   },
   actions: {
     // ------ Tanques ------
-    async getTanks() {
+    async fetchTanks() {
       try {
         const res = await scadaApi.get('/tanques')
         const { data } = res
         this.tanques = data
-        res
+        return res
       } catch (error) {
         return { ok: false, message: error.message }
       }
