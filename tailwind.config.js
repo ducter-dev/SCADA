@@ -16,6 +16,7 @@ module.exports = {
         'success': '#74c545',
         'link': '#ff4d4d',
         'info': '#ffa6a6',
+        'logo':'#BF2933'
       },
       fontFamily: {
         'sans' : ['DIN Next LT Pro', 'Helvetica', 'Arial', 'sans-serif']
