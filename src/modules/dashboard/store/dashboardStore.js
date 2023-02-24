@@ -124,5 +124,19 @@ export const useDashboardStore = defineStore('dashboard', {
         return { ok: false, message: error }
       }
     },
+
+    /**
+     *  Función para enviar la solicitud al servicio  Aceptar
+     * 
+     * @returns object 
+     */
+    async acceptAssignmentSt() {
+      try {
+        const res = await scadaApi.post('/llenaderas/asignacion/aceptar')
+        return res
+      } catch (error) {
+        return { ok: false, message: error }
+      }
+    },
   },
 })
