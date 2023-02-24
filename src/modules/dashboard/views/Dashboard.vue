@@ -16,10 +16,13 @@
           </div>
           <div class="w-full flex justify-around items-start">
             <div class="flex justify-center items-center">
-              <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm" @toggleChange="toggleEntrada" />
+              <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm"
+                @toggleChange="toggleEntrada" />
             </div>
             <div class="flex flex-col justify-center items-center">
-              <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion" :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"  @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
+              <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
+                :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
+                @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
@@ -37,7 +40,8 @@
       </div>
     </div>
     <div class="flex justify-center items-center h-56 overflow-y-scroll">
-      <div class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md mt-24">
+      <div
+        class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md mt-24">
         <TablaEspera :tanques="dataTanksEspera" />
       </div>
     </div>
@@ -82,8 +86,8 @@ export default {
   },
   setup() {
     const router = useRouter()
-    
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion, 
+
+    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
       fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion } = useDashboard()
 
@@ -92,7 +96,7 @@ export default {
     const { fetchUltimaEntrada, getLastTankEntry } = useTanqueEntrada()
     const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera } = useTanqueEspera()
     const { fetchUltimaAsignacion, getLastTankAsign } = useTanqueServicio()
-    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderas, getLlenaderasLibres, 
+    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderas, getLlenaderasLibres,
       getLlenaderasEstado, getLlenaderaAceptaAsignacion, getLlenaderasFiltradas } = useLlenaderas()
 
     const antenaEntrada = computed(() => getAntenaEntrada())
@@ -106,7 +110,7 @@ export default {
     const listaEspera = computed(() => getTanquesInEspera())
     const listaSalida = computed(() => getTanquesInSalida())
     const llenaderas = computed(() => getLlenaderasFiltradas())
-    
+
     const dataAntenaEntrada = ref({})
     const dataAntenaVerificacion = ref({})
     const dataAntenaSalida = ref({})
@@ -365,8 +369,8 @@ export default {
         Swal.fire('Error', `Error: ${error.message}`, 'error')
         // router.push('/auth') //
       }
-    } 
-    
+    }
+
 
     const fetchUsers = async () => {
       try {
@@ -402,7 +406,7 @@ export default {
           Swal.fire("Error", 'No existe un tanque para asignar.', "error")
           return
         }
-        
+
         /* 4. Revisar el estado de la llenadera */
         console.log("🚀 ~ file: Dashboard.vue:410 ~ asignarTanque ~ dataEstadoLlenadera.value", dataEstadoLlenadera.value)
         if (dataEstadoLlenadera.value == 1) {
@@ -418,12 +422,12 @@ export default {
           tanque: tanque.atName,
           llenadera: llenaderaSelected.numero
         }
-        
+
         /* 5. Realizar la asignación del autotanque */
         const res = await asignarLlenadera(form)
         const { data, status } = res
         if (status == 201) {
-          
+
           dataLlenaderas.value = getLlenaderasFiltradas()
           deleteTanqueEspera(tanque)
           /* Pendiente refrescar lista de salida */
@@ -451,9 +455,9 @@ export default {
         // router.push('/auth') //
       }
     }
-    
+
     onMounted(() => {
-      
+
       if (listaEspera.value || listaEspera.value.length == 0) {
         fetchDataTanksInEspera()
       } else {
@@ -475,7 +479,7 @@ export default {
       } else {
         dataEstadoLlenadera.value = estadoLlenadera.value
       }
-      
+
       if (barreraEntrada.value || Object.keys(barreraEntrada.value).length < 1) {
         fetchDataBarreraEntrada()
       }
@@ -500,7 +504,7 @@ export default {
         fetchDatosAntenaSalida()
       }
 
-      if (usuarios.value || usuarios.value.length < 1 ) {
+      if (usuarios.value || usuarios.value.length < 1) {
         fetchUsers()
       }
 
