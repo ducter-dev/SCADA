@@ -80,6 +80,10 @@ const useDashboard = () => {
     return await store.acceptAssignmentSt()
   }
 
+  const nextFiller = async () => {
+    return await store.nextFillerSt()
+  }
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -97,6 +101,7 @@ const useDashboard = () => {
     getBarreraVerificacion,
     getBarreraSalida,
     acceptAssignment,
+    nextFiller,
   }
 }
 

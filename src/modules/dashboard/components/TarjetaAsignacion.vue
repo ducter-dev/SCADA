@@ -17,11 +17,11 @@
     <div class="grid ease-in duration-300" :class="[showMenu ? 'grid-cols-4 ' : 'grid-cols-1']">
       <div class="col-span-1 transition delay-200" v-if="showMenu">
         <div class="flex flex-col items-center space-y-1">
-          <button v-tippy="{ content: 'Siguiente llenadera' }" type="button"
+          <button @click="$emit('siguienteAsignacion')" v-tippy="{ content: 'Siguiente llenadera' }" type="button"
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-blue-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
             <IconArrowsTurnRight/>
           </button>
-          <button  @click="$emit('aceptarAsignacion')" v-tippy="{ content: 'Acepatar asignación' }" type="button"
+          <button @click="$emit('aceptarAsignacion')" v-tippy="{ content: 'Acepatar asignación' }" type="button"
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-green-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
            <IconCheckToSlot/>
           </button>
@@ -189,7 +189,11 @@ export default {
     }
     */
     const aceptarAsignacion = () =>{
-        context.emit('aceptarAsinacion',true)
+        context.emit('aceptarAsignacion',true)
+    }
+
+    const siguienteAsignacion = () =>{
+      context.emit('siguienteAsignacion',true)
     }
 
     watch(() => props.llenaderas, () => {
@@ -217,6 +221,7 @@ export default {
       showMenu,
       llenadera,
       aceptarAsignacion,
+      siguienteAsignacion,
     }
   }
 }
