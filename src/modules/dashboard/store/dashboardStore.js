@@ -138,5 +138,19 @@ export const useDashboardStore = defineStore('dashboard', {
         return { ok: false, message: error }
       }
     },
+
+    /**
+     *  Función para enviar la solicitud al servicio  siguiente llenadera
+     * 
+     * @returns object 
+     */
+    async nextFillerSt() {
+      try {
+        const res = await scadaApi.post('/llenaderas/asignacion/siguiente')
+        return res
+      } catch (error) {
+        return { ok: false, message: error }
+      }
+    },
   },
 })
