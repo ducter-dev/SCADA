@@ -76,6 +76,10 @@ const useDashboard = () => {
     return store.barreraSalida
   }
 
+  const acceptAssignment = async () => {
+    return await store.acceptAssignmentSt()
+  }
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -92,6 +96,7 @@ const useDashboard = () => {
     getBarreraEntrada,
     getBarreraVerificacion,
     getBarreraSalida,
+    acceptAssignment,
   }
 }
 

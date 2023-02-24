@@ -22,7 +22,7 @@
             <div class="flex flex-col justify-center items-center">
               <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
                 :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
-                @toggleChange="toggleVerificacion" @despachar="setDespacho" @asignar="asignarTanque" />
+                @toggleChange="toggleVerificacion" @despachar="setDespacho" @aceptarAsignacion="aceptarAsignacion" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
@@ -89,7 +89,7 @@ export default {
 
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
-      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion } = useDashboard()
+      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
@@ -441,6 +441,20 @@ export default {
       }
     }
 
+    const aceptarAsignacion = async () => {
+      try {
+        const res = await acceptAssignment()
+        const { data, status } = res
+        if (status == 201) {
+          Swal.fire("Aceptar asignación", data.message, "success")
+        } else {
+          Swal.fire("Error", data.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+      }
+    }
+
     const desasignarLlenadera = async (llenadera) => {
       try {
         const res = await resetLlenadera(llenadera)
@@ -534,6 +548,7 @@ export default {
       setDespacho,
       asignarTanque,
       desasignarLlenadera,
+      aceptarAsignacion,
     }
   },
 }
