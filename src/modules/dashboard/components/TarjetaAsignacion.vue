@@ -25,7 +25,7 @@
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-green-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
            <IconCheckToSlot/>
           </button>
-          <button  v-tippy="{ content: 'Cancela asignación' }" type="button"
+          <button @click="$emit('cancelarAsignacion')"   v-tippy="{ content: 'Cancela asignación' }" type="button"
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-red-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
             <IconBan/>
           </button>
@@ -199,6 +199,10 @@ export default {
       context.emit('reasignarAsignacion',true)
     }
 
+    const cancelarAsignacion = () =>{
+      context.emit('cancelarAsignacion',true)
+    }
+
     watch(() => props.llenaderas, () => {
       console.log('Cambio en llenaderas')
       if (props.data) {
@@ -225,7 +229,8 @@ export default {
       llenadera,
       aceptarAsignacion,
       siguienteAsignacion,
-      reasignarAsignacion
+      reasignarAsignacion,
+      cancelarAsignacion
     }
   }
 }
