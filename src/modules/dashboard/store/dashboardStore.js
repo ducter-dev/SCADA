@@ -152,5 +152,24 @@ export const useDashboardStore = defineStore('dashboard', {
         return { ok: false, message: error }
       }
     },
+
+    /**
+     *  Función para enviar la solicitud al servicio reasignar signación
+     * 
+     * @returns object 
+     */
+    async reassignAllocationSt() {
+      try {
+        const res = await scadaApi.post('/llenaderas/asignacion/reasignar')
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+     
+      }
+    },
   },
 })
