@@ -84,6 +84,10 @@ const useDashboard = () => {
     return await store.nextFillerSt()
   }
 
+  const reassignAllocation = async () => {
+    return await store.reassignAllocationSt()
+  }
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -102,6 +106,7 @@ const useDashboard = () => {
     getBarreraSalida,
     acceptAssignment,
     nextFiller,
+    reassignAllocation,
   }
 }
 

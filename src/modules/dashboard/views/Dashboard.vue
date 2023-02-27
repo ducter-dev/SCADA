@@ -23,7 +23,7 @@
               <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
                 :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
                 @toggleChange="toggleVerificacion" @despachar="setDespacho"
-                 @aceptarAsignacion="aceptarAsignacion" 
+                 @aceptarAsignacion="aceptarAsignacion" @reasignarAsignacion="reasignarAsignacion(5)"
                  @siguienteAsignacion="siguienteAsignacion"/>
             </div>
             <div class="flex justify-center items-center">
@@ -91,7 +91,7 @@ export default {
 
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
-      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller } = useDashboard()
+      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
@@ -471,6 +471,19 @@ export default {
       }
     }
 
+    const reasignarAsignacion = async () => {
+      try {
+        const res = await reassignAllocation()
+        if(res.data){
+          Swal.fire("Reasignar asignación", res.data.message, "success")
+        }else if(!res.ok){
+          Swal.fire("Error", res.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+      }
+    }
+
     const desasignarLlenadera = async (llenadera) => {
       try {
         const res = await resetLlenadera(llenadera)
@@ -565,7 +578,8 @@ export default {
       asignarTanque,
       desasignarLlenadera,
       aceptarAsignacion,
-      siguienteAsignacion
+      siguienteAsignacion,
+      reasignarAsignacion
     }
   },
 }

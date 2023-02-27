@@ -25,13 +25,12 @@
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-green-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
            <IconCheckToSlot/>
           </button>
-          <button v-tippy="{ content: 'Cancela asignación' }" type="button"
+          <button  v-tippy="{ content: 'Cancela asignación' }" type="button"
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-red-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
             <IconBan/>
           </button>
-          <button v-tippy="{ content: 'Reasignar llenadera' }" type="button"
+          <button @click="$emit('reasignarAsignacion')" v-tippy="{ content: 'Reasignar llenadera' }" type="button"
             class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-indigo-900 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            
             <IconArrowsTurnToDots/>
           </button>
           <button v-tippy="{ content: 'Detenener despacho' }" type="button"
@@ -196,6 +195,10 @@ export default {
       context.emit('siguienteAsignacion',true)
     }
 
+    const reasignarAsignacion = () =>{
+      context.emit('reasignarAsignacion',true)
+    }
+
     watch(() => props.llenaderas, () => {
       console.log('Cambio en llenaderas')
       if (props.data) {
@@ -222,6 +225,7 @@ export default {
       llenadera,
       aceptarAsignacion,
       siguienteAsignacion,
+      reasignarAsignacion
     }
   }
 }
