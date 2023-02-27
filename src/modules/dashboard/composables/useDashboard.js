@@ -88,6 +88,10 @@ const useDashboard = () => {
     return await store.reassignAllocationSt()
   }
 
+  const cancelAllocation = async () => {
+    return await store.cancelAllocationSt()
+  }
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -107,6 +111,7 @@ const useDashboard = () => {
     acceptAssignment,
     nextFiller,
     reassignAllocation,
+    cancelAllocation,
   }
 }
 

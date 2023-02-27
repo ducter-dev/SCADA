@@ -154,7 +154,7 @@ export const useDashboardStore = defineStore('dashboard', {
     },
 
     /**
-     *  Función para enviar la solicitud al servicio reasignar signación
+     *  Función para enviar la solicitud al servicio reasignar asignación
      * 
      * @returns object 
      */
@@ -168,8 +168,25 @@ export const useDashboardStore = defineStore('dashboard', {
         }else{
           return { ok: false, message: error }
         }
-     
       }
     },
+
+    /**
+     *  Función para cancelar la asignación
+     * 
+     * @returns object 
+     */
+    async cancelAllocationSt(){
+      try {
+        const res = await scadaApi.post('/llenaderas/asignacion/cancelar')
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    }
   },
 })

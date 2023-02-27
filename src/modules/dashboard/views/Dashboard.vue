@@ -23,8 +23,8 @@
               <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
                 :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
                 @toggleChange="toggleVerificacion" @despachar="setDespacho"
-                 @aceptarAsignacion="aceptarAsignacion" @reasignarAsignacion="reasignarAsignacion(5)"
-                 @siguienteAsignacion="siguienteAsignacion"/>
+                 @aceptarAsignacion="aceptarAsignacion" @reasignarAsignacion="reasignarAsignacion"
+                 @siguienteAsignacion="siguienteAsignacion" @cancelarAsignacion="cancelarAsignacion"/>
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
@@ -91,7 +91,7 @@ export default {
 
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
-      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation } = useDashboard()
+      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation} = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
@@ -484,6 +484,19 @@ export default {
       }
     }
 
+    const cancelarAsignacion = async () => {
+      try {
+        const res = await cancelAllocation()
+        if(res.data){
+          Swal.fire("Cancelar asignación", res.data.message, "success")
+        }else if(!res.ok){
+          Swal.fire("Error", res.message, "error")
+        }
+      } catch (error) {
+        Swal.fire('Error', `Error: ${error.message}`, 'error')
+      }
+    }
+
     const desasignarLlenadera = async (llenadera) => {
       try {
         const res = await resetLlenadera(llenadera)
@@ -579,7 +592,8 @@ export default {
       desasignarLlenadera,
       aceptarAsignacion,
       siguienteAsignacion,
-      reasignarAsignacion
+      reasignarAsignacion,
+      cancelarAsignacion,
     }
   },
 }
