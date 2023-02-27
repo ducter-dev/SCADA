@@ -60,7 +60,7 @@ export default {
     {
       path: 'reportes',
       name: 'reportes',
-      component: () => import('../../dashboard/views/Configuracion.vue')
+      component: () => import('../../reports/views/Reports.vue')
     },
   ]
 }
