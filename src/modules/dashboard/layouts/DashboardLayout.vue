@@ -29,6 +29,7 @@
         <router-view />
       </div>
     </div>
+    <ToastList/>
   </div>
 </template>
 
@@ -41,9 +42,10 @@ import NavBar from '../components/NavBar.vue'
 import Sidebar from '../components/SideBar.vue'
 import IconCaretLeft from '../../../assets/icons/caretLeft.svg'
 import IconCaretRight from '../../../assets/icons/caretRight.svg'
+import ToastList from "../components/toast/list.vue";
 
 export default {
-  components: { NavBar, Sidebar, IconCaretLeft, IconCaretRight },
+  components: { NavBar, Sidebar, IconCaretLeft, IconCaretRight ,ToastList},
 
   setup() {
     const { logout, getToken, getUserName } = useAuth()

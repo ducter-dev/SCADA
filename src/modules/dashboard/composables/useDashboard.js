@@ -92,6 +92,10 @@ const useDashboard = () => {
     return await store.cancelAllocationSt()
   }
 
+  const getCurrentFiller = async () => {
+    return await store.getCurrentFillerSt()
+  }
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -112,6 +116,7 @@ const useDashboard = () => {
     nextFiller,
     reassignAllocation,
     cancelAllocation,
+    getCurrentFiller,
   }
 }
 

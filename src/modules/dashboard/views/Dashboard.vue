@@ -22,9 +22,9 @@
             <div class="flex flex-col justify-center items-center">
               <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
                 :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
-                @toggleChange="toggleVerificacion" @despachar="setDespacho"
-                 @aceptarAsignacion="aceptarAsignacion" @reasignarAsignacion="reasignarAsignacion"
-                 @siguienteAsignacion="siguienteAsignacion" @cancelarAsignacion="cancelarAsignacion"/>
+                @toggleChange="toggleVerificacion" @despachar="setDespacho" @aceptarAsignacion="aceptarAsignacion"
+                @reasignarAsignacion="reasignarAsignacion" @siguienteAsignacion="siguienteAsignacion"
+                @cancelarAsignacion="cancelarAsignacion" />
             </div>
             <div class="flex justify-center items-center">
               <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
@@ -68,11 +68,10 @@ import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
-
+import useToast from "../../dashboard/composables/useToast";
 import { ref, computed, onMounted } from 'vue'
 
-import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css'
+const { addToast } = useToast()
 
 export default {
   components: {
@@ -91,7 +90,7 @@ export default {
 
     const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
-      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation} = useDashboard()
+      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
@@ -134,11 +133,22 @@ export default {
         if (status == 200) {
           dataAntenaEntrada.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -149,11 +159,22 @@ export default {
         if (status == 200) {
           dataAntenaVerificacion.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -164,11 +185,22 @@ export default {
         if (status == 200) {
           dataAntenaSalida.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -179,11 +211,22 @@ export default {
         if (status == 201) {
           dataBarreraEntrada.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -194,11 +237,22 @@ export default {
         if (status == 201) {
           dataBarreraVerificacion.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -209,11 +263,22 @@ export default {
         if (status == 201) {
           dataEstadoLlenadera.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -224,11 +289,22 @@ export default {
         if (status == 201) {
           dataBarreraSalida.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -243,13 +319,30 @@ export default {
         const { data, status } = res
         if (status == 201) {
           dataBarreraEntrada.value = data
-          Swal.fire("Barrera de Entrada", `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+          addToast({
+            message: {
+              title: "Barrera de Entrada",
+              message:  `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -260,13 +353,30 @@ export default {
         const { data, status } = res
         if (status == 201) {
           dataBarreraVerificacion.value = data
-          Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+          addToast({
+            message: {
+              title: "Barrera de Verificación",
+              message:  `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -277,13 +387,31 @@ export default {
         const { data, status } = res
         if (status == 201) {
           dataBarreraSalida.value = data
-          Swal.fire("Barrera de Verificacion", `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`, "success")
+
+          addToast({
+            message: {
+              title: "Barrera de Verificación",
+              message:  `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -294,11 +422,22 @@ export default {
         if (status == 200) {
           dataTanksEspera.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -309,11 +448,22 @@ export default {
         if (status == 200) {
           dataTanksSalida.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -324,11 +474,22 @@ export default {
         if (status == 200) {
           dataLastEntry.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -339,11 +500,22 @@ export default {
         if (status == 200) {
           dataLastAsign.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -354,11 +526,22 @@ export default {
         if (status == 200) {
           dataLastExit.value = data
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -368,8 +551,13 @@ export default {
         const { data, status } = res
         dataLlenaderas.value = getLlenaderasFiltradas()
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -379,8 +567,13 @@ export default {
         const res = await fetchUsuarios()
         const { data, status } = res
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -390,13 +583,30 @@ export default {
         const { data, status } = res
         if (status == 201) {
           dataEstadoLlenadera.value = data
-          Swal.fire("Estado Llenadera", `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`, "success")
+          addToast({
+            message: {
+              title: "Estado Llenadera",
+              message:  `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`,
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -405,14 +615,26 @@ export default {
       try {
         /* 3. Revisar que se haya seleccionado un tanque para asignar */
         if (asign === 'noData') {
-          Swal.fire("Error", 'No existe un tanque para asignar.', "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: "No existe un tanque para asignar.",
+              type: "error"
+            },
+          });
           return
         }
 
         /* 4. Revisar el estado de la llenadera */
         console.log("🚀 ~ file: Dashboard.vue:410 ~ asignarTanque ~ dataEstadoLlenadera.value", dataEstadoLlenadera.value)
         if (dataEstadoLlenadera.value == 1) {
-          Swal.fire("Info", 'No se puede realizar la asignación, compruebe el estado de la llenadera', "error")
+          addToast({
+            message: {
+              title: "¡Atención!",
+              message: "No se puede realizar la asignación, compruebe el estado de la llenadera.",
+              type: "error"
+            },
+          });
           return
         }
 
@@ -433,13 +655,30 @@ export default {
           dataLlenaderas.value = getLlenaderasFiltradas()
           deleteTanqueEspera(tanque)
           /* Pendiente refrescar lista de salida */
-          Swal.fire("Hecho", `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`, "success")
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message:`La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`,
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -448,12 +687,30 @@ export default {
         const res = await acceptAssignment()
         const { data, status } = res
         if (status == 201) {
-          Swal.fire("Aceptar asignación", data.message, "success")
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message: "Se acepto la asignación correctamente.",
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -462,38 +719,92 @@ export default {
         const res = await nextFiller()
         const { data, status } = res
         if (status == 201) {
-          Swal.fire("Siguiente llenadera", data.message, "success")
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message: "Se establecio la siguiente llenadera correctamente.",
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
     const reasignarAsignacion = async () => {
       try {
         const res = await reassignAllocation()
-        if(res.data){
-          Swal.fire("Reasignar asignación", res.data.message, "success")
-        }else if(!res.ok){
-          Swal.fire("Error", res.message, "error")
+        if (res.data) {
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message: "Se reasigno la asignación correctamente.",
+              type: "success"
+            },
+          });
+        } else if (!res.ok) {
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: res.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
     const cancelarAsignacion = async () => {
       try {
         const res = await cancelAllocation()
-        if(res.data){
-          Swal.fire("Cancelar asignación", res.data.message, "success")
-        }else if(!res.ok){
-          Swal.fire("Error", res.message, "error")
+        if (res.data) {
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message: "Se cancelo la asignación correctamente.",
+              type: "success"
+            },
+          });
+        } else if (!res.ok) {
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: res.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 
@@ -502,13 +813,30 @@ export default {
         const res = await resetLlenadera(llenadera)
         const { data, status } = res
         if (status == 201) {
-          Swal.fire("Desasignar", data.message, "success")
+          addToast({
+            message: {
+              title: "¡Éxito!",
+              message: "Se desasigno correctamente.",
+              type: "success"
+            },
+          });
         } else {
-          Swal.fire("Error", data.message, "error")
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          });
         }
       } catch (error) {
-        Swal.fire('Error', `Error: ${error.message}`, 'error')
-        // router.push('/auth') //
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
       }
     }
 

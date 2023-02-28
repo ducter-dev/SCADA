@@ -6,13 +6,11 @@ import FilterCard from '../components/FilterCard.vue'
         <div class="text-sm font-medium text-center text-slate-500 border-b border-slate-200">
             <ul class="flex flex-wrap -mb-px">
                 <li class="mr-2">
-                    <a href="#"
-                        class="inline-block p-2 text-primary border-b-2 border-primary rounded-t-lg"
+                    <a href="#" class="inline-block p-2 text-primary border-b-2 border-primary rounded-t-lg"
                         aria-current="page">Reportes díarios</a>
                 </li>
             </ul>
         </div>
         <FilterCard />
-
     </div>
 </template>
