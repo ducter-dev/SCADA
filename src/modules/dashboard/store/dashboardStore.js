@@ -187,6 +187,24 @@ export const useDashboardStore = defineStore('dashboard', {
           return { ok: false, message: error }
         }
       }
+    },
+
+    /**
+     *  Función para obtener la llenadera actual
+     * 
+     * @returns object 
+     */
+    async getCurrentFillerSt(){
+      try {
+        const res = await scadaApi.get('/llenaderas/disponible')
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
     }
   },
 })

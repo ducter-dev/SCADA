@@ -31,10 +31,32 @@ export const useLoginStore = defineStore('login', {
         }
         return obj
       } catch (error) {
-        const obj = {
-          ok: false, detail: error.response.data, status: error.response.status 
+        if (error.response) {
+          // La respuesta fue hecha y el servidor respondió con un código de estado
+          // que esta fuera del rango de 2xx
+          if (error.response.status == 422) {
+            // Si existe validación del lado del servidor aplicar llenado de errores aquí
+          } else {
+            // Si existe error manda un toast
+            const obj = {
+              ok: false, detail:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
+            }
+            return obj
+          }
+        } else if (error.request) {
+          // La petición fue hecha pero no se recibió respuesta
+          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+          // http.ClientRequest en node.js
+          const obj = {
+            ok: false, detail: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+          }
+          return obj
+        } else {
+          const obj = {
+            ok: false, detail:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+          }
+          return obj
         }
-        return obj
       }
     },
 

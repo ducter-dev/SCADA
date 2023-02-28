@@ -49,7 +49,10 @@
           <div class="w-10/12 flex flex-col justify-start items-start space-y-1">
             <div class="w-full flex justify-between items-start">
               <span class="font-semibold text-dark text-sm mx-2">Llenadera:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ llenadera }}</span>
+              <span class="font-semibold text-dark text-sm mx-2" v-if="obtenerLlenadera">{{ llenadera }}</span>
+              <div class="font-semibold text-red-500 text-sm mx-2 flex justify-between" v-else>
+                <span>Error</span> <IconArrowsRotate class="h-4 w-4 ml-3 text-slate-400 cursor-pointer " :class="loaderLlenadera ? 'animate-spin' : ''" @click="currentFiller" v-tippy="'Actualizar información'"/>
+              </div>
             </div>
             <div class="w-full flex justify-between items-start">
               <span class="font-semibold text-dark text-sm mx-2">Estado:</span>
@@ -101,7 +104,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import Toggle from '@vueform/toggle'
 import IconPause from '../../../assets/icons/pause.svg'
 import IconTimes from '../../../assets/icons/xmark-solid.svg'
@@ -111,6 +114,11 @@ import IconBan from '../../../assets/icons/ban.svg'
 import IconArrowsTurnToDots from '../../../assets/icons/arrows-turn-to-dots.svg'
 import IconCircleStop from '../../../assets/icons/circle-stop.svg'
 import IconPlay from '../../../assets/icons/play.svg'
+import IconArrowsRotate from '../../../assets/icons/arrows-rotate.svg'
+import useDashboard from '../composables/useDashboard'
+import useToast from "../../dashboard/composables/useToast";
+
+const { addToast } = useToast()
 
 export default {
   props: ['llenaderas', 'data', 'barrera', 'estado'],
@@ -123,14 +131,21 @@ export default {
     IconBan,
     IconArrowsTurnToDots,
     IconCircleStop,
-    IconPlay
+    IconPlay,
+    IconArrowsRotate
   },
   setup(props, context) {
+
+    const { getCurrentFiller} = useDashboard()
+
+
     const toggle = ref(props.barrera.estado)
     const llenaderasFilter = ref([])
     const llenaderaSel = ref({})
     const showMenu = ref(false)
-    const llenadera = ref(8)
+    const llenadera = ref()
+    const obtenerLlenadera = ref(false)
+    const loaderLlenadera = ref(false)
 
     /* 1. Obtener llenaderas por conector */
     const filterLlenaderas = () => {
@@ -203,6 +218,40 @@ export default {
       context.emit('cancelarAsignacion',true)
     }
 
+    const currentFiller = async () => {
+      loaderLlenadera.value = true
+      try {
+        const res = await getCurrentFiller()
+        const { data, status } = res
+        if (status == 201) {
+          llenadera.value = data.llenaderaDisponible
+          obtenerLlenadera.value = true
+        } else {
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: res.message,
+              type: "error"
+            },
+          });
+        }
+        loaderLlenadera.value = false
+      } catch (error) {
+        loaderLlenadera.value = false
+        addToast({
+            message: {
+              title: "¡Error!",
+              message:  `Error: ${error.message}`,
+              type: "error"
+            },
+          });
+      }
+    }
+
+    onMounted(()=>{
+      currentFiller()
+    })
+
     watch(() => props.llenaderas, () => {
       console.log('Cambio en llenaderas')
       if (props.data) {
@@ -230,7 +279,10 @@ export default {
       aceptarAsignacion,
       siguienteAsignacion,
       reasignarAsignacion,
-      cancelarAsignacion
+      cancelarAsignacion,
+      obtenerLlenadera,
+      loaderLlenadera,
+      currentFiller
     }
   }
 }
