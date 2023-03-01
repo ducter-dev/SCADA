@@ -1,14 +1,13 @@
-<script>
-export default {
-  name: 'LTable'
-}
-</script>
 <script setup>
 import IconLoaderSpinn from "../../../assets/icons/loader.svg"
 defineProps({
   loader: {
     type: Boolean
-  }
+  },
+  Lname: {
+    type: String,
+    default: 'LTable',
+  },
 })
 </script>
 <template>

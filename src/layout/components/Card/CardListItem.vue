@@ -1,8 +1,3 @@
-<script>
-export default {
-    name: 'LCardListItem'
-}
-</script>
 <script setup>
 defineProps({
     label:{
@@ -12,7 +7,11 @@ defineProps({
     value:{
         type:String,
         default:'Value'
-    }
+    },
+    Lname: {
+        type: String,
+        default: 'LCardListItem',
+    },
 })
 </script>
 <template>

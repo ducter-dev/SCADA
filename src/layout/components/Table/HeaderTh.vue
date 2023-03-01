@@ -1,8 +1,3 @@
-<script>
-  export default {
-    name: 'LHeaderTh'
-  }
-</script>
 <script setup>
 import { computed } from 'vue'
 const props = defineProps({
@@ -20,6 +15,10 @@ const props = defineProps({
     left: {
         type: Boolean,
         default: false,
+    },
+    Lname: {
+        type: String,
+        default: 'LHeaderTh',
     },
 
 })

@@ -1,8 +1,3 @@
-<script>
-export default {
-    name: 'LCardListActionButton'
-}
-</script>
 <script setup>
 defineProps({
     labelButton: {
@@ -12,7 +7,11 @@ defineProps({
     valueFiller: {
         type: String,
         default: 'Value'
-    }
+    },
+    Lname: {
+        type: String,
+        default: 'LCardListActionButton',
+    },
 })
 </script>
 <template>
