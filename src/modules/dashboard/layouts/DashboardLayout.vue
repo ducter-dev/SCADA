@@ -1,79 +1,40 @@
+
+<script setup>
+import { ref, computed } from 'vue'
+import { toggleSidebar } from "../../../layout/composables";
+import Header from "../../../layout/components/Header/Index.vue";
+import Sidebar from "../../../layout/components/Sidebar/Index.vue";
+import SidebarMobile from "../../../layout/components/Sidebar/Mobile.vue";
+import Footer from "../../../layout/components/Footer.vue";
+import ToastList from "../components/toast/list.vue";
+</script>
 <template>
-  <div class="mx-auto h-full flex flex-col-reverse sm:flex-row">
-    <div v-show="toggle" class="sm:w-48 relative">
+  <div class="bg-slate-100 font-sans antialiased overflow-hidden dark:bg-slate-900">
+    <div class="h-screen flex overflow-hidden" @keyup.esc="toggleSidebar">
+      <!-- Sidebar-->
       <Sidebar />
-      <div v-show="toggle" class="absolute flex justify-center items-center bottom-6 right-6">
-        <button 
-          type="button" 
-          class="text-white border border-white hover:bg-dark hover:text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-          @click="toggleSidebar"
-          >
-          <IconCaretLeft class="w-4 h-4" />
-        </button>
+
+      <!-- Sidebar mobile-->
+      <SidebarMobile />
+
+      <div class="flex flex-col w-0 flex-1 overflow-hidden overflow-y-auto">
+        <!-- Header-->
+        <Header />
+
+        <router-view v-slot="{ Component, route }">
+          <transition appear enter-active-class="animate__animated  animate__fadeIn"
+            leave-active-class="animate__animated  animate__fadeOut">
+            <main class="flex-1 relative z-0 py-3 lg:py-6" scroll-region>
+              <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 min-h-(screen-content) ">
+                <component :is="Component" :key="route.path" />
+              </div>
+            </main>
+          </transition>
+        </router-view>
+        <Footer />
+        <ToastList />
       </div>
     </div>
-    <div v-show="!toggle" class="absolute flex justify-center items-center bottom-6 left-0">
-      <button 
-        type="button" 
-        class="text-gray-800 border border-gray-800 hover:bg-dark hover:text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-        @click="toggleSidebar"
-        >
-        <IconCaretRight class="w-4 h-4" />
-      </button>
-    </div>
-    <div class="h-full w-full flex-col items-start">
-      <div class="h-10 m-1 sm:m-4">
-        <NavBar :userName="userName" @exitApp="exitApp"/>
-      </div>
-      <div class="w-full flex flex-row justify-center">
-        <router-view />
-      </div>
-    </div>
-    <ToastList/>
   </div>
 </template>
 
-<script>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import useAuth from '../../auth/composables/useAuth'
-
-import NavBar from '../components/NavBar.vue'
-import Sidebar from '../components/SideBar.vue'
-import IconCaretLeft from '../../../assets/icons/caretLeft.svg'
-import IconCaretRight from '../../../assets/icons/caretRight.svg'
-import ToastList from "../components/toast/list.vue";
-
-export default {
-  components: { NavBar, Sidebar, IconCaretLeft, IconCaretRight ,ToastList},
-
-  setup() {
-    const { logout, getToken, getUserName } = useAuth()
-    const router = useRouter() 
-    const token = computed(() => getToken()) 
-    const userName = computed(() => getUserName()) 
-    const toggle = ref(true)
-
-    const toggleSidebar = () => {
-      toggle.value = !toggle.value
-    }
-
-    const exitApp = () => {
-      const resp = logout()
-      if (resp) {
-        router.push('/')
-      }
-    }
-
-    return {
-      NavBar,
-      Sidebar,
-      token,
-      userName,
-      toggle,
-      toggleSidebar,
-      exitApp,
-    }
-  },
-}
-</script>
