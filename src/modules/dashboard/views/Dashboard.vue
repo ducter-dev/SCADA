@@ -1,53 +1,214 @@
 <template>
-  <div class="m-2 sm:mx-12 sm:my-2 w-full flex flex-col">
-    <div class="w-full flex justify-between items-start">
-      <div class="w-full flex justify-between items-start">
-        <div class="w-full flex flex-col justify-between items-center">
-          <div class="w-full flex justify-around items-start">
-            <div class="flex justify-center items-center">
+  <div
+    class="space-y-4 border-b sm:flex sm:items-center sm:justify-between sm:space-y-0 border-slate-200 dark:border-slate-700">
+    <div class="flex-1 min-w-0">
+      <h2 class="text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-2xl sm:leading-9 sm:truncate ">
+        Inicio
+      </h2>
+    </div>
+  </div>
+  <div class="mt-5 space-y-5">
+    <div class="grid gap-5 grid-cols-15">
+      <div class="flex flex-col col-span-3">
+        <div
+          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de entrada</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de PG" value="0000" />
+              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
+            </ul>
+          </div>
+        </div>
+        <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Última entrada</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de autotanque" value="0000" />
+              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
+              <LCardListItem label="Volumen autorizado" value="41800" />
+              <LCardListItem label="Número embarque" value="0" />
+              <LCardListItem label="Tipo de conector" value="AMBOS" />
+              <LCardListItem label="Estado respuesta SAP" value="SIN RESPUESTA" />
+              <LCardListItem label="Respuesta de SAP" value="ACEPTADO" />
+              <LCardListItem label="AT'S en lista" value="14" />
+            </ul>
+          </div>
+        </div>
+        <div class="flex justify-between mt-5">
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Abrir barrera de entrada
+          </button>
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Cerrar barrera de entrada
+          </button>
+        </div>
+      </div>
+      <div class="flex flex-col col-span-3">
+        <div
+          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de verificación</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de PG" value="0000" />
+              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
+            </ul>
+          </div>
+        </div>
+        <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+            <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de autotanque" value="0000" />
+              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
+              <LCardListItem label="Volumen programado" value="0" />
+              <LCardListItem label="Tipo de conector" value="DESCONOCIDO" />
+              <LCardListItem label="Llenadera disponible" value="10" />
+              <LCardListItem label="Lista de despacho" value="DETENIDA" />
+            </ul>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mt-5">
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Abrir barrera de verificación
+          </button>
+
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Cerrar barrera de verificación
+          </button>
+        </div>
+        <div class="grid grid-cols-1 gap-2 mt-2">
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Imprimir ticket para carga
+          </button>
+        </div>
+      </div>
+      <div class="flex flex-col col-span-3">
+        <div
+          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de salida</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de PG" value="0000" />
+              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
+            </ul>
+          </div>
+        </div>
+        <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Última salida</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListItem label="Número de autotanque" value="0000" />
+              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
+              <LCardListItem label="Volumen cargado" value="0" />
+              <LCardListItem label="Peso cargado" value="0" />
+              <LCardListItem label="Respuesta de SAP" value="SIN DATOS" />
+              <LCardListItem label="Tipo de conector" value="DESCONOCIDO" />
+              <LCardListItem label="Hora de salida" value="13:51" />
+              <LCardListItem label="Fecha" value="2023/02/28" />
+            </ul>
+          </div>
+        </div>
+        <div class="flex justify-between mt-5">
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Abrir barrera de salida
+          </button>
+          <button type="button"
+            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            Cerrar barrera de salida
+          </button>
+        </div>
+      </div>
+      <div class="col-span-2">
+        <div class="max-w-sm p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="p-2 border border-solid border-slate-300">
+            <legend class="text-base font-medium text-slate-900 dark:text-white">Estatus Llenaderas</legend>
+            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <LCardListActionButton label-button="Desasignar" value-filler="5" />
+              <LCardListActionButton label-button="Desasignar" value-filler="6" />
+              <LCardListActionButton label-button="Desasignar" value-filler="7" />
+              <LCardListActionButton label-button="Desasignar" value-filler="8" />
+              <LCardListActionButton label-button="Desasignar" value-filler="9" />
+              <LCardListActionButton label-button="Desasignar" value-filler="10" />
+              <LCardListActionButton label-button="Desasignar" value-filler="11" />
+              <LCardListActionButton label-button="Desasignar" value-filler="12" />
+              <LCardListActionButton label-button="Desasignar" value-filler="13" />
+              <LCardListActionButton label-button="Desasignar" value-filler="14" />
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-4">
+        <TarjetaUltimasCargas />
+      </div>
+    </div>
+    <div class="border-t border-slate-300 dark:border-slate-700"></div>
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12">
+        <TablaEspera/>
+        
+      </div>
+    </div>
+  </div>
+  <!--
+  <div class="flex flex-col w-full m-2 sm:mx-12 sm:my-2">
+    <div class="flex items-start justify-between w-full">
+      <div class="flex items-start justify-between w-full">
+        <div class="flex flex-col items-center justify-between w-full">
+          <div class="flex items-start justify-around w-full">
+            <div class="flex items-center justify-center">
               <TarjetaEntrada :data="dataAntenaEntrada" />
             </div>
-            <div class="flex justify-center items-center">
+            <div class="flex items-center justify-center">
               <TarjetaVerificacion :data="dataAntenaVerificacion" />
             </div>
-            <div class="flex justify-center items-center">
+            <div class="flex items-center justify-center">
               <TarjetaSalida :data="dataAntenaSalida" />
             </div>
           </div>
-          <div class="w-full flex justify-around items-start">
-            <div class="flex justify-center items-center">
+          <div class="flex items-start justify-around w-full">
+            <div class="flex items-center justify-center">
               <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm"
                 @toggleChange="toggleEntrada" />
             </div>
-            <div class="flex flex-col justify-center items-center">
+            <div class="flex flex-col items-center justify-center">
               <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
                 :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
                 @toggleChange="toggleVerificacion" @despachar="setDespacho" @aceptarAsignacion="aceptarAsignacion"
                 @reasignarAsignacion="reasignarAsignacion" @siguienteAsignacion="siguienteAsignacion"
                 @cancelarAsignacion="cancelarAsignacion" />
             </div>
-            <div class="flex justify-center items-center">
+            <div class="flex items-center justify-center">
               <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
             </div>
           </div>
         </div>
         <div class="flex flex-col justify-center items center">
-          <div class="flex justify-center items-center">
-            <TarjetaUltimasCargas :salidas="dataTanksSalida" />
+          <div class="flex items-center justify-center">
+            <TarjetaUltimasCargas />
           </div>
-          <div class="flex justify-center items-center">
+          <div class="flex items-center justify-center">
             <TarjetaLlenaderas :data="dataEstadoLlenadera" @desasignarLlenadera="desasignarLlenadera" />
           </div>
         </div>
       </div>
     </div>
-    <div class="flex justify-center items-center h-56 overflow-y-scroll">
+    <div class="flex items-center justify-center h-56 overflow-y-scroll">
       <div
-        class="w-full flex justify-center items-center p-2 m-2 bg-white rounded-lg border border-gray-200 shadow-md mt-24">
+        class="flex items-center justify-center w-full p-2 m-2 mt-24 bg-white border shadow-md border-slate-200">
         <TablaEspera :tanques="dataTanksEspera" />
       </div>
     </div>
   </div>
+  -->
 </template>
 
 <script>
@@ -68,9 +229,8 @@ import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
-import useToast from "../../dashboard/composables/useToast";
+import useToast from "../../dashboard/composables/useToast"
 import { ref, computed, onMounted } from 'vue'
-
 const { addToast } = useToast()
 
 export default {
@@ -83,7 +243,7 @@ export default {
     TarjetaUltimaEntrada,
     TarjetaUltimaSalida,
     TarjetaLlenaderas,
-    TablaEspera,
+    TablaEspera
   },
   setup() {
     const router = useRouter()
@@ -93,12 +253,11 @@ export default {
       fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
-    const { fetchTanksSalidas, fetchUltimaSalida, getTanquesInSalida, getLastTankExit } = useTanqueSalida()
-    const { fetchUltimaEntrada, getLastTankEntry } = useTanqueEntrada()
+    const { fetchUltimaSalida } = useTanqueSalida()
+    const { fetchUltimaEntrada } = useTanqueEntrada()
     const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera } = useTanqueEspera()
-    const { fetchUltimaAsignacion, getLastTankAsign } = useTanqueServicio()
-    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderas, getLlenaderasLibres,
-      getLlenaderasEstado, getLlenaderaAceptaAsignacion, getLlenaderasFiltradas } = useLlenaderas()
+    const { fetchUltimaAsignacion } = useTanqueServicio()
+    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderasEstado, getLlenaderasFiltradas } = useLlenaderas()
 
     const antenaEntrada = computed(() => getAntenaEntrada())
     const antenaVerificacion = computed(() => getAntenaVerificacion())
@@ -109,7 +268,6 @@ export default {
     const barreraSalida = computed(() => getBarreraSalida())
     const estadoLlenadera = computed(() => getLlenaderasEstado())
     const listaEspera = computed(() => getTanquesInEspera())
-    const listaSalida = computed(() => getTanquesInSalida())
     const llenaderas = computed(() => getLlenaderasFiltradas())
 
     const dataAntenaEntrada = ref({})
@@ -120,7 +278,6 @@ export default {
     const dataBarreraSalida = ref({})
     let dataEstadoLlenadera = ref({})
     let dataTanksEspera = ref([])
-    let dataTanksSalida = ref([])
     let dataLastEntry = ref({})
     let dataLastAsign = ref({})
     let dataLastExit = ref({})
@@ -143,12 +300,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -169,12 +326,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -195,12 +352,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -221,12 +378,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -247,12 +404,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -273,12 +430,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -299,12 +456,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -322,7 +479,7 @@ export default {
           addToast({
             message: {
               title: "Barrera de Entrada",
-              message:  `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              message: `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
           });
@@ -337,12 +494,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -356,7 +513,7 @@ export default {
           addToast({
             message: {
               title: "Barrera de Verificación",
-              message:  `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
           });
@@ -371,12 +528,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -391,7 +548,7 @@ export default {
           addToast({
             message: {
               title: "Barrera de Verificación",
-              message:  `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
+              message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
           });
@@ -406,12 +563,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -432,38 +589,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
-      }
-    }
-
-    const fetchDataTanksSalida = async () => {
-      try {
-        const res = await fetchTanksSalidas()
-        const { data, status } = res
-        if (status == 200) {
-          dataTanksSalida.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -484,12 +615,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -510,12 +641,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -536,12 +667,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -552,12 +683,12 @@ export default {
         dataLlenaderas.value = getLlenaderasFiltradas()
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -568,12 +699,12 @@ export default {
         const { data, status } = res
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -586,7 +717,7 @@ export default {
           addToast({
             message: {
               title: "Estado Llenadera",
-              message:  `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`,
+              message: `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`,
               type: "success"
             },
           });
@@ -601,12 +732,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -658,7 +789,7 @@ export default {
           addToast({
             message: {
               title: "¡Éxito!",
-              message:`La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`,
+              message: `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`,
               type: "success"
             },
           });
@@ -673,12 +804,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -705,12 +836,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -737,12 +868,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -768,12 +899,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -799,12 +930,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -831,12 +962,12 @@ export default {
         }
       } catch (error) {
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
@@ -846,12 +977,6 @@ export default {
         fetchDataTanksInEspera()
       } else {
         dataTanksEspera.value = listaEspera.value
-      }
-
-      if (listaSalida.value || listaSalida.value.length == 0) {
-        fetchDataTanksSalida()
-      } else {
-        dataTanksSalida.value = listaSalida.value
       }
 
       fetchDataLastEntry()
@@ -910,7 +1035,6 @@ export default {
       toggleSalida,
       dataEstadoLlenadera,
       dataTanksEspera,
-      dataTanksSalida,
       dataLastEntry,
       dataLastAsign,
       dataLastExit,
