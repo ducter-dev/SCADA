@@ -38,16 +38,7 @@
         </div>
       </div>
       <div class="flex flex-col col-span-3">
-        <div
-          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de verificación</legend>
-            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de PG" value="0000" />
-              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
-            </ul>
-          </div>
-        </div>
+        <AntennaVerification/>
         <WaitingList/>
       </div>
       <div class="flex flex-col col-span-3">
@@ -173,6 +164,7 @@
 <script>
 import WaitingList from '../components/WaitingList.vue'
 import InputAntenna from '../components/InputAntenna.vue'
+import AntennaVerification from '../components/AntennaVerifcation.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
@@ -204,12 +196,13 @@ export default {
     TarjetaLlenaderas,
     TablaEspera,
     WaitingList,
-    InputAntenna
-  },
+    InputAntenna,
+    AntennaVerification
+},
   setup() {
     const router = useRouter()
 
-    const { getAntenaEntrada, getAntenaVerificacion, getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
+    const {  getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
       changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
       fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
 
@@ -220,8 +213,6 @@ export default {
     const { fetchUltimaAsignacion } = useTanqueServicio()
     const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderasEstado, getLlenaderasFiltradas } = useLlenaderas()
 
-    const antenaEntrada = computed(() => getAntenaEntrada())
-    const antenaVerificacion = computed(() => getAntenaVerificacion())
     const antenaSalida = computed(() => getAntenaSalida())
     const usuarios = computed(() => getUsuarios())
     const barreraEntrada = computed(() => getBarreraEntrada())
@@ -231,8 +222,6 @@ export default {
     const listaEspera = computed(() => getTanquesInEspera())
     const llenaderas = computed(() => getLlenaderasFiltradas())
 
-    const dataAntenaEntrada = ref({})
-    const dataAntenaVerificacion = ref({})
     const dataAntenaSalida = ref({})
     const dataBarreraEntrada = ref({})
     const dataBarreraVerificacion = ref({})
@@ -244,61 +233,7 @@ export default {
     let dataLastExit = ref({})
     let dataLlenaderas = ref([])
 
-    const fetchDatosAntenaEntrada = async () => {
-      try {
-        const res = await fetchAntenaEntrada()
-        const { data, status } = res
-        if (status == 200) {
-          dataAntenaEntrada.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDatosAntenaEntrada()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDatosAntenaEntrada()"
-          },
-        });
-      }
-    }
 
-    const fetchDatosAntenaVerificacion = async () => {
-      try {
-        const res = await fetchAntenaVerificacion()
-        const { data, status } = res
-        if (status == 200) {
-          dataAntenaVerificacion.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard  - fetchDatosAntenaVerificacion()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDatosAntenaVerificacion()"
-          },
-        });
-      }
-    }
 
     const fetchDatosAntenaSalida = async () => {
       try {
@@ -988,14 +923,6 @@ export default {
         fetchDataBarreraSalida()
       }
 
-      if (antenaEntrada.value || Object.keys(antenaEntrada.value).length < 1) {
-        fetchDatosAntenaEntrada()
-      }
-
-      if (Object.keys(antenaVerificacion.value).length < 1) {
-        fetchDatosAntenaVerificacion()
-      }
-
       if (antenaSalida.value || Object.keys(antenaSalida.value).length < 1) {
         fetchDatosAntenaSalida()
       }
@@ -1010,8 +937,6 @@ export default {
     })
 
     return {
-      dataAntenaEntrada,
-      dataAntenaVerificacion,
       dataAntenaSalida,
       openForm,
       dataBarreraEntrada,
