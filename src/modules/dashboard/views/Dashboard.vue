@@ -42,16 +42,7 @@
         <WaitingList/>
       </div>
       <div class="flex flex-col col-span-3">
-        <div
-          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de salida</legend>
-            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de PG" value="0000" />
-              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
-            </ul>
-          </div>
-        </div>
+        <OutputAntenna/>
         <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
           <div class="p-2 border border-solid border-slate-300">
             <legend class="text-base font-medium text-slate-900 dark:text-white">Última salida</legend>
@@ -115,17 +106,6 @@
         <div class="flex flex-col items-center justify-between w-full">
           <div class="flex items-start justify-around w-full">
             <div class="flex items-center justify-center">
-              <TarjetaEntrada :data="dataAntenaEntrada" />
-            </div>
-            <div class="flex items-center justify-center">
-              <TarjetaVerificacion :data="dataAntenaVerificacion" />
-            </div>
-            <div class="flex items-center justify-center">
-              <TarjetaSalida :data="dataAntenaSalida" />
-            </div>
-          </div>
-          <div class="flex items-start justify-around w-full">
-            <div class="flex items-center justify-center">
               <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm"
                 @toggleChange="toggleEntrada" />
             </div>
@@ -164,6 +144,7 @@
 <script>
 import WaitingList from '../components/WaitingList.vue'
 import InputAntenna from '../components/InputAntenna.vue'
+import OutputAntenna from '../components/OutputAntenna.vue'
 import AntennaVerification from '../components/AntennaVerifcation.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
@@ -197,23 +178,24 @@ export default {
     TablaEspera,
     WaitingList,
     InputAntenna,
-    AntennaVerification
+    AntennaVerification,
+    OutputAntenna
 },
   setup() {
     const router = useRouter()
 
-    const {  getAntenaSalida, getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
-      changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchAntenaEntrada, fetchAntenaSalida, fetchAntenaVerificacion,
-      fetchBarreraEntrada, fetchBarreraSalida, fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
+    const { getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
+      changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchBarreraEntrada, fetchBarreraSalida,
+       fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
 
     const { fetchUsuarios, getUsuarios } = useUsuario()
     const { fetchUltimaSalida } = useTanqueSalida()
     const { fetchUltimaEntrada } = useTanqueEntrada()
     const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera } = useTanqueEspera()
     const { fetchUltimaAsignacion } = useTanqueServicio()
-    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderasEstado, getLlenaderasFiltradas } = useLlenaderas()
+    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderasEstado,
+       getLlenaderasFiltradas } = useLlenaderas()
 
-    const antenaSalida = computed(() => getAntenaSalida())
     const usuarios = computed(() => getUsuarios())
     const barreraEntrada = computed(() => getBarreraEntrada())
     const barreraVerificacion = computed(() => getBarreraVerificacion())
@@ -232,36 +214,6 @@ export default {
     let dataLastAsign = ref({})
     let dataLastExit = ref({})
     let dataLlenaderas = ref([])
-
-
-
-    const fetchDatosAntenaSalida = async () => {
-      try {
-        const res = await fetchAntenaSalida()
-        const { data, status } = res
-        if (status == 200) {
-          dataAntenaSalida.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDatosAntenaSalida()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDatosAntenaSalida()"
-          },
-        });
-      }
-    }
 
     const fetchDataBarreraEntrada = async () => {
       try {
@@ -921,10 +873,6 @@ export default {
 
       if (barreraSalida.value || Object.keys(barreraSalida.value).length < 1) {
         fetchDataBarreraSalida()
-      }
-
-      if (antenaSalida.value || Object.keys(antenaSalida.value).length < 1) {
-        fetchDatosAntenaSalida()
       }
 
       if (usuarios.value || usuarios.value.length < 1) {
