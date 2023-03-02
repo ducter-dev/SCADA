@@ -34,8 +34,8 @@ export default {
     },
     {
       path: 'servicio',
-      name: 'ListaServicio',
-      component: () => import('../../tanques/views/Servicio.vue')
+      name: 'services',
+      component: () => import('../../services/views/index.vue')
     },
     {
       path: 'tanques/editar',

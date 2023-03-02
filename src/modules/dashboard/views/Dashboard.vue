@@ -57,38 +57,7 @@
             </ul>
           </div>
         </div>
-        <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
-            <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
-            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de autotanque" value="0000" />
-              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
-              <LCardListItem label="Volumen programado" value="0" />
-              <LCardListItem label="Tipo de conector" value="DESCONOCIDO" />
-              <LCardListItem label="Llenadera disponible" value="10" />
-              <LCardListItem label="Lista de despacho" value="DETENIDA" />
-            </ul>
-          </div>
-        </div>
-        
-        <div class="grid grid-cols-2 gap-2 mt-5">
-          <button type="button"
-            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            Abrir barrera de verificación
-          </button>
-
-          <button type="button"
-            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            Cerrar barrera de verificación
-          </button>
-        </div>
-        <div class="grid grid-cols-1 gap-2 mt-2">
-          <button type="button"
-            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            Imprimir ticket para carga
-          </button>
-        </div>
+        <WaitingList/>
       </div>
       <div class="flex flex-col col-span-3">
         <div
@@ -154,7 +123,6 @@
     <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12">
         <TablaEspera/>
-        
       </div>
     </div>
   </div>
@@ -212,6 +180,7 @@
 </template>
 
 <script>
+import WaitingList from '../components/WaitingList.vue'
 import TarjetaEntrada from '../components/TarjetaEntrada.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
@@ -243,7 +212,8 @@ export default {
     TarjetaUltimaEntrada,
     TarjetaUltimaSalida,
     TarjetaLlenaderas,
-    TablaEspera
+    TablaEspera,
+    WaitingList
   },
   setup() {
     const router = useRouter()

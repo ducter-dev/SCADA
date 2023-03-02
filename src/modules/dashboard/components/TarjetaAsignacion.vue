@@ -1,7 +1,45 @@
 <template>
+  <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+    <div class="p-2 border border-solid border-slate-300">
+      <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+      <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
+      <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+        <LCardListItem label="Número de autotanque" value="10" />
+        <LCardListItem label="Tipo de autotanque" :value="setTipo(data.atTipo)" />
+        <LCardListItem label="Volumen programado" :value="data.capacidad" />
+        <LCardListItem label="Tipo de conector" :value="setConector(data.conector)" />
+
+        <LCardListItem label="Llenadera disponible">
+          <span v-if="obtenerLlenadera">{{ llenadera }}</span>
+          <div class="flex justify-between mx-2 text-sm font-semibold text-red-500" v-else>
+            <span>Error</span>
+            <IconArrowsRotate class="w-4 h-4 ml-2 cursor-pointer text-slate-400 "
+              :class="loaderLlenadera ? 'animate-spin' : ''" @click="currentFiller" v-tippy="'Actualizar información'" />
+          </div>
+        </LCardListItem>
+        <LCardListItem value-class="uppercase" label="Lista de despacho"
+          :value="estado.estado === 0 ? 'Liberada' : 'Detenida'" />
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-sm mt-5 bg-transparent">
+    <div class="p-2 border border-solid border-slate-300">
+      <div class="py-1">
+        <div class="flex items-center space-x-4">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium truncate text-slate-700 dark:text-slate-300">Barrera de verificación</p>
+          </div>
+          <div class="flex items-center justify-center mx-2">
+           
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <div class="p-2 m-2 max-w-xs min-w-[20rem] bg-white rounded-lg border border-gray-200 shadow-md flex flex-col">
-    <div class="grid grid-cols-4 text-gray-400  mt-1 mb-1">
-      <div class="col-span-1 flex justify-center">
+    <div class="grid grid-cols-4 mt-1 mb-1 text-gray-400">
+      <div class="flex justify-center col-span-1">
         <svg xmlns="http://www.w3.org/2000/svg" @click="showMenu = !showMenu" class="w-4 h-4 mt-1 cursor-pointer "
           fill="currentColor" viewBox="0 0 448 512">
           <path v-if="!showMenu"
@@ -11,77 +49,80 @@
         </svg>
       </div>
       <div class="col-span-3">
-        <span class="text-center text-xl font-bold ml-10">Asignación</span>
+        <span class="ml-10 text-xl font-bold text-center">Asignación</span>
       </div>
     </div>
-    <div class="grid ease-in duration-300" :class="[showMenu ? 'grid-cols-4 ' : 'grid-cols-1']">
+    <div class="grid duration-300 ease-in" :class="[showMenu ? 'grid-cols-4 ' : 'grid-cols-1']">
       <div class="col-span-1 transition delay-200" v-if="showMenu">
         <div class="flex flex-col items-center space-y-1">
           <button @click="$emit('siguienteAsignacion')" v-tippy="{ content: 'Siguiente llenadera' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-blue-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            <IconArrowsTurnRight/>
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-blue-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconArrowsTurnRight />
           </button>
           <button @click="$emit('aceptarAsignacion')" v-tippy="{ content: 'Acepatar asignación' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-green-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-           <IconCheckToSlot/>
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-green-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconCheckToSlot />
           </button>
-          <button @click="$emit('cancelarAsignacion')"   v-tippy="{ content: 'Cancela asignación' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-red-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            <IconBan/>
+          <button @click="$emit('cancelarAsignacion')" v-tippy="{ content: 'Cancela asignación' }" type="button"
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-red-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconBan />
           </button>
           <button @click="$emit('reasignarAsignacion')" v-tippy="{ content: 'Reasignar llenadera' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-indigo-900 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            <IconArrowsTurnToDots/>
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-indigo-900 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconArrowsTurnToDots />
           </button>
           <button v-tippy="{ content: 'Detenener despacho' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-red-800 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            <IconCircleStop/>
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-red-800 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconCircleStop />
           </button>
           <button v-tippy="{ content: 'Liberar despacho' }" type="button"
-            class="flex justify-center items-center w-8 h-8 text-gray-500 hover:text-lime-500 bg-white rounded-lg border border-gray-200  shadow-sm hover:bg-gray-50  focus:ring-1 focus:ring-gray-300 focus:outline-none ">
-            <IconPlay/>
+            class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-lime-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
+            <IconPlay />
           </button>
 
         </div>
       </div>
       <div class="col-span-3">
-        <div class="flex flex-col justify-center items-center">
-          <div class="w-10/12 flex flex-col justify-start items-start space-y-1">
-            <div class="w-full flex justify-between items-start">
-              <span class="font-semibold text-dark text-sm mx-2">Llenadera:</span>
-              <span class="font-semibold text-dark text-sm mx-2" v-if="obtenerLlenadera">{{ llenadera }}</span>
-              <div class="font-semibold text-red-500 text-sm mx-2 flex justify-between" v-else>
-                <span>Error</span> <IconArrowsRotate class="h-4 w-4 ml-3 text-slate-400 cursor-pointer " :class="loaderLlenadera ? 'animate-spin' : ''" @click="currentFiller" v-tippy="'Actualizar información'"/>
+        <div class="flex flex-col items-center justify-center">
+          <div class="flex flex-col items-start justify-start w-10/12 space-y-1">
+            <div class="flex items-start justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Llenadera:</span>
+              <span class="mx-2 text-sm font-semibold text-dark" v-if="obtenerLlenadera">{{ llenadera }}</span>
+              <div class="flex justify-between mx-2 text-sm font-semibold text-red-500" v-else>
+                <span>Error</span>
+                <IconArrowsRotate class="w-4 h-4 ml-3 cursor-pointer text-slate-400 "
+                  :class="loaderLlenadera ? 'animate-spin' : ''" @click="currentFiller"
+                  v-tippy="'Actualizar información'" />
               </div>
             </div>
-            <div class="w-full flex justify-between items-start">
-              <span class="font-semibold text-dark text-sm mx-2">Estado:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ estado.estado === 0 ? 'Liberada' : 'Detenida'
+            <div class="flex items-start justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Estado:</span>
+              <span class="mx-2 text-sm font-semibold text-dark">{{ estado.estado === 0 ? 'Liberada' : 'Detenida'
               }}</span>
             </div>
-            <div class="w-full flex justify-between items-start">
-              <span class="font-semibold text-dark text-sm mx-2">Num. AT:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ data.atName }}</span>
+            <div class="flex items-start justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Num. AT:</span>
+              <span class="mx-2 text-sm font-semibold text-dark">{{ data.atName }}</span>
             </div>
-            <div class="w-full flex justify-between items-center">
-              <span class="font-semibold text-dark text-sm mx-2">Vol Prog.:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ data.capacidad }}</span>
+            <div class="flex items-center justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Vol Prog.:</span>
+              <span class="mx-2 text-sm font-semibold text-dark">{{ data.capacidad }}</span>
             </div>
-            <div class="w-full flex justify-between items-center">
-              <span class="font-semibold text-dark text-sm mx-2">Tipo:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ setTipo(data.atTipo) }}</span>
+            <div class="flex items-center justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Tipo:</span>
+              <span class="mx-2 text-sm font-semibold text-dark">{{ setTipo(data.atTipo) }}</span>
             </div>
-            <div class="w-full flex justify-between items-center">
-              <span class="font-semibold text-dark text-sm mx-2">Conector:</span>
-              <span class="font-semibold text-dark text-sm mx-2">{{ setConector(data.conector) }}</span>
+            <div class="flex items-center justify-between w-full">
+              <span class="mx-2 text-sm font-semibold text-dark">Conector:</span>
+              <span class="mx-2 text-sm font-semibold text-dark">{{ setConector(data.conector) }}</span>
             </div>
           </div>
-          <div class="flex flex-row items-center self-stretch my-4  whitespace-nowrap border border-slate-300"></div>
-          <div class="flex justify-center items-center">
-            <div class="flex justify-center items-center mx-2">
+          <div class="flex flex-row items-center self-stretch my-4 border whitespace-nowrap border-slate-300"></div>
+          <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center mx-2">
               Barrera de Verificación
             </div>
-            <div class="flex justify-center items-center mx-2">
+            <div class="flex items-center justify-center mx-2">
               <Toggle v-model="toggle" offLabel="Cerrada" onLabel="Abierta" :classes="{
                 toggle: 'flex w-14 h-8 rounded-full relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
                 toggleOn: 'bg-gray-900 border-gray-800 justify-start text-white',
@@ -136,7 +177,7 @@ export default {
   },
   setup(props, context) {
 
-    const { getCurrentFiller} = useDashboard()
+    const { getCurrentFiller } = useDashboard()
 
 
     const toggle = ref(props.barrera.estado)
@@ -202,20 +243,20 @@ export default {
       context.emit('asignar', objAsign)
     }
     */
-    const aceptarAsignacion = () =>{
-        context.emit('aceptarAsignacion',true)
+    const aceptarAsignacion = () => {
+      context.emit('aceptarAsignacion', true)
     }
 
-    const siguienteAsignacion = () =>{
-      context.emit('siguienteAsignacion',true)
+    const siguienteAsignacion = () => {
+      context.emit('siguienteAsignacion', true)
     }
 
-    const reasignarAsignacion = () =>{
-      context.emit('reasignarAsignacion',true)
+    const reasignarAsignacion = () => {
+      context.emit('reasignarAsignacion', true)
     }
 
-    const cancelarAsignacion = () =>{
-      context.emit('cancelarAsignacion',true)
+    const cancelarAsignacion = () => {
+      context.emit('cancelarAsignacion', true)
     }
 
     const currentFiller = async () => {
@@ -239,16 +280,16 @@ export default {
       } catch (error) {
         loaderLlenadera.value = false
         addToast({
-            message: {
-              title: "¡Error!",
-              message:  `Error: ${error.message}`,
-              type: "error"
-            },
-          });
+          message: {
+            title: "¡Error!",
+            message: `Error: ${error.message}`,
+            type: "error"
+          },
+        });
       }
     }
 
-    onMounted(()=>{
+    onMounted(() => {
       currentFiller()
     })
 

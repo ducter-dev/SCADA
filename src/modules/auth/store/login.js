@@ -34,8 +34,12 @@ export const useLoginStore = defineStore('login', {
         if (error.response) {
           // La respuesta fue hecha y el servidor respondió con un código de estado
           // que esta fuera del rango de 2xx
-          if (error.response.status == 422) {
+          if (error.response.status == 419) {
             // Si existe validación del lado del servidor aplicar llenado de errores aquí
+            const obj = {
+              ok: false, detail:error.response.data.message, status: error.response.status 
+            }
+            return obj
           } else {
             // Si existe error manda un toast
             const obj = {
