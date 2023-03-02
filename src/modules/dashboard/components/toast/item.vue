@@ -34,23 +34,25 @@ const classes = computed(() => [
 ]);
 </script>
 <template>
-
-  <div id="toast-interactive"
-    class="w-full max-w-xs p-4 text-slate-500 bg-white shadow " role="alert">
+  <div id="toast-interactive" class="w-full max-w-xs p-4 bg-white shadow dark:bg-slate-800 dark:text-slate-400" role="alert">
     <div class="flex">
-      <div
-        class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8" :class="classes">
-        <IconCircleCheck class="h-5 w-5" v-if="props.message.type === 'success'" />
-        <IconCircleXmarK class="h-5 w-5" v-else-if="props.message.type === 'error'" />
-        <IconCircleInfo class="h-5 w-5" v-else-if="props.message.type === 'info'" />
+      <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8" :class="classes">
+        <IconCircleCheck class="w-5 h-5" v-if="props.message.type === 'success'" />
+        <IconCircleXmarK class="w-5 h-5" v-else-if="props.message.type === 'error'" />
+        <IconCircleInfo class="w-5 h-5" v-else-if="props.message.type === 'info'" />
       </div>
       <div class="ml-3 text-sm font-normal">
-            <span class="mb-1 text-sm font-semibold text-gray-900" v-html="props.message.title"></span>
-            <div class="mb-2 text-sm font-normal" v-html="props.message.message"></div> 
-        </div>
+        <span class="mb-1 text-sm font-semibold text-slate-900 dark:text-white" v-html="props.message.title"></span>
+        <div class="mb-2 text-sm font-normal" v-html="props.message.message"></div>
+        <span class="text-xs font-medium text-right text-yellow-600 dark:text-yellow-500" v-if="props.message.type === 'error'">
+          Componente: {{ props.message.component ? props.message.component  : 'Desconocido' }}
+        </span>
+
+      </div>
       <button type="button" @click="emit('remove')"
-        class="ml-auto -mx-1.5 -my-1.5 bg-white text-slate-400 hover:text-slate-900 focus:ring-2 focus:ring-slate-300 p-1.5 hover:bg-slate-100 inline-flex h-8 w-8" aria-label="Close">
-        <IconXmarK class="h-5 w-5" />
+        class="ml-auto -mx-1.5 -my-1.5 bg-white text-slate-400 hover:text-slate-900 focus:ring-2 focus:ring-slate-300 p-1.5 hover:bg-slate-100 inline-flex h-8 w-8 dark:text-slate-500 dark:hover:text-white dark:bg-slate-800 dark:hover:bg-slate-700"
+        aria-label="Close">
+        <IconXmarK class="w-5 h-5" />
       </button>
     </div>
   </div>

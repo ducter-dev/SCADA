@@ -10,16 +10,7 @@
   <div class="mt-5 space-y-5">
     <div class="grid gap-5 grid-cols-15">
       <div class="flex flex-col col-span-3">
-        <div
-          class="min-w-[12rem] mx-auto p-1 bg-white border border-slate-200  shadow dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Antena de entrada</legend>
-            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de PG" value="0000" />
-              <LCardListItem label="Tipo de AT" value="NINGÚNO" />
-            </ul>
-          </div>
-        </div>
+        <InputAntenna/>
         <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
           <div class="p-2 border border-solid border-slate-300">
             <legend class="text-base font-medium text-slate-900 dark:text-white">Última entrada</legend>
@@ -181,7 +172,7 @@
 
 <script>
 import WaitingList from '../components/WaitingList.vue'
-import TarjetaEntrada from '../components/TarjetaEntrada.vue'
+import InputAntenna from '../components/InputAntenna.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
 import TarjetaUltimasCargas from '../components/TarjetaUltimasCargas.vue'
@@ -204,7 +195,6 @@ const { addToast } = useToast()
 
 export default {
   components: {
-    TarjetaEntrada,
     TarjetaVerificacion,
     TarjetaSalida,
     TarjetaUltimasCargas,
@@ -213,7 +203,8 @@ export default {
     TarjetaUltimaSalida,
     TarjetaLlenaderas,
     TablaEspera,
-    WaitingList
+    WaitingList,
+    InputAntenna
   },
   setup() {
     const router = useRouter()
@@ -264,7 +255,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDatosAntenaEntrada()"
             },
           });
         }
@@ -273,7 +265,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDatosAntenaEntrada()"
           },
         });
       }
@@ -290,7 +283,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard  - fetchDatosAntenaVerificacion()"
             },
           });
         }
@@ -299,7 +293,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDatosAntenaVerificacion()"
           },
         });
       }
@@ -316,7 +311,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDatosAntenaSalida()"
             },
           });
         }
@@ -325,7 +321,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDatosAntenaSalida()"
           },
         });
       }
@@ -335,14 +332,15 @@ export default {
       try {
         const res = await fetchBarreraEntrada()
         const { data, status } = res
-        if (status == 201) {
+        if (status == 200) {
           dataBarreraEntrada.value = data
         } else {
           addToast({
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataBarreraEntrada()"
             },
           });
         }
@@ -351,7 +349,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataBarreraEntrada()"
           },
         });
       }
@@ -361,14 +360,15 @@ export default {
       try {
         const res = await fetchBarreraVerificacion()
         const { data, status } = res
-        if (status == 201) {
+        if (status == 200) {
           dataBarreraVerificacion.value = data
         } else {
           addToast({
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataBarreraVerificacion()"
             },
           });
         }
@@ -377,7 +377,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataBarreraVerificacion()"
           },
         });
       }
@@ -394,7 +395,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataEstadoLlenadera()"
             },
           });
         }
@@ -403,7 +405,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataEstadoLlenadera()"
           },
         });
       }
@@ -413,14 +416,15 @@ export default {
       try {
         const res = await fetchBarreraSalida()
         const { data, status } = res
-        if (status == 201) {
+        if (status == 200) {
           dataBarreraSalida.value = data
         } else {
           addToast({
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard  - fetchDataBarreraSalida()"
             },
           });
         }
@@ -429,7 +433,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataBarreraSalida()"
           },
         });
       }
@@ -458,7 +463,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard | - toggleEntrada()"
             },
           });
         }
@@ -467,7 +473,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - toggleEntrada()"
           },
         });
       }
@@ -553,7 +560,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataTanksInEspera()"
             },
           });
         }
@@ -562,7 +570,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataTanksInEspera()"
           },
         });
       }
@@ -579,7 +588,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataLastEntry()"
             },
           });
         }
@@ -588,7 +598,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataLastEntry()"
           },
         });
       }
@@ -605,7 +616,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataLastAsign()"
             },
           });
         }
@@ -614,7 +626,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataLastAsign()"
           },
         });
       }
@@ -631,7 +644,8 @@ export default {
             message: {
               title: "¡Error!",
               message: data.message,
-              type: "error"
+              type: "error",
+              component:"Dashboard - fetchDataLastExit()"
             },
           });
         }
@@ -640,7 +654,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataLastExit()"
           },
         });
       }
@@ -656,7 +671,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchDataLlenaderas()"
           },
         });
       }
@@ -672,7 +688,8 @@ export default {
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
-            type: "error"
+            type: "error",
+            component:"Dashboard | Catch - fetchUsers()"
           },
         });
       }
