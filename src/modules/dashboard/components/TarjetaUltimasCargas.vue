@@ -3,7 +3,6 @@
 import { ref, onMounted, computed } from "vue";
 import useToast from "../../dashboard/composables/useToast";
 import useDepartureTank from '../../tanques/composables/useTanqueSalida'
-import IconLoaderSpinn from "../../../assets/icons/loader.svg"
 
 /**
  * Declaración de los atributos que son asignables.
@@ -47,7 +46,8 @@ const fecthInformationOnTanksLastDepartures = async () => {
         message: {
           title: "¡Error!",
           message: data.message,
-          type: "error"
+          type: "error",
+          component:"TarjetaUltimasCargas - fecthInformationOnTanksLastDepartures()"
         },
       });
     }
@@ -57,7 +57,8 @@ const fecthInformationOnTanksLastDepartures = async () => {
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
-        type: "error"
+        type: "error",
+        component:"TarjetaUltimasCargas | Catch - fecthInformationOnTanksLastDepartures()"
       },
     });
   }

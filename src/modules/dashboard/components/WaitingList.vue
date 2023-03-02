@@ -28,7 +28,6 @@ let dataFillerStatus = ref({})
  * @param {*} data 
  */
 const setDataFromResult = (data) => {
-    console.log(data)
     dataWaitingTanks.value = data.length > 0 ? data[0] : {}
     loadData.value = false
 }
@@ -64,7 +63,8 @@ const fetchWaitingTanks = async () => {
                 message: {
                     title: "¡Error!",
                     message: data.message,
-                    type: "error"
+                    type: "error",
+                    component:"WaitingList - fetchWaitingTanks()"
                 },
             });
         }
@@ -74,7 +74,8 @@ const fetchWaitingTanks = async () => {
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
-                type: "error"
+                type: "error",
+                component:"WaitingList | Catch - fetchWaitingTanks()"
             },
         });
     }
@@ -91,7 +92,8 @@ const fetchFillerStatus = async () => {
                 message: {
                     title: "¡Error!",
                     message: data.message,
-                    type: "error"
+                    type: "error",
+                    component:"WaitingList - fetchFillerStatus()"
                 },
             });
         }
@@ -100,7 +102,8 @@ const fetchFillerStatus = async () => {
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
-                type: "error"
+                type: "error",
+                component:"WaitingList | Catch - fetchFillerStatus()"
             },
         });
     }
@@ -119,7 +122,8 @@ const currentFiller = async () => {
                 message: {
                     title: "¡Error!",
                     message: res.message,
-                    type: "error"
+                    type: "error",
+                    component:"WaitingList - currentFiller()"
                 },
             });
         }
@@ -130,7 +134,8 @@ const currentFiller = async () => {
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
-                type: "error"
+                type: "error",
+                component:"WaitingList | Catch - currentFiller()"
             },
         });
     }
