@@ -6,6 +6,7 @@ import LBodyTh from "./components/Table/BodyTh.vue"
 import LBodyTd from "./components/Table/BodyTd.vue"
 import LCardListActionButton from "./components/Card/CardListActionButton.vue"
 import LCardListItem from "./components/Card/CardListItem.vue"
+import LFloatInput from "./components/Form/FloatInput.vue"
 
 export default {
     LBreadcrumb,
@@ -15,4 +16,5 @@ export default {
     LBodyTd,
     LCardListActionButton,
     LCardListItem,
+    LFloatInput
 }

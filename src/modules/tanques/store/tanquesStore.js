@@ -12,6 +12,7 @@ export const useTanqueStore = defineStore('tanques', {
     tanquesInEspera: [],
     tanqueInEspereaSel: {},
     tanquesInServicio: [],
+    tanksEntries: [],
     tanqueInServicioSel: {},
     lastTankAsign: {},
     tanquesInSalida: [],
@@ -137,7 +138,17 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
-
+    // ------ Tanques de Entradas ------
+    async fetchEntriesTanksSt(date) {
+      try {
+        const res = await scadaApi.get(`tanques/entrada/fecha/${date}`)
+        const { data } = res
+        this.tanksEntries = data
+        return res
+      } catch (error) {
+        return { ok: false, message: error.message }
+      }
+    },
 
     // ------ Tanques de Servicio ------
     async fetchTanksInServicio(fecha) {
