@@ -4,13 +4,13 @@ import useDashboard from '../composables/useDashboard'
 import useToast from "../../dashboard/composables/useToast";
 import Toggle from '@vueform/toggle'
 import CreateEntry from "../../entries/components/create.vue"
+import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 
-
+const { fetchUltimaEntrada } = useTanqueEntrada()
 const { fetchBarreraEntrada,getBarreraEntrada } = useDashboard()
 const { addToast } = useToast()
 
 const loadDataBarrierStatus = ref(false)
-const dataBarrierEntry = ref({})
 let dataBarrierEntryStatus = ref({})
 const barrierEntry = computed(() => getBarreraEntrada())
 let dataLastEntry = ref({})
@@ -22,7 +22,7 @@ let dataLastEntry = ref({})
  * Retorna una matriz de datos o matriz vacia
  * @param {*} data 
  */
- const setDataFromFetchDataBarrierEntry = (data) => {
+const setDataFromFetchDataBarrierEntry = (data) => {
     dataBarrierEntryStatus.value = data
     loadDataBarrierStatus.value = false
 }
@@ -30,6 +30,28 @@ let dataLastEntry = ref({})
 const setDataFromFetchDataLastEntry = (data) => {
     dataLastEntry.value = data
     loadDataBarrierStatus.value = false
+}
+
+const setTipo = (tipo) => {
+    switch (tipo) {
+        case 1:
+            return 'FULL A'
+        case 2:
+            return 'FULL B'
+        case 3:
+            return 'Sencillo'
+    }
+}
+
+const setConnector = (connector) => {
+    switch (connector) {
+        case 1:
+            return 'Izq.'
+        case 2:
+            return 'Der.'
+        case 3:
+            return 'Ambos'
+    }
 }
 
 const fetchDataLastEntry = async () => {
@@ -44,7 +66,7 @@ const fetchDataLastEntry = async () => {
               title: "¡Error!",
               message: data.message,
               type: "error",
-              component:"Dashboard - fetchDataLastEntry()"
+              component:"LastEntry - fetchDataLastEntry()"
             },
           });
         }
@@ -54,7 +76,7 @@ const fetchDataLastEntry = async () => {
             title: "¡Error!",
             message: `Error: ${error.message}`,
             type: "error",
-            component:"Dashboard | Catch - fetchDataLastEntry()"
+            component:"LastEntry | Catch - fetchDataLastEntry()"
           },
         });
       }
@@ -90,6 +112,8 @@ const fetchDataBarrierEntry = async () => {
 
 onMounted(() => {
 
+    fetchDataLastEntry()
+
      //Condicional para verificar existencia de información en el store
      if (barrierEntry.value.length != 0) {
         // Establece la información del store
@@ -108,14 +132,11 @@ onMounted(() => {
                 <CreateEntry/>
             </div>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de autotanque" value="0000" />
-              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
-              <LCardListItem label="Volumen autorizado" value="41800" />
+              <LCardListItem label="Número de autotanque" :value="dataLastEntry.length > 0 ? dataLastEntry.atName : '-'" />
+              <LCardListItem label="Tipo de autotanque" :value="dataLastEntry.length > 0 ?  setTipo(dataLastEntry.atName) : '-'" />
+              <LCardListItem label="Volumen autorizado" :value="dataLastEntry.length > 0 ? dataLastEntry.capacidad : '-'" />
               <LCardListItem label="Número embarque" value="0" />
-              <LCardListItem label="Tipo de conector" value="AMBOS" />
-              <LCardListItem label="Estado respuesta SAP" value="SIN RESPUESTA" />
-              <LCardListItem label="Respuesta de SAP" value="ACEPTADO" />
-              <LCardListItem label="AT'S en lista" value="14" />
+              <LCardListItem label="Tipo de conector" :value="dataLastEntry.length > 0 ?  setConnector(dataLastEntry.conector) : '-'" />
             </ul>
           </div>
         </div>

@@ -11,11 +11,7 @@
     <div class="grid gap-5 grid-cols-15">
       <div class="flex flex-col col-span-3">
         <InputAntenna/>
-  
-       <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm"
-                @toggleChange="toggleEntrada" />
-                
-               <LastEntry/> 
+        <LastEntry/> 
       </div>
       <div class="flex flex-col col-span-3">
         <AntennaVerification/>
@@ -314,7 +310,7 @@ export default {
     }
 
     const toggleEntrada = async (toggle) => {
-     // return
+      return
       try {
         const res = await changeBarreraEntrada(toggle)
         const { data, status } = res
