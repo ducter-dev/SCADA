@@ -5,8 +5,16 @@ const useTanque = () => {
 
   const fetchTanques = async () => {
     const resp = await store.fetchTanks()
-    console.log("🚀 ~ file: useTanque.js:8 ~ fetchTanques ~ resp", resp)
     return resp
+  }
+  
+  const fetchEntriesTanks = async (date) => {
+    const resp = await store.fetchEntriesTanksSt(date)
+    return resp
+  }
+
+  const getTanksEntries = () => {
+    return store.tanksEntries
   }
 
   const editarTanque = async ( tanque ) => {
@@ -55,6 +63,8 @@ const useTanque = () => {
     getTanquesInEntradaSel,
     getLastTankEntry,
     setSelectTank,
+    getTanksEntries,
+    fetchEntriesTanks
   }
 }
 

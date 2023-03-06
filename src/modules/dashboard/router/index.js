@@ -24,8 +24,8 @@ export default {
     },
     {
       path: 'entradas',
-      name: 'ListaEntrada',
-      component: () => import('../../dashboard/views/Configuracion.vue')
+      name: 'entries',
+      component: () => import('../../entries/views/index.vue')
     },
     {
       path: 'espera',

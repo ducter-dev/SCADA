@@ -9,6 +9,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.11",
     "@tailwindcss/forms": "^0.5.3",
     "@vueform/toggle": "^2.0.1",
     "@vuepic/vue-datepicker": "^3.6.4",
