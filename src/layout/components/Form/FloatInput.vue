@@ -91,7 +91,7 @@ const props = defineProps({
 });
 defineEmits(['update:modelValue']);
 const input = ref(null);
-const UUID = ref(useUUID);
+const UUID = ref(useUUID());
 const baseInputClasses = [
     'block px-2.5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600  focus:outline-none focus:ring-0 peer',
 ]

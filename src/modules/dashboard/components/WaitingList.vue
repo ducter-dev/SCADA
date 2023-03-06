@@ -85,8 +85,8 @@ const fetchFillerStatus = async () => {
     try {
         const res = await fetchEstadoLlenadera()
         const { data, status } = res
-        if (status == 201) {
-            dataEstadoLlenadera.value = data
+        if (status == 200) {
+           setDataFromFetchingWaitingTanks(data)
         } else {
             addToast({
                 message: {
