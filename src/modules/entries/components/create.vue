@@ -1,12 +1,17 @@
 
 <script setup>
-import { ref } from 'vue'
+import { ref,reactive } from 'vue'
 import {
     TransitionRoot,
     TransitionChild,
     Dialog,
     DialogPanel,
     DialogTitle,
+    Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+  ListboxLabel,
 } from '@headlessui/vue'
 
 const isOpen = ref(false)
@@ -17,6 +22,32 @@ const closeModal = () => {
 const openModal = () => {
     isOpen.value = true
 }
+
+const tanksTypes = [
+    { id: 1, name: 'Sencillo', sufix: '',unavailable:false },
+    { id: 2, name: 'Full A', sufix: 'A',unavailable:false  },
+    { id: 3, name: 'Full B', sufix: 'B',unavailable:false  }
+]
+
+const tankConnectors = [
+      { id: 1, name: 'Izquierdo',unavailable:false },
+      { id: 2, name: 'Derecho',unavailable:false },
+      { id: 3, name: 'Ambos',unavailable:false }
+    ]
+
+const entryForm = reactive({
+      posicion: 0,
+      atId: 0,
+      atTipo: ref(tanksTypes[0]), 
+      atName: '',
+      capacidad: 0,
+      conector: ref(tankConnectors[0]),
+    })
+
+    async function onSubmit () {
+      console.log('function - onSubmit')
+      console.log(entryForm.value)
+    }
 
 </script>
 <template>
@@ -70,10 +101,184 @@ const openModal = () => {
                                         <LFloatInput  label="Nombre" square/>
                                     </div>
                                     <div class="col-span-6">
-                                        <LFloatInput  label="Tipo" square/>
+                                        <Listbox v-model="entryForm.atTipo">
+                                            <div class="relative mt-1">
+                                                <ListboxButton class="w-full">
+                                                    <LFloatInput
+                                                        label="Tipo"
+                                                        v-model="entryForm.atTipo.name"
+                                                        square
+                                                        with-append-icon
+                                                        readonly
+                                                    >
+                                                        <template #append-icon>
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="1.5"
+                                                            stroke="currentColor"
+                                                            class="w-5 h-5 text-gray-500"
+                                                        >
+                                                            <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                                                            />
+                                                        </svg>
+                                                        </template>
+                                                    </LFloatInput>
+                                                </ListboxButton>
+                                                <transition
+                                                leave-active-class="transition ease-in duration-100"
+                                                leave-from-class="opacity-100"
+                                                leave-to-class="opacity-0"
+                                                >
+                                                <ListboxOptions
+                                                    class=" absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    <ListboxOption
+                                                    as="template"
+                                                    v-for="item in tanksTypes"
+                                                    :key="item.id"
+                                                    :value="item"
+                                                    :disabled="item.unavailable"
+                                                    v-slot="{ active, selected }"
+                                                    >
+                                                    <li
+                                                        :class="[
+                                                        active
+                                                            ? 'text-white bg-blue-500'
+                                                            : 'text-gray-900',
+                                                        'relative cursor-default select-none py-2 pl-3 pr-9',
+                                                        ]"
+                                                    >
+                                                        <div class="flex items-center">
+                                                        <span
+                                                            :class="[
+                                                            selected ? 'font-semibold' : 'font-normal',
+                                                            'ml-3 block truncate',
+                                                            ]"
+                                                            >{{ item.name }}</span
+                                                        >
+                                                        </div>
+
+                                                        <span
+                                                        v-if="selected"
+                                                        :class="[
+                                                            active ? 'text-white' : 'text-blue-600',
+                                                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                                                        ]"
+                                                        >
+                                                        <svg
+                                                            class="h-5 w-5"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                            fill-rule="evenodd"
+                                                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                            clip-rule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                        </span>
+                                                    </li>
+                                                    </ListboxOption>
+                                                </ListboxOptions>
+                                                </transition>
+                                            </div>
+                                        </Listbox>
                                     </div>
                                     <div class="col-span-6">
-                                        <LFloatInput  label="Conector" square/>
+                                        <Listbox v-model="entryForm.conector">
+                                            <div class="relative mt-1">
+                                                <ListboxButton class="w-full">
+                                                    <LFloatInput
+                                                        label="Conector"
+                                                        v-model="entryForm.conector.name"
+                                                        square
+                                                        with-append-icon
+                                                        readonly
+                                                    >
+                                                        <template #append-icon>
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="1.5"
+                                                            stroke="currentColor"
+                                                            class="w-5 h-5 text-gray-500"
+                                                        >
+                                                            <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                                                            />
+                                                        </svg>
+                                                        </template>
+                                                    </LFloatInput>
+                                                </ListboxButton>
+                                                <transition
+                                                leave-active-class="transition ease-in duration-100"
+                                                leave-from-class="opacity-100"
+                                                leave-to-class="opacity-0"
+                                                >
+                                                <ListboxOptions
+                                                    class=" absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    <ListboxOption
+                                                    as="template"
+                                                    v-for="item in tankConnectors"
+                                                    :key="item.id"
+                                                    :value="item"
+                                                    :disabled="item.unavailable"
+                                                    v-slot="{ active, selected }"
+                                                    >
+                                                    <li
+                                                        :class="[
+                                                        active
+                                                            ? 'text-white bg-blue-500'
+                                                            : 'text-gray-900',
+                                                        'relative cursor-default select-none py-2 pl-3 pr-9',
+                                                        ]"
+                                                    >
+                                                        <div class="flex items-center">
+                                                        <span
+                                                            :class="[
+                                                            selected ? 'font-semibold' : 'font-normal',
+                                                            'ml-3 block truncate',
+                                                            ]"
+                                                            >{{ item.name }}</span
+                                                        >
+                                                        </div>
+
+                                                        <span
+                                                        v-if="selected"
+                                                        :class="[
+                                                            active ? 'text-white' : 'text-blue-600',
+                                                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                                                        ]"
+                                                        >
+                                                        <svg
+                                                            class="h-5 w-5"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                            fill-rule="evenodd"
+                                                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                            clip-rule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                        </span>
+                                                    </li>
+                                                    </ListboxOption>
+                                                </ListboxOptions>
+                                                </transition>
+                                            </div>
+                                        </Listbox>
                                     </div>
                                     <div class="col-span-6">
                                         <LFloatInput  label="Capacidad 90" square/>
@@ -86,7 +291,7 @@ const openModal = () => {
                             <!-- Modal footer -->
                             <div
                                 class="flex items-center justify-end p-3 space-x-2 border-t border-slate-200 dark:border-slate-600">
-                                <button type="button"
+                                <button type="button" @click="onSubmit"
                                     class="px-5 py-2 text-sm font-medium text-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
                             </div>
                         </DialogPanel>
