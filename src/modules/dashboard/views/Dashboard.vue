@@ -19,21 +19,9 @@
       </div>
       <div class="flex flex-col col-span-3">
         <OutputAntenna/>
-        <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Última salida</legend>
-            <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de autotanque" value="0000" />
-              <LCardListItem label="Tipo de autotanque" value="SENCILLO" />
-              <LCardListItem label="Volumen cargado" value="0" />
-              <LCardListItem label="Peso cargado" value="0" />
-              <LCardListItem label="Respuesta de SAP" value="SIN DATOS" />
-              <LCardListItem label="Tipo de conector" value="DESCONOCIDO" />
-              <LCardListItem label="Hora de salida" value="13:51" />
-              <LCardListItem label="Fecha" value="2023/02/28" />
-            </ul>
-          </div>
-        </div>
+        <!--<TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />-->
+        <LastOutput/>
+        
         <div class="flex justify-between mt-5">
           <button type="button"
             class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
@@ -122,6 +110,7 @@ import WaitingList from '../components/WaitingList.vue'
 import LastEntry from '../components/LastEntry.vue'
 import InputAntenna from '../components/InputAntenna.vue'
 import OutputAntenna from '../components/OutputAntenna.vue'
+import LastOutput from '../components/LastOutput.vue'
 import AntennaVerification from '../components/AntennaVerifcation.vue'
 import TarjetaVerificacion from '../components/TarjetaVerificacion.vue'
 import TarjetaSalida from '../components/TarjetaSalida.vue'
@@ -157,7 +146,8 @@ export default {
     InputAntenna,
     AntennaVerification,
     OutputAntenna,
-    LastEntry
+    LastEntry,
+    LastOutput
 },
   setup() {
     const router = useRouter()
