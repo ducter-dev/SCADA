@@ -21,17 +21,6 @@
         <OutputAntenna/>
         <!--<TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />-->
         <LastOutput/>
-        
-        <div class="flex justify-between mt-5">
-          <button type="button"
-            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            Abrir barrera de salida
-          </button>
-          <button type="button"
-            class="px-2 py-1 text-sm font-medium text-center text-gray-900 border border-gray-800 hover:text-white hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            Cerrar barrera de salida
-          </button>
-        </div>
       </div>
       <div class="col-span-2">
         <div class="max-w-sm p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
