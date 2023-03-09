@@ -1,19 +1,21 @@
 <script setup>
 //Importación de recursos
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, watch } from "vue"
 import { useRouter } from "vue-router"
 import EditIcon from "../../../assets/icons/edit.svg"
 import DeleteIcon from "../../../assets/icons/trash-can-solid.svg"
 import CallIcon from "../../../assets/icons/call.svg"
 import useToast from "../../dashboard/composables/useToast"
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
+import useEventsBus from "../../../layout/eventBus"
 
 /**
  * Declaración de los atributos que son asignables.
  * 
  * @var array<boolean, string, array>
  */
-const { fetchTanksInEspera, getTanquesInEspera } = useTanqueEspera()
+ const { bus } = useEventsBus()
+const { fetchTanksInEspera, getTanquesInEspera,deleteTanqueEspera } = useTanqueEspera()
 const waitingList = computed(() => getTanquesInEspera())
 const { addToast } = useToast()
 let dataTankWaitingList = ref([])
@@ -28,6 +30,44 @@ let loadData = ref(true)
 const setDataFromResult = (data) => {
   dataTankWaitingList.value = data
   loadData.value = false
+}
+
+const deleteTankFromList = async (item) => {
+  try {
+    const res = await deleteTanqueEspera(item)
+    const { data, status } = res
+
+    // Valida de acuerdo al estatus de la petición
+    // Si el código de estatus es diferente de 200 se marcara un error 
+    if (status == 200) {
+      loadDataFunction()
+      addToast({
+        message: {
+          title: "Éxito!",
+          message:  `Se elimino ${data.atName} de la lista de espera.`,
+          type: "success"
+        },
+      });
+    } else {
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: data.message,
+          type: "error"
+        },
+      });
+    }
+  } catch (error) {
+    // En caso de tener error establece un mensaje de error
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: `Error: ${error.message}`,
+        type: "error"
+      },
+    });
+  }
+
 }
 
 /**
@@ -73,11 +113,6 @@ const editTanque = (item) => {
   console.log(`Editar tanque: ${item.id}`)
 }
 
-const deleteTanque = (item) => {
-  // editar tanque
-  console.log(`Eliminar tanque: ${item.id}`)
-}
-
 const callTanque = (tanque) => {
   // editar tanque
   console.log(`Llamar tanque: ${item.id}`)
@@ -109,13 +144,7 @@ function setConector(conector) {
   }
 }
 
-/**
- *  Al montar el componente evalua la disponibilidad y existencia de la información
- *  previamente almacenada en el store, en caso de existir @var waitingList sera asignado,
- *  en caso contrario se invoca a la funcion @function fetchDataTankWaitingList 
- *  para la obtencion de nueva información.
- */
-onMounted(() => {
+const loadDataFunction = () =>{
   //Condicional para verificar existencia de información en el store
   if (waitingList.value.length != 0) {
     // Establece la información del store
@@ -124,13 +153,30 @@ onMounted(() => {
     // Realiza la petición al servidor
     fetchDataTankWaitingList()
   }
+}
+
+/**
+ *  Al montar el componente evalua la disponibilidad y existencia de la información
+ *  previamente almacenada en el store, en caso de existir @var waitingList sera asignado,
+ *  en caso contrario se invoca a la funcion @function fetchDataTankWaitingList 
+ *  para la obtencion de nueva información.
+ */
+onMounted(() => {
+  loadDataFunction()
+})
+
+watch(()=>bus.value.get('successRegistration'), (val) => {
+  fetchDataTankWaitingList()
 })
 </script>
 <template>
   <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="border border-solid border-slate-300">
       <div class="flex items-center justify-between">
-        <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+        <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de espera
+
+          <span class="text-slate-700 text-xs dark:text-slate-200">(Elementos en la lista: <strong>{{ dataTankWaitingList.length }}</strong>  )</span>
+        </legend>
         <button class="p-2" @click="fetchDataTankWaitingList()">
           <svg xmlns="http://www.w3.org/2000/svg" :class="loadData ? 'animate-spin' : ''" class="w-4 h-4 text-slate-600 dark:text-slate-300" fill="currentColor"
             viewBox="0 0 512 512">
@@ -173,7 +219,7 @@ onMounted(() => {
                   class="px-2 py-1.5 text-sm font-medium text-yellow-900 bg-transparent border border-yellow-900 hover:bg-yellow-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-yellow-500 focus:bg-yellow-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-yellow-700 dark:focus:bg-yellow-700">
                   <EditIcon class="w-3 h-3" />
                 </button>
-                <button type="button" @click="deleteTanque(item)"
+                <button type="button" @click="deleteTankFromList(item)"
                   class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border-t border-b border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
                   <DeleteIcon class="h-3 -3" />
                 </button>

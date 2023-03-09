@@ -109,14 +109,14 @@ onMounted(() => {
             <legend class="text-base font-medium text-slate-900 dark:text-white">Última salida</legend>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <LCardListItem label="Número de autotanque"
-                    :value=" dataLastOutput == null  ? dataLastOutput.atName : '-'" />
+                    :value=" dataLastOutput.hasOwnProperty('atName')  ? dataLastOutput.atName : '-'" />
                 <LCardListItem label="Tipo de autotanque"
-                    :value=" dataLastOutput == null ? setTipo(dataLastOutput.atName) : '-'" />
+                    :value=" dataLastOutput.hasOwnProperty('atTipo') ? dataLastOutput.atTipo : '-'" />
                 <LCardListItem label="Volumen cargado"
-                    :value=" dataLastOutput == null ? dataLastOutput.capacidad : '-'" />
-                <LCardListItem label="Peso cargado" value="0" />
+                    :value=" dataLastOutput.hasOwnProperty('capacidad') ? dataLastOutput.capacidad : '-'" />
+                <LCardListItem label="Peso cargado"  :value=" dataLastOutput.hasOwnProperty('capacidadStd') ? dataLastOutput.capacidadStd : '-'" /> 
                 <LCardListItem label="Tipo de conector"
-                    :value=" dataLastOutput == null ? setConnector(dataLastOutput.conector) : '-'" />
+                    :value=" dataLastOutput.hasOwnProperty('conector') ? setConnector(dataLastOutput.conector) : '-'" />
                 <LCardListItem label="Hora de salida" value="13:51" />
                 <LCardListItem label="Fecha" value="2023/02/28" />
             </ul>
