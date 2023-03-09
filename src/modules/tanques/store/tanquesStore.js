@@ -23,11 +23,11 @@ export const useTanqueStore = defineStore('tanques', {
     llenaderaAceptaAsignacion: 0,
   }),
   getters: {
-    currentTanqueInEspera (state) { return state.tanqueInEspereaSel },
-    currentTanqueSel (state) { return state.tanqueSelect },
-    countTanquesEspera (state) { return state.tanquesInEspera.length + 1 },
-    llenaderasFiltradas (state) { 
-      return state.llenaderas.length > 1 ? state.llenaderas.filter( llen => llen.estado == 1 ) : []
+    currentTanqueInEspera(state) { return state.tanqueInEspereaSel },
+    currentTanqueSel(state) { return state.tanqueSelect },
+    countTanquesEspera(state) { return state.tanquesInEspera.length + 1 },
+    llenaderasFiltradas(state) {
+      return state.llenaderas.length > 1 ? state.llenaderas.filter(llen => llen.estado == 1) : []
     },
   },
   actions: {
@@ -45,10 +45,10 @@ export const useTanqueStore = defineStore('tanques', {
 
     async editTank(tank) {
       try {
-        const res = await scadaApi.put(`/tanques/${tank.id}`, tank )
+        const res = await scadaApi.put(`/tanques/${tank.id}`, tank)
         const { data } = res
         const { atId, atTipo, atName, conector, capacidad90, transportadora } = data
-        const tanque = this.tanques.find( t => t.id == data.id)
+        const tanque = this.tanques.find(t => t.id == data.id)
         tanque.atId = atId
         tanque.atTipo = atTipo
         tanque.atName = atName
@@ -77,7 +77,7 @@ export const useTanqueStore = defineStore('tanques', {
       try {
         const res = await scadaApi.delete(`/tanques/${tank.id}`, tank.id)
         const { data } = res
-        const tanques = this.tanques.filter( t => t.id != data.id)
+        const tanques = this.tanques.filter(t => t.id != data.id)
         this.tanques = []
         this.tanques = tanques
         return res
@@ -89,7 +89,7 @@ export const useTanqueStore = defineStore('tanques', {
     selectTank(tank) {
       this.tanqueSelect = tank
     },
-    
+
     // ------ Tanques Entradas ------
     async fetchUltimaEntrada() {
       try {
@@ -114,6 +114,16 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    // ------ Tanques Espera mover elemento de la lista de espera ------
+    async updateTankPosition(item) {
+      try {
+        const res = await scadaApi.post('tanques/espera/mover-inicio',item)
+        return res
+      } catch (error) {
+        return { ok: false, message: error.message }
+      }
+    },
+
     async agregarTanqueEspera(tank) {
       try {
         const res = await scadaApi.post('tanques/espera', tank)
@@ -129,7 +139,7 @@ export const useTanqueStore = defineStore('tanques', {
       try {
         const res = await scadaApi.delete(`tanques/espera/${tank.id}`)
         const { data } = res
-        const tanques = this.tanquesInEspera.filter( t => t.id !==  data.id)
+        const tanques = this.tanquesInEspera.filter(t => t.id !== data.id)
         this.tanquesInEspera = []
         this.tanquesInEspera = tanques
         return res
@@ -246,7 +256,7 @@ export const useTanqueStore = defineStore('tanques', {
       try {
         const res = await scadaApi.post('llenaderas/asignacion/aceptar', form)
         const { data } = res
-        this.llenaderas.map( llen => {
+        this.llenaderas.map(llen => {
           if (llen.numero == data.numero) {
             llen.estado = 0
             console.log(`Llenadera: ${llen.numero}, estado: ${llen.estado == 1 ? 'Libre' : 'Ocupada'}`)
