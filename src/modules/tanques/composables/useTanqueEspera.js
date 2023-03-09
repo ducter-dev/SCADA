@@ -18,6 +18,10 @@ const useTanqueEspera = () => {
     return resp
   }
 
+  const updateTankPosition = async (tank) => {
+    return  await store.updateTankPosition(tank)
+  }
+
   const getTanquesInEspera = () => {
     return store.tanquesInEspera
   }
@@ -34,6 +38,7 @@ const useTanqueEspera = () => {
     fetchTanksInEspera,
     agregarTanqueEspera,
     deleteTanqueEspera,
+    updateTankPosition,
     getTanquesInEspera,
     getTanqueInEspereaSel,
     getCountTanquesEspera,
