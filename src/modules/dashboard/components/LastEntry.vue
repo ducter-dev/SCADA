@@ -132,11 +132,12 @@ onMounted(() => {
                 <CreateEntry/>
             </div>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de autotanque" :value="dataLastEntry.length > 0 ? dataLastEntry.atName : '-'" />
-              <LCardListItem label="Tipo de autotanque" :value="dataLastEntry.length > 0 ?  setTipo(dataLastEntry.atName) : '-'" />
-              <LCardListItem label="Volumen autorizado" :value="dataLastEntry.length > 0 ? dataLastEntry.capacidad : '-'" />
+              <LCardListItem label="Número de autotanque" :value="dataLastEntry.hasOwnProperty('atName') ? dataLastEntry.atName : '-'" />
+              <LCardListItem label="Tipo de autotanque" :value="dataLastEntry.hasOwnProperty('atTipo') ?  setTipo(dataLastEntry.atTipo) : '-'" />
+              <LCardListItem label="Volumen autorizado" :value="dataLastEntry.hasOwnProperty('capacidad') ? dataLastEntry.capacidad : '-'" />
               <LCardListItem label="Número embarque" value="0" />
-              <LCardListItem label="Tipo de conector" :value="dataLastEntry.length > 0 ?  setConnector(dataLastEntry.conector) : '-'" />
+              <LCardListItem label="Tipo de conector" :value="dataLastEntry.hasOwnProperty('conector') ?  setConnector(dataLastEntry.conector) : '-'" />
+              <LCardListItem label="Fecha" :value="dataLastEntry.hasOwnProperty('fechaEntrada') ?  dataLastEntry.fechaEntrada : '-'" />
             </ul>
           </div>
         </div>

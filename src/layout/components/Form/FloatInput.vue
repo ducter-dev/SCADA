@@ -1,12 +1,19 @@
 <script setup>
 import {computed, onMounted, ref, useSlots} from 'vue';
 import {useUUID} from "../../composables"
+import { vMaska } from "maska"
+
 const slots = useSlots();
 const props = defineProps({
     modelValue:[String, Number],
     Lname: {
         type: String,
         default: 'LFloatInput',
+    },
+    mask:{
+        type:String,
+        default:null,
+        required:false
     },
     label:{
         type:String,
@@ -172,7 +179,7 @@ defineExpose({ focus: () => input.value.focus() });
                 <!-- Heroicon name: solid/mail -->
                 <slot name="prepend-icon"></slot>
             </div>
-            <input :type="type"
+            <input :type="type" v-maska :data-maska="mask"
                    :autofocus="autofocus"
                    :id="`${UUID}${id}`"
                    @input="$emit('update:modelValue', $event.target.value)"
