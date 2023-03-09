@@ -8,6 +8,11 @@ const useTanqueEspera = () => {
     return resp
   }
 
+  const fetchLastAssignment = async () => {
+    const resp = await store.fetchLastAssignmentSt()
+    return resp
+  }
+
   const agregarTanqueEspera = async (tank) => {
     const resp = await store.agregarTanqueEspera(tank)
     return resp
@@ -33,15 +38,20 @@ const useTanqueEspera = () => {
   const getCountTanquesEspera = () => {
     return store.countTanquesEspera
   }
+  const getLastAssignment = () =>{
+    return store.lastTankAsign
+  }
   
   return {
     fetchTanksInEspera,
+    fetchLastAssignment,
     agregarTanqueEspera,
     deleteTanqueEspera,
     updateTankPosition,
     getTanquesInEspera,
     getTanqueInEspereaSel,
     getCountTanquesEspera,
+    getLastAssignment,
   }
 }
 

@@ -449,34 +449,6 @@ export default {
       }
     }
 
-    const fetchDataLastAsign = async () => {
-      try {
-        const res = await fetchUltimaAsignacion()
-        const { data, status } = res
-        if (status == 200) {
-          dataLastAsign.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataLastAsign()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataLastAsign()"
-          },
-        });
-      }
-    }
-
     const fetchDataLastExit = async () => {
       try {
         const res = await fetchUltimaSalida()
@@ -804,15 +776,7 @@ export default {
 
     onMounted(() => {
 
-      if (listaEspera.value || listaEspera.value.length == 0) {
-        fetchDataTanksInEspera()
-      } else {
-        dataTanksEspera.value = listaEspera.value
-      }
-
-      fetchDataLastEntry()
-      fetchDataLastAsign()
-      fetchDataLastExit()
+    
 
       if (estadoLlenadera.value || Object.keys(estadoLlenadera.value).length < 1) {
         fetchDataEstadoLlenadera()
