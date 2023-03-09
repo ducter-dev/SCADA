@@ -172,7 +172,7 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
-    async fetchUltimaAsignacion() {
+    async fetchLastAssignmentSt() {
       try {
         const res = await scadaApi.get('tanques/servicio/ultimo')
         const { data } = res
@@ -187,7 +187,6 @@ export const useTanqueStore = defineStore('tanques', {
     async fetchTanksSalidas() {
       try {
         const res = await scadaApi.get('/tanques/salida')
-        console.log("🚀 ~ file: tanquesStore.js:152 ~ fetchTanksSalidas ~ res", res)
         const { data } = res
         this.tanquesInSalida = data
         return res

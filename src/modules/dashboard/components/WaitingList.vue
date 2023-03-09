@@ -8,7 +8,7 @@ import IconArrowsRotate from '../../../assets/icons/arrows-rotate.svg'
 import Toggle from '@vueform/toggle'
 
 const { fetchEstadoLlenadera, getLlenaderasEstado } = useFillers()
-const { fetchTanksInEspera, getTanquesInEspera } = useWaitingTank()
+const { fetchLastAssignment, getLastAssignment } = useWaitingTank()
 const { getCurrentFiller } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
@@ -16,7 +16,7 @@ const loadData = ref(false)
 const loadDataFillerStatus = ref(false)
 const getFiller = ref(false)
 const filler = ref()
-const listWaitingTanks = computed(() => getTanquesInEspera())
+const listWaitingTank = computed(() => getLastAssignment())
 const fillerStatus = computed(() => getLlenaderasEstado())
 let dataWaitingTanks = ref([])
 let dataFillerStatus = ref({})
@@ -28,7 +28,7 @@ let dataFillerStatus = ref({})
  * @param {*} data 
  */
 const setDataFromResult = (data) => {
-    dataWaitingTanks.value = data.length > 0 ? data[0] : {}
+    dataWaitingTanks.value = data
     loadData.value = false
 }
 
@@ -44,14 +44,14 @@ const setDataFromFetchingWaitingTanks = (data) => {
 }
 
 /**
- *  Función que consulta `fetchTanksInEspera`  para obtener datos desde la API la información.
+ *  Función que consulta `fetchLastAssignment`  para obtener datos desde la API la información.
  *  Invoca a la función @function setDataFromResult para almacenar el resultado.
  *  En caso de error en la petición @throws crea una instancia con el metodo @method addToast 
  *  en la cual guarda un mensaje para visualizar en la interfaz.
  */
 const fetchWaitingTanks = async () => {
     try {
-        const res = await fetchTanksInEspera()
+        const res = await fetchLastAssignment()
         const { data, status } = res
 
         // Valida de acuerdo al estatus de la petición
@@ -164,19 +164,12 @@ const setConector = (conector) => {
 }
 
 onMounted(() => {
-    //Condicional para verificar existencia de información en el store
-    if (listWaitingTanks.value.length != 0) {
-        // Establece la información del store
-        setDataFromResult(listWaitingTanks.value)
-    } else {
-        // Realiza la petición al servidor
-        fetchWaitingTanks()
-    }
+    fetchWaitingTanks()
 
     //Condicional para verificar existencia de información en el store
     if (fillerStatus.value.length != 0) {
         // Establece la información del store
-        setDataFromResult(fillerStatus.value)
+        setDataFromFetchingWaitingTanks(fillerStatus.value)
     } else {
         // Realiza la petición al servidor
         fetchFillerStatus()
@@ -190,9 +183,9 @@ onMounted(() => {
             <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
             <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-                <LCardListItem label="Número de autotanque" value="10" />
+                <LCardListItem label="Número de autotanque" :value="dataWaitingTanks.atName" />
                 <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTanks.atTipo)" />
-                <LCardListItem label="Volumen programado" :value="dataWaitingTanks.capacidad" />
+                <LCardListItem label="Volumen programado" :value="dataWaitingTanks.volProg" />
                 <LCardListItem label="Tipo de conector" :value="setConector(dataWaitingTanks.conector)" />
 
                 <LCardListItem label="Llenadera disponible">

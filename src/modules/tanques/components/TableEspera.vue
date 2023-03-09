@@ -79,6 +79,7 @@ const moveTank = async (item) => {
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
       if (data.hasOwnProperty('atName')) {
+        dataTankWaitingList.value = []
         fetchDataTankWaitingList()
         addToast({
           message: {
