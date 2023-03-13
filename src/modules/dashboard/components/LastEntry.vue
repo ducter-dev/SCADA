@@ -1,14 +1,17 @@
 <script setup>
-import {ref, onMounted, computed} from "vue"
+import { ref, onMounted, computed, watch } from "vue"
 import useDashboard from '../composables/useDashboard'
 import useToast from "../../dashboard/composables/useToast";
 import Toggle from '@vueform/toggle'
 import CreateEntry from "../../entries/components/create.vue"
 import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
+import useEventsBus from "../../../layout/eventBus"
+
 
 const { fetchUltimaEntrada } = useTanqueEntrada()
-const { fetchBarreraEntrada,getBarreraEntrada } = useDashboard()
+const { fetchBarreraEntrada, getBarreraEntrada } = useDashboard()
 const { addToast } = useToast()
+const { bus } = useEventsBus()
 
 const loadDataBarrierStatus = ref(false)
 let dataBarrierEntryStatus = ref({})
@@ -55,32 +58,32 @@ const setConnector = (connector) => {
 }
 
 const fetchDataLastEntry = async () => {
-      try {
+    try {
         const res = await fetchUltimaEntrada()
         const { data, status } = res
         if (status == 200) {
             setDataFromFetchDataLastEntry(data)
         } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"LastEntry - fetchDataLastEntry()"
-            },
-          });
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error",
+                    component: "LastEntry - fetchDataLastEntry()"
+                },
+            });
         }
-      } catch (error) {
+    } catch (error) {
         addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"LastEntry | Catch - fetchDataLastEntry()"
-          },
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error",
+                component: "LastEntry | Catch - fetchDataLastEntry()"
+            },
         });
-      }
     }
+}
 
 const fetchDataBarrierEntry = async () => {
     try {
@@ -94,7 +97,7 @@ const fetchDataBarrierEntry = async () => {
                     title: "¡Error!",
                     message: data.message,
                     type: "error",
-                    component:"LastEntry - fetchDataBarrierEntry()"
+                    component: "LastEntry - fetchDataBarrierEntry()"
                 },
             });
         }
@@ -104,18 +107,23 @@ const fetchDataBarrierEntry = async () => {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
-                component:"LastEntry | Catch - fetchDataBarrierEntry()"
+                component: "LastEntry | Catch - fetchDataBarrierEntry()"
             },
         });
     }
 }
 
+watch(() => bus.value.get('reloadData'), (val) => {
+    fetchDataBarrierEntry()
+    fetchDataLastEntry()
+})
+
 onMounted(() => {
 
     fetchDataLastEntry()
 
-     //Condicional para verificar existencia de información en el store
-     if (barrierEntry.value.length != 0) {
+    //Condicional para verificar existencia de información en el store
+    if (barrierEntry.value.length != 0) {
         // Establece la información del store
         setDataFromFetchDataBarrierEntry(barrierEntry.value)
     } else {
@@ -125,23 +133,28 @@ onMounted(() => {
 })
 </script>
 <template>
-       <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
-          <div class="p-2 border border-solid border-slate-300">
+    <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+        <div class="p-2 border border-solid border-slate-300">
             <div class="flex justify-between items-center">
                 <legend class="text-base font-medium text-slate-900 dark:text-white">Última entrada</legend>
-                <CreateEntry/>
+                <CreateEntry />
             </div>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListItem label="Número de autotanque" :value="dataLastEntry.hasOwnProperty('atName') ? dataLastEntry.atName : '-'" />
-              <LCardListItem label="Tipo de autotanque" :value="dataLastEntry.hasOwnProperty('atTipo') ?  setTipo(dataLastEntry.atTipo) : '-'" />
-              <LCardListItem label="Volumen autorizado" :value="dataLastEntry.hasOwnProperty('capacidad') ? dataLastEntry.capacidad : '-'" />
-              <LCardListItem label="Número embarque" value="0" />
-              <LCardListItem label="Tipo de conector" :value="dataLastEntry.hasOwnProperty('conector') ?  setConnector(dataLastEntry.conector) : '-'" />
-              <LCardListItem label="Fecha" :value="dataLastEntry.hasOwnProperty('fechaEntrada') ?  dataLastEntry.fechaEntrada : '-'" />
+                <LCardListItem label="Número de autotanque"
+                    :value="dataLastEntry.hasOwnProperty('atName') ? dataLastEntry.atName : '-'" />
+                <LCardListItem label="Tipo de autotanque"
+                    :value="dataLastEntry.hasOwnProperty('atTipo') ? setTipo(dataLastEntry.atTipo) : '-'" />
+                <LCardListItem label="Volumen autorizado"
+                    :value="dataLastEntry.hasOwnProperty('capacidad') ? dataLastEntry.capacidad : '-'" />
+                <LCardListItem label="Número embarque" value="0" />
+                <LCardListItem label="Tipo de conector"
+                    :value="dataLastEntry.hasOwnProperty('conector') ? setConnector(dataLastEntry.conector) : '-'" />
+                <LCardListItem label="Fecha"
+                    :value="dataLastEntry.hasOwnProperty('fechaEntrada') ? dataLastEntry.fechaEntrada : '-'" />
             </ul>
-          </div>
         </div>
-        <div class="max-w-sm mt-5 bg-transparent">
+    </div>
+    <div class="max-w-sm mt-5 bg-transparent">
         <div class="p-2 border border-solid border-slate-300">
             <div class="py-1">
                 <div class="flex items-center space-x-4">
@@ -149,7 +162,7 @@ onMounted(() => {
                         <p class="text-sm font-medium truncate text-slate-700 dark:text-slate-300">Barrera de entrada
                         </p>
                     </div>
-                    
+
                     <div class="flex items-center justify-center mx-2">
                         <Toggle v-model="dataBarrierEntryStatus" offLabel="Cerrada" onLabel="Abierta" :classes="{
                             toggle: 'flex w-[5.5rem] py-2 relative cursor-pointer transition items-center box-content text-sm leading-none',

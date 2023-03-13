@@ -109,17 +109,14 @@ import TarjetaAsignacion from '../components/TarjetaAsignacion.vue'
 import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
 import useDashboard from '../composables/useDashboard'
-import useUsuario from '../../usuarios/composables/useUser'
-import useTanqueSalida from '../../tanques/composables/useTanqueSalida'
-import useTanqueEntrada from '../../tanques/composables/useTanqueEntrada'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
-import useTanqueServicio from '../../tanques/composables/useTanqueServicio'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import TablaEspera from '../../tanques/components/TableEspera.vue'
 import { useRouter } from 'vue-router'
 import useToast from "../../dashboard/composables/useToast"
-import { ref, computed, onMounted } from 'vue'
-const { addToast } = useToast()
+import { ref, onMounted } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
+import useEventsBus from "../../../layout/eventBus"
 
 export default {
   components: {
@@ -140,26 +137,19 @@ export default {
 },
   setup() {
     const router = useRouter()
+    const { addToast } = useToast()
+    const { emit } = useEventsBus()
 
-    const { getBarreraEntrada, changeBarreraEntrada, getBarreraVerificacion,
-      changeBarreraVerificacion, getBarreraSalida, changeBarreraSalida, fetchBarreraEntrada, fetchBarreraSalida,
-       fetchBarreraVerificacion, acceptAssignment, nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
+    const { pause, resume, isActive } = useIntervalFn(() => {
+      emit("reloadData", true);
+    }, 20000)
 
-    const { fetchUsuarios, getUsuarios } = useUsuario()
-    const { fetchUltimaSalida } = useTanqueSalida()
-    const { fetchUltimaEntrada } = useTanqueEntrada()
-    const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera } = useTanqueEspera()
-    const { fetchUltimaAsignacion } = useTanqueServicio()
-    const { fetchLlenaderas, resetLlenadera, fetchEstadoLlenadera, changeEstadoLlenadera, asignarLlenadera, getLlenaderasEstado,
+    const { changeBarreraEntrada,
+      changeBarreraVerificacion, changeBarreraSalida,nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
+
+    const { deleteTanqueEspera } = useTanqueEspera()
+    const { resetLlenadera, changeEstadoLlenadera, asignarLlenadera,
        getLlenaderasFiltradas } = useLlenaderas()
-
-    const usuarios = computed(() => getUsuarios())
-    const barreraEntrada = computed(() => getBarreraEntrada())
-    const barreraVerificacion = computed(() => getBarreraVerificacion())
-    const barreraSalida = computed(() => getBarreraSalida())
-    const estadoLlenadera = computed(() => getLlenaderasEstado())
-    const listaEspera = computed(() => getTanquesInEspera())
-    const llenaderas = computed(() => getLlenaderasFiltradas())
 
     const dataAntenaSalida = ref({})
     const dataBarreraEntrada = ref({})
@@ -171,118 +161,6 @@ export default {
     let dataLastAsign = ref({})
     let dataLastExit = ref({})
     let dataLlenaderas = ref([])
-
-    const fetchDataBarreraEntrada = async () => {
-      try {
-        const res = await fetchBarreraEntrada()
-        const { data, status } = res
-        if (status == 200) {
-          dataBarreraEntrada.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataBarreraEntrada()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataBarreraEntrada()"
-          },
-        });
-      }
-    }
-
-    const fetchDataBarreraVerificacion = async () => {
-      try {
-        const res = await fetchBarreraVerificacion()
-        const { data, status } = res
-        if (status == 200) {
-          dataBarreraVerificacion.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataBarreraVerificacion()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataBarreraVerificacion()"
-          },
-        });
-      }
-    }
-
-    const fetchDataEstadoLlenadera = async () => {
-      try {
-        const res = await fetchEstadoLlenadera()
-        const { data, status } = res
-        if (status == 201) {
-          dataEstadoLlenadera.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataEstadoLlenadera()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataEstadoLlenadera()"
-          },
-        });
-      }
-    }
-
-    const fetchDataBarreraSalida = async () => {
-      try {
-        const res = await fetchBarreraSalida()
-        const { data, status } = res
-        if (status == 200) {
-          dataBarreraSalida.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard  - fetchDataBarreraSalida()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataBarreraSalida()"
-          },
-        });
-      }
-    }
 
     const openForm = () => {
       router.push('/dashboard/entrada/manual')
@@ -393,124 +271,6 @@ export default {
       }
     }
 
-    const fetchDataTanksInEspera = async () => {
-      try {
-        const res = await fetchTanksInEspera()
-        const { data, status } = res
-        if (status == 200) {
-          dataTanksEspera.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataTanksInEspera()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataTanksInEspera()"
-          },
-        });
-      }
-    }
-
-    const fetchDataLastEntry = async () => {
-      try {
-        const res = await fetchUltimaEntrada()
-        const { data, status } = res
-        if (status == 200) {
-          dataLastEntry.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataLastEntry()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataLastEntry()"
-          },
-        });
-      }
-    }
-
-    const fetchDataLastExit = async () => {
-      try {
-        const res = await fetchUltimaSalida()
-        const { data, status } = res
-        if (status == 200) {
-          dataLastExit.value = data
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard - fetchDataLastExit()"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataLastExit()"
-          },
-        });
-      }
-    }
-
-    const fetchDataLlenaderas = async () => {
-      try {
-        const res = await fetchLlenaderas()
-        const { data, status } = res
-        dataLlenaderas.value = getLlenaderasFiltradas()
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchDataLlenaderas()"
-          },
-        });
-      }
-    }
-
-
-    const fetchUsers = async () => {
-      try {
-        const res = await fetchUsuarios()
-        const { data, status } = res
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - fetchUsers()"
-          },
-        });
-      }
-    }
-
     const setDespacho = async (orden) => {
       try {
         const res = await changeEstadoLlenadera(orden)
@@ -543,7 +303,6 @@ export default {
         });
       }
     }
-
 
     const asignarTanque = async (asign) => {
       try {
@@ -616,37 +375,6 @@ export default {
       }
     }
 
-    const aceptarAsignacion = async () => {
-      try {
-        const res = await acceptAssignment()
-        const { data, status } = res
-        if (status == 201) {
-          addToast({
-            message: {
-              title: "¡Éxito!",
-              message: "Se acepto la asignación correctamente.",
-              type: "success"
-            },
-          });
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error"
-            },
-          });
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error"
-          },
-        });
-      }
-    }
 
     const siguienteAsignacion = async () => {
       try {
@@ -778,31 +506,7 @@ export default {
 
     
 
-      if (estadoLlenadera.value || Object.keys(estadoLlenadera.value).length < 1) {
-        fetchDataEstadoLlenadera()
-      } else {
-        dataEstadoLlenadera.value = estadoLlenadera.value
-      }
-
-      if (barreraEntrada.value || Object.keys(barreraEntrada.value).length < 1) {
-        fetchDataBarreraEntrada()
-      }
-
-      if (barreraVerificacion.value || Object.keys(barreraVerificacion.value).length < 1) {
-        fetchDataBarreraVerificacion()
-      }
-
-      if (barreraSalida.value || Object.keys(barreraSalida.value).length < 1) {
-        fetchDataBarreraSalida()
-      }
-
-      if (usuarios.value || usuarios.value.length < 1) {
-        fetchUsers()
-      }
-
-      if (llenaderas.value || llenaderas.value.length < 1) {
-        fetchDataLlenaderas()
-      }
+    
     })
 
     return {
@@ -823,7 +527,6 @@ export default {
       setDespacho,
       asignarTanque,
       desasignarLlenadera,
-      aceptarAsignacion,
       siguienteAsignacion,
       reasignarAsignacion,
       cancelarAsignacion,

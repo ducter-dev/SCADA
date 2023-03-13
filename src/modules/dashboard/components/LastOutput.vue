@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, watch } from "vue"
 import useToast from "../../dashboard/composables/useToast";
 import Toggle from '@vueform/toggle'
 import useTankOutput from '../../tanques/composables/useTanqueSalida'
 import useDashboard from '../composables/useDashboard'
+import useEventsBus from "../../../layout/eventBus"
 
 
 let status = ref(false)
@@ -11,6 +12,7 @@ let dataLastOutput = ref({})
 const { fetchUltimaSalida } = useTankOutput()
 const { addToast } = useToast()
 const { fetchBarreraSalida, getBarreraSalida } = useDashboard()
+const { bus } = useEventsBus()
 
 const barreraSalida = computed(() => getBarreraSalida())
 
@@ -94,6 +96,11 @@ const setConnector = (connector) => {
     }
 }
 
+watch(() => bus.value.get('reloadData'), (val) => {
+    fetchDataLastOutput()
+    fetchDataBarreraSalida()
+})
+
 onMounted(() => {
     fetchDataLastOutput()
 
@@ -109,14 +116,15 @@ onMounted(() => {
             <legend class="text-base font-medium text-slate-900 dark:text-white">Última salida</legend>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <LCardListItem label="Número de autotanque"
-                    :value=" dataLastOutput.hasOwnProperty('atName')  ? dataLastOutput.atName : '-'" />
+                    :value="dataLastOutput.hasOwnProperty('atName') ? dataLastOutput.atName : '-'" />
                 <LCardListItem label="Tipo de autotanque"
-                    :value=" dataLastOutput.hasOwnProperty('atTipo') ? dataLastOutput.atTipo : '-'" />
+                    :value="dataLastOutput.hasOwnProperty('atTipo') ? dataLastOutput.atTipo : '-'" />
                 <LCardListItem label="Volumen cargado"
-                    :value=" dataLastOutput.hasOwnProperty('capacidad') ? dataLastOutput.capacidad : '-'" />
-                <LCardListItem label="Peso cargado"  :value=" dataLastOutput.hasOwnProperty('capacidadStd') ? dataLastOutput.capacidadStd : '-'" /> 
+                    :value="dataLastOutput.hasOwnProperty('capacidad') ? dataLastOutput.capacidad : '-'" />
+                <LCardListItem label="Peso cargado"
+                    :value="dataLastOutput.hasOwnProperty('capacidadStd') ? dataLastOutput.capacidadStd : '-'" />
                 <LCardListItem label="Tipo de conector"
-                    :value=" dataLastOutput.hasOwnProperty('conector') ? setConnector(dataLastOutput.conector) : '-'" />
+                    :value="dataLastOutput.hasOwnProperty('conector') ? setConnector(dataLastOutput.conector) : '-'" />
                 <LCardListItem label="Hora de salida" value="13:51" />
                 <LCardListItem label="Fecha" value="2023/02/28" />
             </ul>
@@ -147,5 +155,6 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
+        </div>
     </div>
-</div></template>
+</template>

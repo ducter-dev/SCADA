@@ -1,14 +1,16 @@
 <script setup>
 //Importación de recursos
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import useOutputAntenna from '../composables/useDashboard'
 import useToast from "../composables/useToast"
+import useEventsBus from "../../../layout/eventBus"
 
 /**
  * Declaración de los atributos que son asignables.
  * 
  * @var array<boolean, string, array>
  */
+ const { bus } = useEventsBus()
 const { addToast } = useToast()
 const { getAntenaSalida, fetchAntenaSalida } = useOutputAntenna()
 const outputAntenna = computed(() => getAntenaSalida())
@@ -74,6 +76,10 @@ const setTipo = (tipo) => {
             return 'Sencillo'
     }
 }
+
+watch(() => bus.value.get('reloadData'), (val) => {
+    fetchOutputAntennaData()
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
