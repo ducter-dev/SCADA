@@ -1,9 +1,9 @@
 <script setup>
 //Importación de recursos
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import useInputAntenna from '../composables/useDashboard'
 import useToast from "../composables/useToast"
-
+import useEventsBus from "../../../layout/eventBus"
 
 /**
  * Declaración de los atributos que son asignables.
@@ -15,6 +15,7 @@ const { getAntenaVerificacion, fetchAntenaVerificacion } = useInputAntenna()
 const verificationAntenna = computed(() => getAntenaVerificacion())
 const dataResult = ref({})
 let loadData = ref(true)
+const { bus } = useEventsBus()
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -75,6 +76,10 @@ const setTipo = (tipo) => {
             return 'Sencillo'
     }
 }
+
+watch(() => bus.value.get('reloadData'), (val) => {
+    fetchAntennaVerificationData()
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información

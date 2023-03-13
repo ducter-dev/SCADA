@@ -1,15 +1,25 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import useDashboard from '../composables/useDashboard'
 import useWaitingTank from '../../tanques/composables/useTanqueEspera'
 import useFillers from '../../tanques/composables/useLlenaderas'
 import useToast from "../../dashboard/composables/useToast";
 import IconArrowsRotate from '../../../assets/icons/arrows-rotate.svg'
+import IconBars from "../../../assets/icons/bars.svg"
 import Toggle from '@vueform/toggle'
+import useEventsBus from "../../../layout/eventBus"
+import IconArrowsTurnRight from '../../../assets/icons/arrows-turn-right.svg'
+import IconCheckToSlot from '../../../assets/icons/check-to-slot.svg'
+import IconBan from '../../../assets/icons/ban.svg'
+import IconArrowsTurnToDots from '../../../assets/icons/arrows-turn-to-dots.svg'
+import IconCircleStop from '../../../assets/icons/circle-stop.svg'
+import IconPlay from '../../../assets/icons/play.svg'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
+const { bus } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado } = useFillers()
 const { fetchLastAssignment, getLastAssignment } = useWaitingTank()
-const { getCurrentFiller } = useDashboard()
+const { getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
 const loadData = ref(false)
@@ -64,7 +74,7 @@ const fetchWaitingTanks = async () => {
                     title: "¡Error!",
                     message: data.message,
                     type: "error",
-                    component:"WaitingList - fetchWaitingTanks()"
+                    component: "WaitingList - fetchWaitingTanks()"
                 },
             });
         }
@@ -75,7 +85,7 @@ const fetchWaitingTanks = async () => {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
-                component:"WaitingList | Catch - fetchWaitingTanks()"
+                component: "WaitingList | Catch - fetchWaitingTanks()"
             },
         });
     }
@@ -85,15 +95,15 @@ const fetchFillerStatus = async () => {
     try {
         const res = await fetchEstadoLlenadera()
         const { data, status } = res
-        if (status == 200) {
-           setDataFromFetchingWaitingTanks(data)
+        if (status == 201) {
+            setDataFromFetchingWaitingTanks(data)
         } else {
             addToast({
                 message: {
                     title: "¡Error!",
                     message: data.message,
                     type: "error",
-                    component:"WaitingList - fetchFillerStatus()"
+                    component: "WaitingList - fetchFillerStatus()"
                 },
             });
         }
@@ -103,7 +113,7 @@ const fetchFillerStatus = async () => {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
-                component:"WaitingList | Catch - fetchFillerStatus()"
+                component: "WaitingList | Catch - fetchFillerStatus()"
             },
         });
     }
@@ -123,7 +133,7 @@ const currentFiller = async () => {
                     title: "¡Error!",
                     message: res.message,
                     type: "error",
-                    component:"WaitingList - currentFiller()"
+                    component: "WaitingList - currentFiller()"
                 },
             });
         }
@@ -135,7 +145,7 @@ const currentFiller = async () => {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
-                component:"WaitingList | Catch - currentFiller()"
+                component: "WaitingList | Catch - currentFiller()"
             },
         });
     }
@@ -163,24 +173,222 @@ const setConector = (conector) => {
     }
 }
 
+const nextAssignment = async () => {
+    try {
+        const res = await nextFiller()
+        const { data, status } = res
+        if (status == 201) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: "Se establecio la siguiente llenadera correctamente.",
+                    type: "success"
+                },
+            });
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
+    }
+}
+
+const reassignAssignment = async () => {
+    try {
+        const res = await reassignAllocation()
+        if (res.data) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: "Se reasigno la asignación correctamente.",
+                    type: "success"
+                },
+            });
+        } else if (!res.ok) {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: res.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
+    }
+}
+
+const acceptAssignmentFunction = async () => {
+    try {
+        const res = await acceptAssignment()
+        const { data, status } = res
+        if (status == 201) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: "Se acepto la asignación correctamente.",
+                    type: "success"
+                },
+            });
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
+    }
+}
+
+const unassign = async () => {
+    try {
+        const res = await cancelAllocation()
+        if (res.data) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: "Se cancelo la asignación correctamente.",
+                    type: "success"
+                },
+            });
+        } else if (!res.ok) {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: res.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
+    }
+}
+
+watch(() => bus.value.get('reloadData'), (val) => {
+    fetchWaitingTanks()
+    currentFiller()
+    fetchFillerStatus()
+})
+
 onMounted(() => {
     fetchWaitingTanks()
-
-    //Condicional para verificar existencia de información en el store
-    if (fillerStatus.value.length != 0) {
-        // Establece la información del store
-        setDataFromFetchingWaitingTanks(fillerStatus.value)
-    } else {
-        // Realiza la petición al servidor
-        fetchFillerStatus()
-    }
+    fetchFillerStatus()
     currentFiller()
 })
 </script>
 <template>
     <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
         <div class="p-2 border border-solid border-slate-300">
-            <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+            <div class="flex items-start">
+                <Menu as="div" class="relative inline-block text-left">
+                    <MenuButton class="mr-5">
+                        <IconBars class="w-4 h-4 text-slate-500" />
+                    </MenuButton>
+                    <transition enter-active-class="transition duration-100 ease-out"
+                        enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
+                        leave-active-class="transition duration-75 ease-in"
+                        leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
+                        <MenuItems
+                            class="absolute left-0 mt-2 w-44 origin-top-right divide-y divide-slate-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div class="px-1 py-1 divide-y">
+                                <MenuItem v-slot="{ active }">
+                                <button @click="nextAssignment()" :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+
+                                    <IconArrowsTurnRight class="mr-2 h-5 w-5 text-green-400" />
+                                    Siguiente llenadera
+                                </button>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <button @click="acceptAssignmentFunction()" :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+                                    <IconCheckToSlot class="mr-2 h-5 w-5 text-blue-400" />
+
+                                    Acepatar asignación
+                                </button>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <button @click="unassign()" :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+                                    <IconBan class="mr-2 h-5 w-5 text-orange-400" />
+
+                                    Cancelar asignación
+                                </button>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <button @click="reassignAssignment()" :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+                                    <IconArrowsTurnToDots class="mr-2 h-5 w-5 text-indigo-400" />
+                                    Reasignar llenader
+                                </button>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <button :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+                                    <IconCircleStop class="mr-2 h-5 w-5 text-red-400" />
+                                    Detenener despacho
+                                </button>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <button :class="[
+                                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
+                                    'group flex w-full items-center px-1 py-1 text-sm',
+                                ]">
+                                    <IconPlay class="mr-2 h-5 w-5 text-lime-400" />
+                                    Liberar despacho
+                                </button>
+                                </MenuItem>
+                            </div>
+                        </MenuItems>
+                    </transition>
+                </Menu>
+                <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+            </div>
             <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <LCardListItem label="Número de autotanque" :value="dataWaitingTanks.atName" />

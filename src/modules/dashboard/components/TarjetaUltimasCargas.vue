@@ -1,14 +1,16 @@
 <script setup>
 //Importación de recursos
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import useToast from "../../dashboard/composables/useToast";
 import useDepartureTank from '../../tanques/composables/useTanqueSalida'
+import useEventsBus from "../../../layout/eventBus"
 
 /**
  * Declaración de los atributos que son asignables.
  * 
  * @var array<boolean, string, array>
  */
+const { bus } = useEventsBus()
 const { fetchTanksSalidas, getTanquesInSalida } = useDepartureTank()
 const departureList = computed(() => getTanquesInSalida())
 const { addToast } = useToast()
@@ -23,7 +25,6 @@ let loadData = ref(true)
  */
 const setDataFromResult = (data) => {
   dataResult.value = data
-  loadData.value = false
 }
 
 /**
@@ -33,6 +34,7 @@ const setDataFromResult = (data) => {
  *  en la cual guarda un mensaje para visualizar en la interfaz.
  */
 const fecthInformationOnTanksLastDepartures = async () => {
+  loadData.value = true
   try {
     const res = await fetchTanksSalidas()
     const { data, status } = res
@@ -41,6 +43,7 @@ const fecthInformationOnTanksLastDepartures = async () => {
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
       setDataFromResult(data)
+      loadData.value = false
     } else {
       addToast({
         message: {
@@ -50,6 +53,7 @@ const fecthInformationOnTanksLastDepartures = async () => {
           component:"TarjetaUltimasCargas - fecthInformationOnTanksLastDepartures()"
         },
       });
+      loadData.value = false
     }
   } catch (error) {
     // En caso de tener error establece un mensaje de error
@@ -61,8 +65,13 @@ const fecthInformationOnTanksLastDepartures = async () => {
         component:"TarjetaUltimasCargas | Catch - fecthInformationOnTanksLastDepartures()"
       },
     });
+    loadData.value = false
   }
 }
+
+watch(() => bus.value.get('reloadData'), (val) => {
+  fecthInformationOnTanksLastDepartures()
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información

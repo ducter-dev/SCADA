@@ -129,6 +129,7 @@ const moveTank = async (item) => {
  *  en la cual guarda un mensaje para visualizar en la interfaz.
  */
 const fetchDataTankWaitingList = async () => {
+  loadData.value = true
   try {
     const res = await fetchTanksInEspera()
     const { data, status } = res
@@ -137,6 +138,7 @@ const fetchDataTankWaitingList = async () => {
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
       setDataFromResult(data)
+      loadData.value = false
     } else {
       addToast({
         message: {
@@ -146,6 +148,7 @@ const fetchDataTankWaitingList = async () => {
           component: "TableEspera - fetchDataTankWaitingList()"
         },
       });
+      loadData.value = false
     }
   } catch (error) {
     // En caso de tener error establece un mensaje de error
@@ -157,6 +160,7 @@ const fetchDataTankWaitingList = async () => {
         component: "TableEspera | Catch - fetchDataTankWaitingList()"
       },
     });
+    loadData.value = false
   }
 }
 
@@ -220,6 +224,10 @@ onMounted(() => {
 })
 
 watch(() => bus.value.get('successRegistration'), (val) => {
+  fetchDataTankWaitingList()
+})
+
+watch(() => bus.value.get('reloadData'), (val) => {
   fetchDataTankWaitingList()
 })
 </script>
