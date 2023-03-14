@@ -31,7 +31,7 @@ const openModal = () => {
     isOpen.value = true
 }
 
-const { agregarTanqueEspera, getCountTanquesEspera } = useWaitTank()
+const { agregarTanqueEspera, getCountTanquesEspera,addEntryTank } = useWaitTank()
 
 const tanksTypes = [
     { id: 1, name: 'Sencillo', sufix: '', unavailable: false },
@@ -82,7 +82,7 @@ async function onSubmit() {
     entryForm.reporte24 = format(new Date(), 'yyyy-MM-dd')
     entryForm.reporte05 = format(new Date(), 'yyyy-MM-dd')
 
-    const { data, status } = await agregarTanqueEspera({
+    var body = {
         posicion: entryForm.posicion,
         atId: entryForm.atId,
         atTipo: entryForm.atTipo.id,
@@ -95,7 +95,15 @@ async function onSubmit() {
         fechaEntrada: entryForm.fechaEntrada,
         reporte24: entryForm.reporte24,
         reporte05: entryForm.reporte05,
-    })
+    }
+    
+    submitWaitTank(body)
+    submitEntryTank(body)
+
+}
+
+async function submitWaitTank (body){
+    const { data, status } = await agregarTanqueEspera(body)
     if (status == 200) {
         loader.value = false
         emit("successRegistration", true);
@@ -105,6 +113,33 @@ async function onSubmit() {
             message: {
                 title: "Éxito!",
                 message: `Se agregó el tanque ${data.atName} a la lista de espera.`,
+                type: "success"
+            },
+        });
+    } else {
+        loader.value = false
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: data,
+                type: "error",
+                component: "create - onSubmit()"
+            },
+        });
+    }
+}
+
+async function submitEntryTank(body){
+    const { data, status } = await addEntryTank(body)
+    if (status == 200) {
+        loader.value = false
+        emit("successRegistrationEntryTank", true);
+        resetForm()
+        closeModal()
+        addToast({
+            message: {
+                title: "Éxito!",
+                message: `Se agregó el tanque ${data.atName} a la lista de entrada.`,
                 type: "success"
             },
         });
