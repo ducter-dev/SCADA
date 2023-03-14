@@ -6,12 +6,14 @@ import useTank from '../../tanques/composables/useTanque'
 import CreateEntry from "../components/create.vue"
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import useEventsBus from "../../../layout/eventBus"
 
 /**
  * Declaración de los atributos que son asignables.
  * 
  * @var array<boolean, string, array>
  */
+ const { bus } = useEventsBus()
 const { fetchEntriesTanks, eliminarTanque, getTanksEntries } = useTank()
 const tanksList = computed(() => getTanksEntries())
 const { addToast } = useToast()
@@ -93,6 +95,10 @@ const setTipo = (categoria) => {
     }
 }
 
+watch(() => bus.value.get('successRegistrationEntryTank'), (val) => {
+    fetchDataEntriesTanks(dateToUse.value)
+})
+
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
  *  previamente almacenada en el store, en caso de existir @var tanksList sera asignado,
@@ -105,7 +111,6 @@ onMounted(() => {
         // Establece la información del store
         setDataFromResult(tanksList.value)
     } else {
-        console.log(dateToUse.value)
         // Realiza la petición al servidor
         fetchDataEntriesTanks(dateToUse.value)
     }

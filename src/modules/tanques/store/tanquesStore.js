@@ -135,6 +135,15 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    async addEntryTankSt(tank) {
+      try {
+        const res = await scadaApi.post('tanques/entrada', tank)
+        return res
+      } catch (error) {
+        return { ok: false, message: error.message }
+      }
+    },
+
     async borrarTanqueEspera(tank) {
       try {
         const res = await scadaApi.delete(`tanques/espera/${tank.id}`)

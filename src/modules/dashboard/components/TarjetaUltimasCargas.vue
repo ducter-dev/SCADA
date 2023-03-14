@@ -11,8 +11,7 @@ import useEventsBus from "../../../layout/eventBus"
  * @var array<boolean, string, array>
  */
 const { bus } = useEventsBus()
-const { fetchTanksSalidas, getTanquesInSalida } = useDepartureTank()
-const departureList = computed(() => getTanquesInSalida())
+const { fetchTanksSalidas } = useDepartureTank()
 const { addToast } = useToast()
 let dataResult = ref([])
 let loadData = ref(true)
@@ -25,6 +24,7 @@ let loadData = ref(true)
  */
 const setDataFromResult = (data) => {
   dataResult.value = data
+  loadData.value = false
 }
 
 /**
@@ -34,7 +34,6 @@ const setDataFromResult = (data) => {
  *  en la cual guarda un mensaje para visualizar en la interfaz.
  */
 const fecthInformationOnTanksLastDepartures = async () => {
-  loadData.value = true
   try {
     const res = await fetchTanksSalidas()
     const { data, status } = res
@@ -43,7 +42,6 @@ const fecthInformationOnTanksLastDepartures = async () => {
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
       setDataFromResult(data)
-      loadData.value = false
     } else {
       addToast({
         message: {
@@ -53,7 +51,6 @@ const fecthInformationOnTanksLastDepartures = async () => {
           component:"TarjetaUltimasCargas - fecthInformationOnTanksLastDepartures()"
         },
       });
-      loadData.value = false
     }
   } catch (error) {
     // En caso de tener error establece un mensaje de error
@@ -65,7 +62,6 @@ const fecthInformationOnTanksLastDepartures = async () => {
         component:"TarjetaUltimasCargas | Catch - fecthInformationOnTanksLastDepartures()"
       },
     });
-    loadData.value = false
   }
 }
 
@@ -80,14 +76,7 @@ watch(() => bus.value.get('reloadData'), (val) => {
  *  para la obtencion de nueva información.
  */
 onMounted(() => {
-  //Condicional para verificar existencia de información en el store
-  if (departureList.value.length != 0) {
-    // Establece la información del store
-    setDataFromResult(departureList.value)
-  } else {
-    // Realiza la petición al servidor
-    fecthInformationOnTanksLastDepartures()
-  }
+  fecthInformationOnTanksLastDepartures()
 })
 </script>
 <template>
