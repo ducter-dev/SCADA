@@ -49,7 +49,6 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import useUser from '../composables/useUser'
 import Table from '../components/Table.vue'
 import Swal from 'sweetalert2'
@@ -61,15 +60,14 @@ export default {
     Table,
   },
   setup() {
-    const store = useStore()
-    const { agregarUsers, getUsuarios } = useUser()
+    const { fetchUsuarios, getUsuarios } = useUser()
 
     const usuarios = computed(() => getUsuarios())
     let users = ref(usuarios.value)
 
-    async function getUsuarios () {
+    async function getUsers () {
       try {
-        const res = await agregarUsers()
+        const res = await fetchUsuarios()
         const { data, status } = res
         if (status == 200) {
           users.value = data
@@ -85,7 +83,7 @@ export default {
     onMounted(() => {
       if (users.value.length < 1) {
         // No hay usuarios en el store
-        getUsuarios()
+        getUsers()
       } else {
         console.log('Ya hay usaurios en el store')
       }

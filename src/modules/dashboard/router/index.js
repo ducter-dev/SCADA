@@ -9,7 +9,7 @@ export default {
     },
     {
       path: 'configuracion',
-      name: 'configuracion',
+      name: 'configuration',
       component: () => import('../../dashboard/views/Configuracion.vue')
     },
     {
