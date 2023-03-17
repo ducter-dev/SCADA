@@ -29,7 +29,7 @@ export default {
     },
     {
       path: 'espera',
-      name: 'ListaEspera',
+      name: 'waitinglist',
       component: () => import('../../tanques/views/Espera.vue')
     },
     {

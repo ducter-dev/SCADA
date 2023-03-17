@@ -86,12 +86,14 @@ const formatPicker = () => {
 
 const setTipo = (categoria) => {
     switch (categoria) {
-        case 1:
+        case 0:
             return "Sencillo"
-        case 2:
+        case 1:
             return "Full A"
-        case 3:
+        case 2:
             return "Full B"
+        case 3:
+            return ""
     }
 }
 
