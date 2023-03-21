@@ -2,17 +2,13 @@
 //Importación de recursos
 import { ref, onMounted, computed, watch } from "vue"
 import useToast from "../../dashboard/composables/useToast"
-import useTankService from '../../tanques/composables/useTanqueServicio'
+import useTankExist from '../../tanques/composables/useTanqueSalida'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
-/**
- * Declaración de los atributos que son asignables.
- * 
- * @var array<boolean, string, array>
- */
-const { fetchTanksInServicio, getTanquesInServicio } = useTankService()
-const tanksInServiceList = computed(() => getTanquesInServicio())
+const { fetchTanksSalidas, getTanquesInSalida } = useTankExist()
+
+const tanksInExisList = computed(() => getTanquesInSalida())
 const { addToast } = useToast()
 const date = ref(new Date())
 const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
@@ -20,40 +16,27 @@ const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
 let dataResult = ref([])
 let loadData = ref(true)
 
-/**
- * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
- * 
- * Retorna una matriz de datos o matriz vacia
- * @param {*} data 
- */
+
 const setDataFromResult = (data) => {
 
-    if (data.length == 0) {
-        addToast({
-            message: {
-                title: "¡Atención!",
-                message: "No existen registros con esa fecha.",
-                type: "info"
-            },
-        });
-    }
-    dataResult.value = data
-    loadData.value = false
+if (data.length == 0) {
+    addToast({
+        message: {
+            title: "¡Atención!",
+            message: "No existen registros con esa fecha.",
+            type: "info"
+        },
+    });
+}
+dataResult.value = data
+loadData.value = false
 }
 
-/**
- *  Función que consulta `fetchTanksSalidas`  para obtener datos desde la API la información.
- *  Invoca a la función @function setDataFromResult para almacenar el resultado.
- *  En caso de error en la petición @throws crea una instancia con el metodo @method addToast 
- *  en la cual guarda un mensaje para visualizar en la interfaz.
- */
-const fetchTankService = async (dateToUse) => {
+const fetchTankExist = async (dateToUse) => {
     try {
-        const res = await fetchTanksInServicio(dateToUse)
+        const res = await fetchTanksSalidas(dateToUse)
         const { data, status } = res
 
-        // Valida de acuerdo al estatus de la petición
-        // Si el código de estatus es diferente de 200 se marcara un error 
         if (status == 200) {
             setDataFromResult(data)
         } else {
@@ -66,7 +49,6 @@ const fetchTankService = async (dateToUse) => {
             });
         }
     } catch (error) {
-        // En caso de tener error establece un mensaje de error
         addToast({
             message: {
                 title: "¡Error!",
@@ -76,7 +58,6 @@ const fetchTankService = async (dateToUse) => {
         });
     }
 }
-
 const formatPicker = () => {
     return format(date.value, 'dd-MM-yyyy')
 }
@@ -94,23 +75,14 @@ const setTipo = (categoria) => {
     }
 }
 
-/**
- *  Al montar el componente evalua la disponibilidad y existencia de la información
- *  previamente almacenada en el store, en caso de existir @var tanksInServiceList sera asignado,
- *  en caso contrario se invoca a la funcion @function fetchTankService 
- *  para la obtencion de nueva información.
- */
 onMounted(() => {
     //Condicional para verificar existencia de información en el store
-    if (tanksInServiceList.value.length != 0) {
-        // Establece la información del store
-        setDataFromResult(tanksInServiceList.value)
+    if (tanksInExisList.value.length != 0) {
+        setDataFromResult(tanksInExisList.value)
     } else {
-        // Realiza la petición al servidor
-        fetchTankService(dateToUse.value)
+        fetchTankExist(dateToUse.value)
     }
 })
-
 </script>
 <template>
     <LBreadcrumb :back-route="{ name: 'Home' }">
@@ -140,7 +112,7 @@ onMounted(() => {
                         <div class="flex items-center justify-between">
                             <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de servicios
                             </legend>
-                            <button class="p-2" @click="fetchTankService(dateToUse)">
+                            <button class="p-2" @click="fetchTankExist(dateToUse)">
                                 <svg xmlns="http://www.w3.org/2000/svg" :class="loadData ? 'animate-spin' : ''"
                                     class="w-4 h-4 text-slate-600 dark:text-slate-300" fill="currentColor"
                                     viewBox="0 0 512 512">
@@ -153,7 +125,7 @@ onMounted(() => {
                             <div class="col-span-2">
                                 <Datepicker v-model="date" :format-locale="es" locale="es" cancelText="Cancelar"
                                     selectText="Seleccionar" placeholder="Seleccione una fecha" :enableTimePicker="false"
-                                    :format="formatPicker" autoApply @update:model-value="fetchTankService(dateToUse)"
+                                    :format="formatPicker" autoApply @update:model-value="fetchTankExist(dateToUse)"
                                     :clearable="false" />
                             </div>
                         </div>
@@ -163,10 +135,11 @@ onMounted(() => {
                                     <LHeaderTh value="No." center />
                                     <LHeaderTh value="AT" center />
                                     <LHeaderTh value="Tipo" center />
-                                    <LHeaderTh value="Capacidad" center />
+                                    <LHeaderTh value="Masa" center />
+                                    <LHeaderTh value="Volumen" center />
+                                    <LHeaderTh value="Densidad" center />
                                     <LHeaderTh value="Llenadera" center />
-                                    <LHeaderTh value="Hora ingreso" center />
-                                    <LHeaderTh value="Fecha ingreso" center />
+                                    <LHeaderTh value="Fecha Fin" center />
                                 </tr>
                             </template>
                             <template #body>
@@ -174,10 +147,11 @@ onMounted(() => {
                                     <LBodyTh :value="item.id" center />
                                     <LBodyTd :value="item.atName" center />
                                     <LBodyTd :value="setTipo(item.atTipo)" center />
-                                    <LBodyTd :value="item.capacidad" center />
+                                    <LBodyTd :value="item.masaTons" center />
+                                    <LBodyTd :value="item.volNatBls" center />
+                                    <LBodyTd :value="item.densidadCor" center />
                                     <LBodyTd :value="item.llenadera" center />
-                                    <LBodyTd :value="item.horaEntrada" center />
-                                    <LBodyTd :value="item.fechaEntrada" center />
+                                    <LBodyTd :value="item.fechaFin" center />
                                 </tr>
                                 <tr v-else>
                                     <LBodyTh value="Sin información" colspan="7" center />

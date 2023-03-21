@@ -54,8 +54,8 @@ export default {
     },
     {
       path: 'salidas',
-      name: 'salidas',
-      component: () => import('../../dashboard/views/Configuracion.vue')
+      name: 'exits',
+      component: () => import('../../exits/views/index.vue')
     },
     {
       path: 'reportes',
