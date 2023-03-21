@@ -12,5 +12,10 @@ export default {
       name: 'registro',
       component: () => import('../views/Register.vue')
     },
+    {
+      path: 'resetpassword',
+      name: 'resetpassword',
+      component: () => import('../views/ResetPassword.vue')
+    },
   ]
 }
