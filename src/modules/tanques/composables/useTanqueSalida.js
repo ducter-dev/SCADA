@@ -3,8 +3,8 @@ import { useTanqueStore } from '../store/tanquesStore'
 const useTanqueSalida = () => {
   const store = useTanqueStore()
 
-  const fetchTanksSalidas = async () => {
-    const resp = await store.fetchTanksSalidas()
+  const fetchTanksSalidas = async (fecha) => {
+    const resp = await store.fetchTanksSalidas(fecha)
     return resp
   }
 

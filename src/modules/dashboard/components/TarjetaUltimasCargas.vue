@@ -4,6 +4,8 @@ import { ref, onMounted, computed, watch } from "vue";
 import useToast from "../../dashboard/composables/useToast";
 import useDepartureTank from '../../tanques/composables/useTanqueSalida'
 import useEventsBus from "../../../layout/eventBus"
+import { format } from 'date-fns'
+
 
 /**
  * Declaración de los atributos que son asignables.
@@ -35,7 +37,9 @@ const setDataFromResult = (data) => {
  */
 const fecthInformationOnTanksLastDepartures = async () => {
   try {
-    const res = await fetchTanksSalidas()
+    const date = ref(new Date())
+    const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
+    const res = await fetchTanksSalidas(dateToUse.value)
     const { data, status } = res
 
     // Valida de acuerdo al estatus de la petición
