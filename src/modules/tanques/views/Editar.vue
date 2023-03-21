@@ -203,15 +203,15 @@ export default {
 
 
     const tiposTanque = [
-      { id: 1, nombre: 'Sencillo' },
-      { id: 2, nombre: 'Full A' },
-      { id: 3, nombre: 'Full B' }
+      { id: 0, nombre: 'Sencillo' },
+      { id: 1, nombre: 'Full A' },
+      { id: 2, nombre: 'Full B' }
     ]
 
     const conectorTanque = [
-      { id: 1, nombre: 'Izquierdo' },
-      { id: 2, nombre: 'Derecho' },
-      { id: 3, nombre: 'Ambos' }
+      { id: 0, nombre: 'Izquierdo' },
+      { id: 1, nombre: 'Derecho' },
+      { id: 2, nombre: 'Ambos' }
     ]
 
     const tankForm = ref({
