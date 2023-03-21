@@ -165,7 +165,6 @@ watch(() => entryForm.atId, (id) => {
 watch(() => entryForm.atTipo, () => {
     const { sufix } = tanksTypes.find(t => t.id == entryForm.atTipo.id)
     entryForm.atName = `PG-${entryForm.atId}${sufix}`
-    console.log(sufix)
 })
 
 </script>
