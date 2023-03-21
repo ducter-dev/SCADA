@@ -197,9 +197,9 @@ export default {
     const { registrarTanque } = useTanque()
 
     const tiposTanque = [
-      { id: 1, nombre: 'Sencillo' },
-      { id: 2, nombre: 'Full A' },
-      { id: 3, nombre: 'Full B' }
+      { id: 0, nombre: 'Sencillo' },
+      { id: 1, nombre: 'Full A' },
+      { id: 2, nombre: 'Full B' }
     ]
 
     const conectorTanque = [

@@ -34,9 +34,9 @@ const openModal = () => {
 const { agregarTanqueEspera, getCountTanquesEspera,addEntryTank } = useWaitTank()
 
 const tanksTypes = [
-    { id: 1, name: 'Sencillo', sufix: '', unavailable: false },
-    { id: 2, name: 'Full A', sufix: 'A', unavailable: false },
-    { id: 3, name: 'Full B', sufix: 'B', unavailable: false }
+    { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
+    { id: 1, name: 'Full A', sufix: 'A', unavailable: false },
+    { id: 2, name: 'Full B', sufix: 'B', unavailable: false }
 ]
 
 const tankConnectors = [

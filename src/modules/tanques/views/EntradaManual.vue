@@ -172,9 +172,9 @@ export default {
     const { agregarTanqueEspera, getCountTanquesEspera } = useTanqueEspera()
 
     const tiposTanque = [
-      { id: 1, nombre: 'Sencillo', sufijo: '' },
-      { id: 2, nombre: 'Full A', sufijo: 'A' },
-      { id: 3, nombre: 'Full B', sufijo: 'B' }
+      { id: 0, nombre: 'Sencillo', sufijo: '' },
+      { id: 1, nombre: 'Full A', sufijo: 'A' },
+      { id: 2, nombre: 'Full B', sufijo: 'B' }
     ]
 
     const conectorTanque = [
