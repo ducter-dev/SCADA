@@ -16,6 +16,11 @@ export default {
       path: 'resetpassword',
       name: 'resetpassword',
       component: () => import('../views/ResetPassword.vue')
+    },    
+    {
+      path: 'rescutepassword',
+      name: 'rescutepassword',
+      component: () => import('../views/RescutePassword.vue')
     },
   ]
 }
