@@ -1,5 +1,5 @@
 <template>
-    <h1 class="font-bold text-center text-2xl mb-5">Recuperar Contraseña</h1>
+    <h1 class="font-bold text-center text-2xl mb-5">Actualizar Contraseña</h1>
     <form class="bg-white shadow w-full rounded-lg divide-y divide-gray-200" @submit.prevent="onSubmit">
         <div class="px-5 py-7">
             <label class="font-semibold text-sm text-gray-600 pb-1 block">Contraseña</label>
