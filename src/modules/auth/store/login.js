@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import scadaApi from '@/api'
+import { format } from 'date-fns'
 
 export const useLoginStore = defineStore('login', {
   id: 'login',
@@ -21,13 +22,16 @@ export const useLoginStore = defineStore('login', {
         }
         const { data, status } = await scadaApi.post('/auth/login', dataForm )
         const { token } = data
+        const { bloqueado } = await this.islocked({usuario})
         delete user.password
         this.user = data.user
         this.token = token
-        this.status = 'authenticated'
-        localStorage.setItem('token', token)
+        if(!bloqueado){
+          this.status = 'authenticated'
+          localStorage.setItem('token', token)
+        }
         const obj = {
-          ok: true, detail: data.user, status: 'authenticated'
+          ok: true, detail: data.user, status: (bloqueado)? 'locked':'authenticated'
         }
         return obj
       } catch (error) {
@@ -69,6 +73,34 @@ export const useLoginStore = defineStore('login', {
       this.token = null
       this.user = null
       this.status = 'No authenticated'
+    },
+    async islocked (user){
+      const { usuario} = user
+        const dataForm = {
+          usuario,
+        }
+      try{
+        const { data, status } = await scadaApi.post('/auth/bloqueados/user', dataForm )
+        return data
+      }catch(error){
+        return {bloqueado:true}
+      }
+    },
+    async locked(usuario) {
+      console.log(format(new Date(), 'yyyy-MM-dd H:m:s'))
+      const dataForm = {
+        user:usuario,
+        fechaBloqueo: format(new Date(), 'yyyy-MM-dd H:m:s')
+      }
+      try {
+        const { data } = await scadaApi.post('/auth/bloqueados', dataForm )
+        return {detail:data.fechaDesbloqueo}
+      } catch (error) {
+        const obj = {
+          detail:error.response.data.message
+        }
+        return obj
+      }
     }
   },
 

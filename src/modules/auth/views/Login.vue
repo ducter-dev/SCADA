@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import useAuth from '../composables/useAuth'
 import { useRouter } from 'vue-router'
 import useToast from "../../dashboard/composables/useToast";
@@ -57,7 +57,7 @@ export default {
   setup() {
     const USERDB = import.meta.env.VITE_USERDB
     const PASSDB = import.meta.env.VITE_PASSDB
-    const { login } = useAuth()
+    const { login, setlocked } = useAuth()
     const router = useRouter()
 
     const submit = ref(false)
@@ -66,13 +66,13 @@ export default {
       usuario: USERDB,
       password: PASSDB
     })
+    const intentos = ref(0)
 
     const onSubmit = async () => {
       submit.value = true
       const { ok, detail, status } = await login(userForm.value)
-
       if (!ok) {
-
+        intentos.value++
         addToast({
           message: {
             title: "¡Error!",
@@ -81,7 +81,8 @@ export default {
           },
         });
         submit.value = false
-      } else {
+      }
+      else if(ok && status == "authenticated") {
         addToast({
           message: {
             title: "¡Login Correcto!",
@@ -92,8 +93,34 @@ export default {
         submit.value = false
         router.push('/dashboard')
       }
-    }
+      else if(ok && status == "locked"){
+        addToast({
+          message: {
+            title: "¡Error!",
+            message: "Tus credenciales estan bloqueadas",
+            type: "error"
+          },
+        });
+        submit.value = false
+      }
 
+    }
+    watch(
+      () => intentos.value, async(intento) => {
+        if (intento == 3) {
+          console.log("bloquear usuario"+ userForm.value.usuario)
+          const { detail } = await setlocked(userForm.value.usuario)
+          console.log(detail)
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: "Espera" + detail,
+              type: "error"
+            },
+          });
+        }
+      }
+    ) 
     return {
       userForm,
       submit,
