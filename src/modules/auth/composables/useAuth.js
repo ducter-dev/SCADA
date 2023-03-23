@@ -23,12 +23,17 @@ const useAuth = () => {
     const userName = store.user ? store.user.username : '' 
     return userName
   }
+  const setlocked = async(formUser) =>{
+    const resp = await store.locked(formUser)
+    return resp
+  }
 
   return {
     login,
     logout,
     getToken,
     getUserName,
+    setlocked
   }
 }
 
