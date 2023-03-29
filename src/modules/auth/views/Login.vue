@@ -1,17 +1,17 @@
 <template>
-  <h1 class="font-bold text-center text-2xl mb-5">Acceso</h1>
-  <form @submit.prevent="onSubmit" class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
+  <h1 class="mb-5 text-2xl font-bold text-center">Acceso</h1>
+  <form @submit.prevent="onSubmit" class="w-full bg-white divide-y divide-gray-200 rounded-lg shadow">
     <div class="px-5 py-7">
-      <label class="font-semibold text-sm text-gray-600 pb-1 block">Usuario</label>
-      <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" v-model="userForm.usuario" />
-      <label class="font-semibold text-sm text-gray-600 pb-1 block">Contraseña</label>
-      <input type="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" v-model="userForm.password" />
-      <div class=" mx-2">
+      <label class="block pb-1 text-sm font-semibold text-gray-600">Usuario</label>
+      <input type="text" class="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg" v-model="userForm.usuario" />
+      <label class="block pb-1 text-sm font-semibold text-gray-600">Contraseña</label>
+      <input type="password" class="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg" v-model="userForm.password" />
+      <div class="mx-2 ">
         <button
-          class="inline-flex disabled:opacity-25 disabled:cursor-not-allowed items-center justify-center w-full p-2 bg-gradient-to-r from-primary bg-link text-white hover:bg-logo scale-105 duration-300"
+          class="inline-flex items-center justify-center w-full p-2 text-white duration-300 scale-105 disabled:opacity-25 disabled:cursor-not-allowed bg-gradient-to-r from-primary bg-link hover:bg-logo"
           :disabled="submit" type="submit">
           <template v-if="submit">
-            <svg class="inline mr-2 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none"
+            <svg class="inline w-4 h-4 mr-2 text-white animate-spin" viewBox="0 0 100 101" fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -32,9 +32,9 @@
     <div class="flex flex-row-reverse">
       <div class="text-center sm:text-left whitespace-nowrap">
         <router-link :to="{ name: 'Landing' }"
-          class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+          class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            class="w-4 h-4 inline-block align-text-top">
+            class="inline-block w-4 h-4 align-text-top">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           <span class="inline-block ml-1">volver</span>
@@ -49,7 +49,7 @@
 import { ref,watch } from 'vue'
 import useAuth from '../composables/useAuth'
 import { useRouter } from 'vue-router'
-import useToast from "../../dashboard/composables/useToast";
+import useToast from "../../dashboard/composables/useToast"
 
 const { addToast } = useToast()
 

@@ -59,7 +59,7 @@ export default {
     },
     {
       path: 'reportes',
-      name: 'reportes',
+      name: 'reports',
       component: () => import('../../reports/views/Reports.vue')
     },
   ]
