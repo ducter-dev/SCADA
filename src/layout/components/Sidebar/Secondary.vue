@@ -8,8 +8,8 @@ import IconTruck from "../../../assets/icons/truck.svg"
   <div class="flex-1 overflow-y-auto">
     <div class="p-3 min-h-[64px] lg:min-h-[48px]">
       <p class="text-sm font-semibold business_name text-slate-900 dark:text-slate-100"
-        v-tippy="'Ductos y Terminales, S.A. de C.V.'">
-        Ductos y Terminales, S.A. de C.V.
+        v-tippy="'Instalación de Recibo, Guarda y Entrega'">
+        IRGE
       </p>
     </div>
     <nav class="pb-4 mb-8 space-y-5 border-t border-transparent sidebar md:border-slate-200 dark:border-slate-700">
@@ -56,6 +56,12 @@ import IconTruck from "../../../assets/icons/truck.svg"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
           <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Reportes</span>
+        </router-link>
+        <router-link :to="{ name: 'records' }"
+          exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
+          class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
+          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <span class="truncate">Bitácora</span>
         </router-link>
         <router-link :to="{ name: 'configuration' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
