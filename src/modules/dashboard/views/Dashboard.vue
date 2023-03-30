@@ -139,7 +139,6 @@ export default {
     const router = useRouter()
     const { addToast } = useToast()
     const { emit } = useEventsBus()
-
     const { pause, resume, isActive } = useIntervalFn(() => {
       emit("reloadData", true);
     }, 20000)

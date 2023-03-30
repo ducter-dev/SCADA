@@ -13,7 +13,7 @@ import useEventsBus from "../../../layout/eventBus"
  * 
  * @var array<boolean, string, array>
  */
- const { bus } = useEventsBus()
+const { bus } = useEventsBus()
 const { fetchEntriesTanks, eliminarTanque, getTanksEntries } = useTank()
 const tanksList = computed(() => getTanksEntries())
 const { addToast } = useToast()
@@ -196,6 +196,7 @@ onMounted(() => {
                         </LTable>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
-</div></template>
+</template>

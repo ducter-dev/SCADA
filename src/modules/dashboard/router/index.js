@@ -60,7 +60,12 @@ export default {
     {
       path: 'reportes',
       name: 'reports',
-      component: () => import('../../reports/views/Reports.vue')
+      component: () => import('../../reports/views/index.vue')
+    },
+    {
+      path: 'bitacora',
+      name: 'records',
+      component: () => import('../../bitacora/views/index.vue')
     },
   ]
 }
