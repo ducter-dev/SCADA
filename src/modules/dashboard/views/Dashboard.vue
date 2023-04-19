@@ -117,6 +117,7 @@ import useToast from "../../dashboard/composables/useToast"
 import { ref, onMounted } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 import useEventsBus from "../../../layout/eventBus"
+import useTanque from '../../tanques/composables/useTanque'
 
 export default {
   components: {
@@ -140,15 +141,16 @@ export default {
     const { addToast } = useToast()
     const { emit } = useEventsBus()
     const { pause, resume, isActive } = useIntervalFn(() => {
-      emit("reloadData", true);
+      emit("reloadData", true)
     }, 20000)
 
+    const { fetchTanques } = useTanque()
     const { changeBarreraEntrada,
       changeBarreraVerificacion, changeBarreraSalida,nextFiller, reassignAllocation, cancelAllocation } = useDashboard()
 
     const { deleteTanqueEspera } = useTanqueEspera()
     const { resetLlenadera, changeEstadoLlenadera, asignarLlenadera,
-       getLlenaderasFiltradas } = useLlenaderas()
+    getLlenaderasFiltradas } = useLlenaderas()
 
     const dataAntenaSalida = ref({})
     const dataBarreraEntrada = ref({})
@@ -178,7 +180,7 @@ export default {
               message: `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -187,7 +189,7 @@ export default {
               type: "error",
               component:"Dashboard | - toggleEntrada()"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -197,7 +199,7 @@ export default {
             type: "error",
             component:"Dashboard | Catch - toggleEntrada()"
           },
-        });
+        })
       }
     }
 
@@ -214,7 +216,7 @@ export default {
               message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -222,7 +224,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -231,7 +233,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -249,7 +251,7 @@ export default {
               message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -257,7 +259,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -266,7 +268,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -282,7 +284,7 @@ export default {
               message: `La llenadera ha sido ${data.estado == 1 ? 'Detenida' : 'Liberada'}.`,
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -290,7 +292,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -299,7 +301,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -313,7 +315,7 @@ export default {
               message: "No existe un tanque para asignar.",
               type: "error"
             },
-          });
+          })
           return
         }
 
@@ -326,7 +328,7 @@ export default {
               message: "No se puede realizar la asignación, compruebe el estado de la llenadera.",
               type: "error"
             },
-          });
+          })
           return
         }
 
@@ -353,7 +355,7 @@ export default {
               message: `La llenadera ${llenaderaSelected.numero} ha aceptado la asignación.`,
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -361,7 +363,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -370,10 +372,9 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
-
 
     const siguienteAsignacion = async () => {
       try {
@@ -386,7 +387,7 @@ export default {
               message: "Se establecio la siguiente llenadera correctamente.",
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -394,7 +395,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -403,7 +404,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -417,7 +418,7 @@ export default {
               message: "Se reasigno la asignación correctamente.",
               type: "success"
             },
-          });
+          })
         } else if (!res.ok) {
           addToast({
             message: {
@@ -425,7 +426,7 @@ export default {
               message: res.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -434,7 +435,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -448,7 +449,7 @@ export default {
               message: "Se cancelo la asignación correctamente.",
               type: "success"
             },
-          });
+          })
         } else if (!res.ok) {
           addToast({
             message: {
@@ -456,7 +457,7 @@ export default {
               message: res.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -465,7 +466,7 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
@@ -480,7 +481,7 @@ export default {
               message: "Se desasigno correctamente.",
               type: "success"
             },
-          });
+          })
         } else {
           addToast({
             message: {
@@ -488,7 +489,7 @@ export default {
               message: data.message,
               type: "error"
             },
-          });
+          })
         }
       } catch (error) {
         addToast({
@@ -497,15 +498,12 @@ export default {
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        })
       }
     }
 
     onMounted(() => {
-
-    
-
-    
+      fetchTanques()
     })
 
     return {

@@ -1,6 +1,6 @@
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import {
     TransitionRoot,
     TransitionChild,
@@ -15,6 +15,7 @@ import {
 } from '@headlessui/vue'
 import { format } from 'date-fns'
 import useWaitTank from '../../tanques/composables/useTanqueEspera'
+import useTanque from '../../tanques/composables/useTanque'
 import useToast from "../../dashboard/composables/useToast";
 import useEventsBus from "../../../layout/eventBus"
 
@@ -32,6 +33,9 @@ const openModal = () => {
 }
 
 const { agregarTanqueEspera, getCountTanquesEspera,addEntryTank } = useWaitTank()
+const { getTanques } = useTanque()
+const tanques = computed(() => getTanques())
+console.log("🚀 ~ file: create.vue:38 ~ tanques:", tanques.value)
 
 const tanksTypes = [
     { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
@@ -160,11 +164,21 @@ watch(() => entryForm.atId, (id) => {
     const { sufix } = tanksTypes.find(t => t.id == entryForm.atTipo.id)
     entryForm.atName = `PG-${id}${sufix}`
     entryForm.password = id
+    const pgFinded = tanques.value.find( t => t.atName === entryForm.atName)
+    if (pgFinded) { 
+        entryForm.capacidad = pgFinded.capacidad90
+        entryForm.conector = tankConnectors.find(t => t.id == pgFinded.conector)
+    }
 })
 
 watch(() => entryForm.atTipo, () => {
     const { sufix } = tanksTypes.find(t => t.id == entryForm.atTipo.id)
     entryForm.atName = `PG-${entryForm.atId}${sufix}`
+    const pgFinded = tanques.value.find( t => t.atName === entryForm.atName)
+    if (pgFinded) { 
+        entryForm.capacidad = pgFinded.capacidad90
+        entryForm.conector = tankConnectors.find(t => t.id == pgFinded.conector)
+    }
 })
 
 </script>
@@ -216,9 +230,6 @@ watch(() => entryForm.atTipo, () => {
                                         <LFloatInput v-model.number="entryForm.atId" mask="#####" label="PG" square />
                                     </div>
                                     <div class="col-span-6 md:col-span-3">
-                                        <LFloatInput v-model.number="entryForm.atName" label="Nombre" square />
-                                    </div>
-                                    <div class="col-span-6 md:col-span-3">
                                         <Listbox v-model="entryForm.atTipo">
                                             <div class="relative mt-1">
                                                 <ListboxButton class="w-full">
@@ -234,10 +245,10 @@ watch(() => entryForm.atTipo, () => {
                                                         </template>
                                                     </LFloatInput>
                                                 </ListboxButton>
-                                                <transition leave-active-class="transition ease-in duration-100"
+                                                <transition leave-active-class="transition duration-100 ease-in"
                                                     leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                     <ListboxOptions
-                                                        class=" absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                        class="absolute z-20 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                         <ListboxOption as="template" v-for="item in tanksTypes"
                                                             :key="item.id" :value="item" :disabled="item.unavailable"
                                                             v-slot="{ active, selected }">
@@ -258,7 +269,7 @@ watch(() => entryForm.atTipo, () => {
                                                                     active ? 'text-white' : 'text-blue-600',
                                                                     'absolute inset-y-0 right-0 flex items-center pr-4',
                                                                 ]">
-                                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                         viewBox="0 0 20 20" fill="currentColor"
                                                                         aria-hidden="true">
                                                                         <path fill-rule="evenodd"
@@ -272,6 +283,9 @@ watch(() => entryForm.atTipo, () => {
                                                 </transition>
                                             </div>
                                         </Listbox>
+                                    </div>
+                                    <div class="col-span-6 md:col-span-3">
+                                        <LFloatInput v-model.number="entryForm.atName" label="Nombre" square />
                                     </div>
                                     <div class="col-span-6 md:col-span-3">
                                         <Listbox v-model="entryForm.conector">
@@ -289,10 +303,10 @@ watch(() => entryForm.atTipo, () => {
                                                         </template>
                                                     </LFloatInput>
                                                 </ListboxButton>
-                                                <transition leave-active-class="transition ease-in duration-100"
+                                                <transition leave-active-class="transition duration-100 ease-in"
                                                     leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                     <ListboxOptions
-                                                        class=" absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                        class="absolute z-20 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                         <ListboxOption as="template" v-for="item in tankConnectors"
                                                             :key="item.id" :value="item" :disabled="item.unavailable"
                                                             v-slot="{ active, selected }">
@@ -313,7 +327,7 @@ watch(() => entryForm.atTipo, () => {
                                                                     active ? 'text-white' : 'text-blue-600',
                                                                     'absolute inset-y-0 right-0 flex items-center pr-4',
                                                                 ]">
-                                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                         viewBox="0 0 20 20" fill="currentColor"
                                                                         aria-hidden="true">
                                                                         <path fill-rule="evenodd"
@@ -337,10 +351,10 @@ watch(() => entryForm.atTipo, () => {
                             <div
                                 class="flex items-center justify-end p-3 space-x-2 border-t border-slate-200 dark:border-slate-600">
                                 <button type="button" @click="onSubmit" :disabled="loader"
-                                    class="disabled:opacity-25 disabled:cursor-not-allowed px-5 py-2 text-sm font-medium text-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class="px-5 py-2 text-sm font-medium text-center text-white bg-blue-700 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                                     <template v-if="loader">
-                                        <svg class="inline mr-2 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101"
+                                        <svg class="inline w-4 h-4 mr-2 text-white animate-spin" viewBox="0 0 100 101"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

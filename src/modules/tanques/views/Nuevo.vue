@@ -1,12 +1,12 @@
 <template>
   <div class="w-6/12">
-    <div class="flex justify-start items-center content-center my-8">
+    <div class="flex items-center content-center justify-start my-8">
       <h2 class="text-xl font-bold"> Registrar autotanque</h2>
     </div>
-    <div class="w-full flex justify-center items-center">
+    <div class="flex items-center justify-center w-full">
       <form class="w-full" @submit.prevent="onSubmit">
-        <div class="flex justify-between items-center">
-          <div class="w-3/6 mb-6 mx-2">
+        <div class="flex items-center justify-between">
+          <div class="w-3/6 mx-2 mb-6">
             <label for="user" class="block mb-2 text-base font-bold text-dark"
               >Id</label
             >
@@ -28,7 +28,24 @@
               required
             />
           </div>
-          <div class="w-3/6 mb-6 mx-2">
+          <div class="w-3/6 mx-2 mb-6">
+            <label for="tipoAt" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Tipo</label>
+            <select id="tipoAt" class="bg-gray-50
+                border border-gray-300
+                text-dark text-base
+                font-semibold
+                rounded-lg
+                focus:ring-black focus:border-dark
+                block
+                w-full
+                p-2.5"
+                v-model="tankForm.atTipo">
+              <option v-for="tipo in tiposTanque" :key="tipo.id" :value="tipo.id">{{ tipo.nombre }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="w-3/6 mx-2 mb-6">
             <label for="user" class="block mb-2 text-base font-bold text-dark"
               >Nombre</label
             >
@@ -50,24 +67,7 @@
               required
             />
           </div>
-        </div>
-        <div class="flex justify-between items-center">
-          <div class="w-3/6 mb-6 mx-2">
-            <label for="tipoAt" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Tipo</label>
-            <select id="tipoAt" class="bg-gray-50
-                border border-gray-300
-                text-dark text-base
-                font-semibold
-                rounded-lg
-                focus:ring-black focus:border-dark
-                block
-                w-full
-                p-2.5"
-                v-model="tankForm.atTipo">
-              <option v-for="tipo in tiposTanque" :key="tipo.id" :value="tipo.id">{{ tipo.nombre }}</option>
-            </select>
-          </div>
-          <div class="w-3/6 mb-6 mx-2">
+          <div class="w-3/6 mx-2 mb-6">
             <label for="tipoAt" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Conector</label>
             <select id="tipoAt" class="bg-gray-50
                 border border-gray-300
@@ -83,8 +83,8 @@
             </select>
           </div>
         </div>
-        <div class="flex justify-between items-center">
-          <div class="w-3/6 mb-6 mx-2">
+        <div class="flex items-center justify-between">
+          <div class="w-3/6 mx-2 mb-6">
             <label for="user" class="block mb-2 text-base font-bold text-dark"
               >Capacidad 90</label
             >
@@ -107,7 +107,7 @@
             />
           </div>
           
-          <div class="w-3/6 mb-6 mx-2">
+          <div class="w-3/6 mx-2 mb-6">
             <label for="user" class="block mb-2 text-base font-bold text-dark"
               >Transportadora</label
             >
@@ -130,8 +130,8 @@
             />
           </div>
         </div>
-        <div class="flex justify-end items-center">
-          <div class="flex hustify-center items-center">
+        <div class="flex items-center justify-end">
+          <div class="flex items-center hustify-center">
             <button
               type="submit"
               class="
@@ -153,7 +153,7 @@
               Guardar
             </button>
           </div>
-          <div class="flex hustify-center items-center">
+          <div class="flex items-center hustify-center">
             <button
               type="button"
               class="
@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import useTanque from '../composables/useTanque'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -232,6 +232,10 @@ export default {
     function cancelSave () {
       router.push('/dashboard/configuracion')
     }
+
+    watch(() => tankForm.value, () => {
+      console.log("🚀 ~ file: Nuevo.vue:237 ~ watch ~ tankForm.value:", tankForm.value)
+    }) 
 
     return {
       tiposTanque,
