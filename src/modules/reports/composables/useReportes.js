@@ -33,10 +33,22 @@ const useReportes = () => {
     }
   }
 
+  const getReportCromatografo = (fecha, croma) => {
+    // Croma de 1 al 4
+    try {
+      const url = `${api_url}/reportes/cromatografo/${croma}/fecha/${fecha}`
+      open(url, '_blank')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getReportEsferas,
     getReportPatines,
+    getReportCromatografo,
   }
 }
 
