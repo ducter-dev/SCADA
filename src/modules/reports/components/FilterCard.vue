@@ -21,26 +21,36 @@ const fileOpen = ref(false)
 
 const { addToast } = useToast()
 
-const { getCargasDiarias } = useReportes()
+const { getCargasDiarias, getReportEsferas } = useReportes()
 
 const getReportServicio = async (type) => {
+	console.log("🚀 ~ file: FilterCard.vue:27 ~ getReportServicio ~ type:", type)
 	const fecha = formatPicker()
-	const detail = `Cargas Diarias de ${fecha}`
+	let detail = ''
 
 	switch (type) {
 		case 'diario-cargas':
 			fileOpen.value = getCargasDiarias(fecha)
-			addToast({
-          message: {
-            title: "¡Descargando archivo!",
-            message: detail,
-            type: "info"
-          },
-        });
+			detail = `Cargas Diarias de ${fecha}`
 			break
-		default:
+		case 'esfera-1':
+			fileOpen.value = getReportEsferas(fecha, 'a')
+			detail = `Reporte diario de esfera a del día ${fecha}`
 			break
+		case 'esfera-2':
+			fileOpen.value = getReportEsferas(fecha, 'b')
+			detail = `Reporte diario de esfera b del día ${fecha}`
+			break
+			default:
+				break
 	}
+	addToast({
+			message: {
+				title: "¡Descargando archivo!",
+				message: detail,
+				type: "info"
+			},
+		})
 }
 
 const formatPicker = () => {
@@ -205,7 +215,7 @@ const formatPicker = () => {
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
-						<span> {{ formatPicker() }}_Esfera_TE-301A</span>
+						<span> {{ formatPicker() }}_Esfera_TE-301B</span>
 					</div>
 					<IconCircleDown @click="getReportServicio('esfera-2')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
