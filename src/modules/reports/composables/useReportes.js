@@ -22,9 +22,21 @@ const useReportes = () => {
     }
   }
 
+  const getReportPatines = (fecha, patin) => {
+    // patín 401A, 401B, 402A ó 402B
+    try {
+      const url = `${api_url}/reportes/patines/${patin}/fecha/${fecha}`
+      open(url, '_blank')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getReportEsferas,
+    getReportPatines,
   }
 }
 
