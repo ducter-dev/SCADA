@@ -11,8 +11,20 @@ const useReportes = () => {
     }
   }
 
+  const getReportEsferas = (fecha, esfera) => {
+    // esfera a ó b
+    try {
+      const url = `${api_url}/reportes/esferas/${esfera}/fecha/${fecha}`
+      open(url, '_blank')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
+    getReportEsferas,
   }
 }
 
