@@ -21,7 +21,7 @@ const fileOpen = ref(false)
 
 const { addToast } = useToast()
 
-const { getCargasDiarias, getReportEsferas, getReportPatines } = useReportes()
+const { getCargasDiarias, getReportEsferas, getReportPatines, getReportCromatografo } = useReportes()
 
 const getReportServicio = async (type) => {
 	console.log("🚀 ~ file: FilterCard.vue:27 ~ getReportServicio ~ type:", type)
@@ -57,6 +57,22 @@ const getReportServicio = async (type) => {
 			fileOpen.value = getReportPatines(fecha, '402B')
 			detail = `Reporte diario de ${type} del día ${fecha}`
 			break
+		case 'croma-irge':
+			fileOpen.value = getReportCromatografo(fecha, 1)
+			detail = `Reporte diario de coromatógrafo ${type} del día ${fecha}`
+			break
+		case 'croma-eb04-1':
+			fileOpen.value = getReportCromatografo(fecha, 2)
+			detail = `Reporte diario de ${type} del día ${fecha}`
+			break
+		case 'croma-eb04-2':
+			fileOpen.value = getReportCromatografo(fecha, 3)
+			detail = `Reporte diario de ${type} del día ${fecha}`
+			break
+		case 'croma-eb04-3':
+			fileOpen.value = getReportCromatografo(fecha, 4)
+			detail = `Reporte diario de ${type} del día ${fecha}`
+			break
 			default:
 				break
 	}
@@ -90,7 +106,7 @@ const formatPicker = () => {
 	</div>
 	<div>
 		<div class="py-3 border-t border-slate-400/20">
-			<div class="mb-1.5 text-xs font-semibold text-dark">Lista de reportes disponibles</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Documentación</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -134,6 +150,9 @@ const formatPicker = () => {
 					<IconCircleDown @click="getReportServicio('ultimas-cargas')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
+			</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Patines</div>
+			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
@@ -158,8 +177,6 @@ const formatPicker = () => {
 					<IconCircleDown @click="getReportServicio('patin-402a')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
-			</div>
-			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
@@ -168,6 +185,7 @@ const formatPicker = () => {
 					<IconCircleDown @click="getReportServicio('patin-402b')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
+			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
@@ -176,6 +194,10 @@ const formatPicker = () => {
 					<IconCircleDown @click="getReportServicio('patin-ambos')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
+			</div>
+			</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Bombas</div>
+			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
@@ -185,6 +207,7 @@ const formatPicker = () => {
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Cromatógrafo</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -219,6 +242,7 @@ const formatPicker = () => {
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Esferas</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -246,6 +270,7 @@ const formatPicker = () => {
 				</div>
 				
 			</div>
+			<div class="m-2 text-xs font-semibold text-dark">Reportes de Bitácora</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
