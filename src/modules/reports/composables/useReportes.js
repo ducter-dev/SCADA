@@ -44,11 +44,22 @@ const useReportes = () => {
     }
   }
 
+  const getReportBombas = (fecha) => {
+    try {
+      const url = `${api_url}/reportes/bombas/${fecha}`
+      open(url, '_blank')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getReportEsferas,
     getReportPatines,
     getReportCromatografo,
+    getReportBombas,
   }
 }
 

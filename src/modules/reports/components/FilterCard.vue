@@ -21,7 +21,7 @@ const fileOpen = ref(false)
 
 const { addToast } = useToast()
 
-const { getCargasDiarias, getReportEsferas, getReportPatines, getReportCromatografo } = useReportes()
+const { getCargasDiarias, getReportEsferas, getReportPatines, getReportCromatografo, getReportBombas } = useReportes()
 
 const getReportServicio = async (type) => {
 	console.log("🚀 ~ file: FilterCard.vue:27 ~ getReportServicio ~ type:", type)
@@ -72,6 +72,10 @@ const getReportServicio = async (type) => {
 		case 'croma-eb04-3':
 			fileOpen.value = getReportCromatografo(fecha, 4)
 			detail = `Reporte diario de ${type} del día ${fecha}`
+			break
+		case 'bombas':
+			fileOpen.value = getReportBombas(fecha)
+			detail = `Reporte diario de bombas ${type} del día ${fecha}`
 			break
 			default:
 				break
