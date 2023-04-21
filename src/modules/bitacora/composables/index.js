@@ -5,8 +5,8 @@ const useBitacora = () => {
 
   const store = useBitacoraStore()
 
-  const fetchBitacora = async () => {
-    const res = await store.fetchBitacoras()
+  const fetchBitacora = async (fecha) => {
+    const res = await store.fetchBitacoras(fecha)
     return res
   }
 

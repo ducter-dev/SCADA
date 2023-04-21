@@ -8,9 +8,9 @@ export const useBitacoraStore = defineStore('bitacora', {
   }),
   getters: {},
   actions: {
-    async fetchBitacoras() {
+    async fetchBitacoras(fecha) {
       try {
-        const res = await scadaApi.get('/bitacora')
+        const res = await scadaApi.get(`/bitacora/${fecha}`)
         const { data } = res
         this.records = data
         return res

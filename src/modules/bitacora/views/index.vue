@@ -17,6 +17,7 @@ const { fetchBitacora, getBitacora } = useBitacora()
 const records = computed(() => getBitacora())
 const date = ref(new Date())
 const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
+const { addToast } = useToast()
 
 let dataResult = ref([])
 let loadData = ref(true)
@@ -52,10 +53,9 @@ const setDataFromResult = (data) => {
 const fetchDataBitacora = async () => {
   console.log("🚀 ~ file: index.vue:53 ~ fetchDataBitacora ~ fetchDataBitacora:", fetchDataBitacora)
   try {
-    const res = await fetchBitacora()
-    console.log("🚀 ~ file: index.vue:55 ~ fetchDataBitacora ~ res:", res)
+    console.log("🚀 ~ file: index.vue:56 ~ fetchDataBitacora ~ dateToUse:", dateToUse.value)
+    const res = await fetchBitacora(dateToUse.value)
     const { data, status } = res
-    console.log("🚀 ~ file: index.vue:54 ~ fetchDataBitacora ~ data:", data)
 
     // Valida de acuerdo al estatus de la petición
     // Si el código de estatus es diferente de 200 se marcara un error 
