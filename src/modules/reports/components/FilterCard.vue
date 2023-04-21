@@ -110,7 +110,7 @@ const formatPicker = () => {
 	</div>
 	<div>
 		<div class="py-3 border-t border-slate-400/20">
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Documentación</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Documentación</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -155,7 +155,7 @@ const formatPicker = () => {
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Patines</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Patines</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -200,7 +200,7 @@ const formatPicker = () => {
 				</div>
 			</div>
 			</div>
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Bombas</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Bombas</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -211,7 +211,7 @@ const formatPicker = () => {
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Cromatógrafo</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Cromatógrafo</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -246,7 +246,7 @@ const formatPicker = () => {
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Esferas</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Esferas</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
@@ -274,7 +274,7 @@ const formatPicker = () => {
 				</div>
 				
 			</div>
-			<div class="m-2 text-xs font-semibold text-dark">Reportes de Bitácora</div>
+			<div class="mt-4 mb-1 text-xs font-semibold text-dark">Reportes de Bitácora</div>
 			<div class="grid grid-cols-4 gap-1">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">

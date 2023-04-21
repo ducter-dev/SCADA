@@ -16,11 +16,15 @@ import {
 import { format } from 'date-fns'
 import useWaitTank from '../../tanques/composables/useTanqueEspera'
 import useTanque from '../../tanques/composables/useTanque'
-import useToast from "../../dashboard/composables/useToast";
+import useToast from "../../dashboard/composables/useToast"
 import useEventsBus from "../../../layout/eventBus"
+import useBitacora from '../../bitacora/composables'
+import useAuth from '../../auth/composables/useAuth'
 
 const { addToast } = useToast()
 const { emit } = useEventsBus()
+const { insertBitacora } = useBitacora()
+const { getCurrentUser } = useAuth()
 
 const isOpen = ref(false)
 const loader = ref(false)
@@ -35,7 +39,7 @@ const openModal = () => {
 const { agregarTanqueEspera, getCountTanquesEspera,addEntryTank } = useWaitTank()
 const { getTanques } = useTanque()
 const tanques = computed(() => getTanques())
-console.log("🚀 ~ file: create.vue:38 ~ tanques:", tanques.value)
+const currentUser = computed(() => getCurrentUser())
 
 const tanksTypes = [
     { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
@@ -81,11 +85,6 @@ const resetForm = () => Object.assign(entryForm, getInitialFormData())
 async function onSubmit() {
     loader.value = true
     entryForm.posicion = getCountTanquesEspera()
-    entryForm.horaEntrada = format(new Date(), 'H:m:s')
-    entryForm.fechaEntrada = format(new Date(), 'yyyy-MM-dd')
-    entryForm.reporte24 = format(new Date(), 'yyyy-MM-dd')
-    entryForm.reporte05 = format(new Date(), 'yyyy-MM-dd')
-
     var body = {
         posicion: entryForm.posicion,
         atId: entryForm.atId,
@@ -95,42 +94,11 @@ async function onSubmit() {
         conector: entryForm.conector.id,
         password: entryForm.password,
         embarque: entryForm.embarque,
-        horaEntrada: entryForm.horaEntrada,
-        fechaEntrada: entryForm.fechaEntrada,
-        reporte24: entryForm.reporte24,
-        reporte05: entryForm.reporte05,
     }
     
-    submitWaitTank(body)
     submitEntryTank(body)
+    submitWaitTank(body)
 
-}
-
-async function submitWaitTank (body){
-    const { data, status } = await agregarTanqueEspera(body)
-    if (status == 200) {
-        loader.value = false
-        emit("successRegistration", true);
-        resetForm()
-        closeModal()
-        addToast({
-            message: {
-                title: "Éxito!",
-                message: `Se agregó el tanque ${data.atName} a la lista de espera.`,
-                type: "success"
-            },
-        });
-    } else {
-        loader.value = false
-        addToast({
-            message: {
-                title: "¡Error!",
-                message: data,
-                type: "error",
-                component: "create - onSubmit()"
-            },
-        });
-    }
 }
 
 async function submitEntryTank(body){
@@ -140,6 +108,12 @@ async function submitEntryTank(body){
         emit("successRegistrationEntryTank", true);
         resetForm()
         closeModal()
+        const objBitacora = {
+            user: currentUser.id,
+            actividad: `El usuario ${currentUser.value.username} agregó al tanque la lista de entradas ${data.atName}.`,
+            evento: 4,
+        }
+        insertBitacora(objBitacora)
         addToast({
             message: {
                 title: "Éxito!",
@@ -160,10 +134,46 @@ async function submitEntryTank(body){
     }
 }
 
-watch(() => entryForm.atId, (id) => {
+
+async function submitWaitTank (body){
+    const { data, status } = await agregarTanqueEspera(body)
+    if (status == 200) {
+        loader.value = false
+        emit("successRegistration", true);
+        resetForm()
+        closeModal()
+        const objBitacora = {
+            user: currentUser.id,
+            actividad: `El usuario ${currentUser.value.username} agregó al tanque la lista de espera ${data.atName}.`,
+            evento: 4,
+        }
+        insertBitacora(objBitacora)
+        addToast({
+            message: {
+                title: "Éxito!",
+                message: `Se agregó el tanque ${data.atName} a la lista de espera.`,
+                type: "success"
+            },
+        });
+    } else {
+        loader.value = false
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: data,
+                type: "error",
+                component: "create - onSubmit()"
+            },
+        });
+    }
+}
+
+
+watch(() => entryForm.atId, () => {
     const { sufix } = tanksTypes.find(t => t.id == entryForm.atTipo.id)
-    entryForm.atName = `PG-${id}${sufix}`
-    entryForm.password = id
+    console.log("🚀 ~ file: create.vue:175 ~ watch ~ entryForm.atId:", entryForm.atId)
+    entryForm.atName = entryForm.atId < 999 ? `PG-0${entryForm.atId}${sufix}` : `PG-${entryForm.atId}${sufix}`
+    entryForm.password = entryForm.atTipo.id
     const pgFinded = tanques.value.find( t => t.atName === entryForm.atName)
     if (pgFinded) { 
         entryForm.capacidad = pgFinded.capacidad90
@@ -173,7 +183,9 @@ watch(() => entryForm.atId, (id) => {
 
 watch(() => entryForm.atTipo, () => {
     const { sufix } = tanksTypes.find(t => t.id == entryForm.atTipo.id)
-    entryForm.atName = `PG-${entryForm.atId}${sufix}`
+    console.log("🚀 ~ file: create.vue:175 ~ watch ~ entryForm.atId:", entryForm.atId)
+    entryForm.atName = entryForm.atId < 999 ? `PG-0${entryForm.atId}${sufix}` : `PG-${entryForm.atId}${sufix}`
+    entryForm.password = entryForm.atTipo.id
     const pgFinded = tanques.value.find( t => t.atName === entryForm.atName)
     if (pgFinded) { 
         entryForm.capacidad = pgFinded.capacidad90

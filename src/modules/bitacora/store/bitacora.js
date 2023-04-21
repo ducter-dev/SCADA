@@ -18,5 +18,13 @@ export const useBitacoraStore = defineStore('bitacora', {
         return { ok: false, message: error }
       }
     },
+    async insertBitacora(bitacora) {
+      try {
+        const res = await scadaApi.post('/bitacora', bitacora)
+        return res
+      } catch (error) {
+        return { ok: false, message: error }
+      }
+    }
   }
 })

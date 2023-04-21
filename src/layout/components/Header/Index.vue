@@ -17,12 +17,21 @@ import useToast from "../../../modules/dashboard/composables/useToast";
 
 const { addToast } = useToast()
 const { isFullscreen, toggle: toggleFullScreen } = useFullscreen()
-const { logout, getToken, getUserName } = useAuth()
+const { logout, getToken, getUserName, getCurrentUser } = useAuth()
 const token = computed(() => getToken())
 const userName = computed(() => getUserName())
 const router = useRouter()
-const exitApp = () => {
-    const resp = logout()
+const currentUser = computed(() => getCurrentUser())
+
+const exitApp = async () => {
+    const oldUser = currentUser.value
+    const objBitacora = {
+        user: oldUser.id,
+        actividad: `El usuario ${oldUser.username} ha cerrado sesión.`,
+        evento: 2,
+    }
+    
+    const resp = await logout(objBitacora)
     if (resp) {
         addToast({
             message: {
@@ -30,32 +39,32 @@ const exitApp = () => {
                 message: "Cierre de sesión exitosamente.",
                 type: "info"
             },
-        });
+        })
         router.push({ name: 'login' })
     }
 }
 </script>
 <template>
     <div
-        class=" sticky top-0 z-10 shrink-0 flex h-16 bg-white dark:bg-slate-900 md:bg-transparent md:dark:bg-transparent backdrop-filter backdrop-blur-md shadow md:shadow-none md:py-2 md:h-auto border-b border-transparent md:border-slate-200 dark:border-slate-700">
+        class="sticky top-0 z-10 flex h-16 bg-white border-b border-transparent shadow shrink-0 dark:bg-slate-900 md:bg-transparent md:dark:bg-transparent backdrop-filter backdrop-blur-md md:shadow-none md:py-2 md:h-auto md:border-slate-200 dark:border-slate-700">
         <button @click="toggleSidebar()" aria-label="Open sidebar"
             class="px-4 border-r border-slate-200 dark:border-slate-700 text-slate-500 focus:outline-none focus:bg-slate-100 dark:focus:bg-slate-800 focus:text-slate-600 dark:focus:text-slate-500 md:hidden">
-            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
         </button>
         <button @click="toggleCollapsableMode()" aria-label="Open sidebar"
-            class="px-4 border-r border-slate-200 dark:border-slate-700 text-slate-500 focus:outline-none focus:bg-slate-100 dark:focus:bg-slate-800 focus:text-slate-600 dark:focus:text-slate-500 hidden md:block">
-            <svg class="h-6 w-6 transition delay-300" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            class="hidden px-4 border-r border-slate-200 dark:border-slate-700 text-slate-500 focus:outline-none focus:bg-slate-100 dark:focus:bg-slate-800 focus:text-slate-600 dark:focus:text-slate-500 md:block">
+            <svg class="w-6 h-6 transition delay-300" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" v-if="!isCollapse" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" v-else />
             </svg>
         </button>
-        <div class="flex-1 px-4 sm:px-6 md:px-8 flex justify-between">
-            <div class="flex-1 flex">
+        <div class="flex justify-between flex-1 px-4 sm:px-6 md:px-8">
+            <div class="flex flex-1">
                 <!-- Search component -->
             </div>
-            <div class="ml-4 flex items-center md:ml-6 space-x-4">
+            <div class="flex items-center ml-4 space-x-4 md:ml-6">
                 <button v-tippy="'alternar el modo oscuro'" type="button" @click="toggleDarkMode()"
                     class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
                     <IconSun v-show="isDark" class="w-5 h-5" />
@@ -68,13 +77,13 @@ const exitApp = () => {
                     <IconCompress v-show="isFullscreen" class="w-5 h-5" />
                 </button>
                 <!-- Profile dropdown -->
-                <div class="ml-3 relative">
+                <div class="relative ml-3">
                     <Dropdown align="right" width="56">
                         <template #trigger>
                             <button
-                                class="max-w-xs flex items-center text-sm rounded-full overflow-hidden focus:outline-none hover:bg-slate-50 dark:focus:bg-slate-700 dark:hover:bg-slate-800 lg:p-2 lg:rounded-md">
-                                <span class=" text-slate-900 dark:text-white text-sm leading-5 font-medium block" v-text="userName"></span>
-                                <IconChevronDown class="hidden shrink-0 ml-1 h-4 w-4 text-slate-400 lg:block" />
+                                class="flex items-center max-w-xs overflow-hidden text-sm rounded-full focus:outline-none hover:bg-slate-50 dark:focus:bg-slate-700 dark:hover:bg-slate-800 lg:p-2 lg:rounded-md">
+                                <span class="block text-sm font-medium leading-5 text-slate-900 dark:text-white" v-text="userName"></span>
+                                <IconChevronDown class="hidden w-4 h-4 ml-1 shrink-0 text-slate-400 lg:block" />
                             </button>
                         </template>
                         <template #content>
@@ -82,7 +91,7 @@ const exitApp = () => {
                                 <DropdownLink @click="exitApp" class="w-full">
                                     <!-- iconos de cerrar sesion -->
                                     <IconRightFromBracket
-                                        class=" mr-3 h-5 w-5 text-red-400 group-hover:text-red-500 group-focus:text-red-500" />
+                                        class="w-5 h-5 mr-3 text-red-400 group-hover:text-red-500 group-focus:text-red-500" />
                                     Cerrar sesión
                                 </DropdownLink>
                             </div>
