@@ -19,9 +19,10 @@ import useAuth from "../../auth/composables/useAuth"
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { bus } = useEventsBus()
-const { fetchEstadoLlenadera, getLlenaderasEstado } = useFillers()
+const { fetchEstadoLlenadera, getLlenaderasEstado, resetLlenadera, desasignLlenadera, asignarLlenadera, changeEstadoLlenadera }  = useFillers()
 const { fetchLastAssignment, getLastAssignment, getFirstTank } = useWaitingTank()
-const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, changeBarreraVerificacion } = useDashboard()
+const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, 
+        changeBarreraVerificacion, liberarLlenadera, } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
 const loadData = ref(false)
@@ -111,8 +112,9 @@ const fetchWaitingTanks = async () => {
 const fetchFillerStatus = async () => {
     try {
         const res = await fetchEstadoLlenadera()
+        console.log("🚀 ~ file: WaitingList.vue:115 ~ fetchFillerStatus ~ res:", res)
         const { data, status } = res
-        if (status == 201) {
+        if (status == 200) {
             setDataFromFetchingWaitingTanks(data.estado)
         } else {
             addToast({
@@ -201,7 +203,8 @@ const nextAssignment = async () => {
                     message: "Se establecio la siguiente llenadera correctamente.",
                     type: "success"
                 },
-            });
+            })
+            
         } else {
             addToast({
                 message: {
@@ -232,7 +235,13 @@ const reassignAssignment = async () => {
                     message: "Se reasigno la asignación correctamente.",
                     type: "success"
                 },
-            });
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} reasignó la llenadera.`,
+                evento: 15,
+            }
+            insertBitacora(objBitacora)
         } else if (!res.ok) {
             addToast({
                 message: {
@@ -240,7 +249,13 @@ const reassignAssignment = async () => {
                     message: res.message,
                     type: "error"
                 },
-            });
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} reasignó la llenadera.`,
+                evento: 15,
+            }
+            insertBitacora(objBitacora)
         }
     } catch (error) {
         addToast({
@@ -264,7 +279,13 @@ const acceptAssignmentFunction = async () => {
                     message: "Se acepto la asignación correctamente.",
                     type: "success"
                 },
-            });
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
+                evento: 13,
+            }
+            insertBitacora(objBitacora)
         } else {
             addToast({
                 message: {
@@ -295,7 +316,13 @@ const unassign = async () => {
                     message: "Se cancelo la asignación correctamente.",
                     type: "success"
                 },
-            });
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} canceló la asignación.`,
+                evento: 14,
+            }
+            insertBitacora(objBitacora)
         } else if (!res.ok) {
             addToast({
                 message: {
@@ -342,6 +369,82 @@ const fetchDataBarrierVerification = async () => {
                 component: "LastEntry | Catch - fetchDataBarrierEntry()"
             },
         })
+    }
+}
+
+const stopDispacth = async () => {
+    try {
+        const res = await changeEstadoLlenadera(1)
+        const { data, status } = res
+        if (status == 201) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: `El usuario ${currentUser.value.username} detuvo el despacho de la llenaderas.`,
+                    type: "success"
+                },
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} detuvo el despacho de la llenaderas.`,
+                evento: 16,
+            }
+            insertBitacora(objBitacora)
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
+    }
+}
+
+const releaseDispacth = async () => {
+    try {
+        const res = await changeEstadoLlenadera(0)
+        const { data, status } = res
+        if (status == 201) {
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: `El usuario ${currentUser.value.username} liberó el despacho de la llenaderas.`,
+                    type: "success"
+                },
+            })
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} liberó el despacho de la llenaderas.`,
+                evento: 17,
+            }
+            insertBitacora(objBitacora)
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error"
+                },
+            });
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error"
+            },
+        });
     }
 }
 
@@ -432,7 +535,7 @@ onMounted(() => {
                                 ]">
                                     <IconCheckToSlot class="w-5 h-5 mr-2 text-blue-400" />
 
-                                    Acepatar asignación
+                                    Aceptar asignación
                                 </button>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
@@ -455,7 +558,7 @@ onMounted(() => {
                                 </button>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
-                                <button :class="[
+                                <button @click="stopDispacth()" :class="[
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
@@ -464,7 +567,7 @@ onMounted(() => {
                                 </button>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
-                                <button :class="[
+                                <button @click="releaseDispacth()" :class="[
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">

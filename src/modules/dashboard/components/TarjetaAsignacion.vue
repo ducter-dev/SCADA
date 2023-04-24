@@ -59,7 +59,7 @@
             class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-blue-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
             <IconArrowsTurnRight />
           </button>
-          <button @click="$emit('aceptarAsignacion')" v-tippy="{ content: 'Acepatar asignación' }" type="button"
+          <button @click="$emit('aceptarAsignacion')" v-tippy="{ content: 'Aceptar asignación' }" type="button"
             class="flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm hover:text-green-500 hover:bg-gray-50 focus:ring-1 focus:ring-gray-300 focus:outline-none ">
             <IconCheckToSlot />
           </button>

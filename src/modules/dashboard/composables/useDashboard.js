@@ -102,7 +102,11 @@ const useDashboard = () => {
 
   const desAsignarLlenadera = async (llenadera) => {
     return await store.desAsignarLlenadera(llenadera)
-  } 
+  }
+
+  const setDespachoLlenadera = async (estado) => {
+    return await store.setDespacho(estado)
+  }
 
   return {
     fetchAntenaEntrada,
@@ -127,6 +131,7 @@ const useDashboard = () => {
     getCurrentFiller,
     liberarLlenadera,
     desAsignarLlenadera,
+    setDespachoLlenadera,
   }
 }
 

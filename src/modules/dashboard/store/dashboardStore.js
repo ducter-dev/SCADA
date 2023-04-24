@@ -227,13 +227,34 @@ export const useDashboardStore = defineStore('dashboard', {
     },
 
     /**
-     *  Función para liberar una llenadera
+     *  Función para desasignar una llenadera
      * 
      * @returns Boolean 
     */
     async desAsignarLlenadera(llenadera) {
       try {
         const res = await scadaApi.post(`/llenaderas/desasignar/${llenadera}`)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    /**
+     *  Función para cambiar el estado de una llenadera
+     * 
+     * @returns Boolean 
+    */
+    async setDespacho(estado) {
+      try {
+        const dataForm = {
+          estado
+        }
+        const res = await scadaApi.post('/llenaderas/estado', dataForm)
         return res
       } catch (error) {
         if(error.response){
