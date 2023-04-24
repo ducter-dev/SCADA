@@ -1,17 +1,23 @@
 import { useLoginStore } from '../store/login'
+import useBitacora  from '../../bitacora/composables'
+
 
 const useAuth = () => {
 
   const store = useLoginStore()
+  const { insertBitacora } = useBitacora()
+  
   
   const login = async( formUser ) => {
     const resp = await store.login(formUser)
     return resp
   }
 
-  const logout = () => {
-    const resp = store.logout()
-    return resp
+  const logout = async (bitacora) => {
+    console.log("🚀 ~ file: useAuth.js:17 ~ logout ~ bitacora:", bitacora)
+    await insertBitacora(bitacora)
+    store.logout()
+    return true
   }
 
   const getToken = () => {
@@ -28,12 +34,17 @@ const useAuth = () => {
     return resp
   }
 
+  const getCurrentUser = () => {
+    return store.user
+  }
+
   return {
     login,
     logout,
     getToken,
     getUserName,
-    setlocked
+    setlocked,
+    getCurrentUser,
   }
 }
 

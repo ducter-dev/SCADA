@@ -29,6 +29,7 @@ export const useTanqueStore = defineStore('tanques', {
     llenaderasFiltradas(state) {
       return state.llenaderas.length > 1 ? state.llenaderas.filter(llen => llen.estado == 1) : []
     },
+    firstTanqueInWaitingList(state) { return state.tanquesInEspera[0] },
   },
   actions: {
     // ------ Tanques ------

@@ -168,7 +168,7 @@ onMounted(() => {
               <template #body v-if="dataResult.length > 0">
                 <tr  v-for="(item, index) in dataResult" :key="item.id">
                   <LBodyTh :value="index + 1" center />
-                  <LBodyTd :value="item.actividad" center />
+                  <LBodyTd :value="item.actividad" />
                   <LBodyTd :value="item.evento.descripcion" center />
                   <LBodyTd :value="item.user.username" center />
                   <LBodyTd :value="item.fecha" center />

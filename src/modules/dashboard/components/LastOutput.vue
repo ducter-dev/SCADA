@@ -1,22 +1,37 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue"
-import useToast from "../../dashboard/composables/useToast";
+import useToast from "../../dashboard/composables/useToast"
 import Toggle from '@vueform/toggle'
 import useTankOutput from '../../tanques/composables/useTanqueSalida'
 import useDashboard from '../composables/useDashboard'
 import useEventsBus from "../../../layout/eventBus"
+import useBitacora from "../../bitacora/composables"
+import useAuth from "../../auth/composables/useAuth"
 
 
 let status = ref(false)
 let dataLastOutput = ref({})
 const { fetchUltimaSalida } = useTankOutput()
+const { fetchBarreraSalida, getBarreraSalida, changeBarreraSalida } = useDashboard()
+
+const { insertBitacora } = useBitacora()
+const { getCurrentUser } = useAuth()
+const currentUser = computed(() => getCurrentUser())
+
 const { addToast } = useToast()
-const { fetchBarreraSalida, getBarreraSalida } = useDashboard()
 const { bus } = useEventsBus()
 
-const barreraSalida = computed(() => getBarreraSalida())
+const loadDataBarrierStatus = ref(false)
+let dataBarrierExitStatus = ref({})
+const barrierExit = computed(() => getBarreraSalida())
 
 const dataBarreraSalida = ref({})
+
+const setDataFromFetchDataBarrierExit = (data) => {
+    dataBarrierExitStatus.value = data
+    loadDataBarrierStatus.value = false
+}
+
 
 const fetchDataLastOutput = async () => {
     try {
@@ -50,8 +65,9 @@ const fetchDataBarreraSalida = async () => {
     try {
         const res = await fetchBarreraSalida()
         const { data, status } = res
+        console.log("🚀 ~ file: LastOutput.vue:68 ~ fetchDataBarreraSalida ~ data:", data)
         if (status == 200) {
-            dataBarreraSalida.value = data.estado
+            setDataFromFetchDataBarrierExit(data.estado)
         } else {
             addToast({
                 message: {
@@ -76,11 +92,11 @@ const fetchDataBarreraSalida = async () => {
 
 const setTipo = (tipo) => {
     switch (tipo) {
-        case 1:
+        case 0:
             return 'FULL A'
-        case 2:
+        case 1:
             return 'FULL B'
-        case 3:
+        case 2:
             return 'Sencillo'
     }
 }
@@ -101,10 +117,51 @@ watch(() => bus.value.get('reloadData'), (val) => {
     fetchDataBarreraSalida()
 })
 
+watch(
+    () => dataBarrierExitStatus.value, async(estadoBarrera) => {
+        console.log("🚀 ~ file: LastOutput.vue:121 ~ estadoBarrera:", estadoBarrera)
+        const res = await changeBarreraSalida(estadoBarrera)
+        console.log("🚀 ~ file: LastOutput.vue:123 ~ res:", res)
+        
+        const { data, status } = res
+        if (status == 201) {
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera? 'Abierta': 'Cerrada'}.`,
+                evento: estadoBarrera ? 22 : 23,
+            }
+            console.log("🚀 ~ file: LastOutput.vue:133 ~ objBitacora:", objBitacora)
+            insertBitacora(objBitacora)
+            addToast({
+                message: {
+                    title: "Éxito!",
+                    message: `Se cambio el estado de la barrera de salida.`,
+                    type: "success"
+                },
+            })  
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: `Error: No se pudo cambiar el estado de la barrera de salida`,
+                    type: "error",
+                    component: "LastExit | Catch - changeBarreraSalida()"
+                },
+            })
+        }
+    }
+)
+
 onMounted(() => {
     fetchDataLastOutput()
 
-    if (barreraSalida.value || Object.keys(barreraSalida.value).length < 1) {
+    if (barrierExit.value.length != 0) {
+        console.log("🚀 ~ file: LastOutput.vue:157 ~ onMounted ~ barrierExit.value:", barrierExit.value.estado)
+        
+        // Establece la información del store
+        setDataFromFetchDataBarrierExit(barrierExit.value.estado)
+    } else {
+        // Realiza la petición al servidor
         fetchDataBarreraSalida()
     }
 
@@ -139,7 +196,7 @@ onMounted(() => {
                         </p>
                     </div>
                     <div class="flex items-center justify-center mx-2">
-                        <Toggle v-model="dataBarreraSalida" offLabel="Cerrada" onLabel="Abierta" :classes="{
+                        <Toggle v-model="dataBarrierExitStatus" offLabel="Cerrada" onLabel="Abierta" :classes="{
                             toggle: 'flex w-[5.5rem] py-2 relative cursor-pointer transition items-center box-content text-sm leading-none',
                             toggleOn: 'bg-green-200 dark:bg-green-700 border-salte-300 dark:border-salte-800 justify-start text-green-900 dark:text-white',
                             toggleOff: 'bg-red-200 dark:bg-red-700 border-salte-300 dark:border-salte-800 justify-end text-red-900 dark:text-white',

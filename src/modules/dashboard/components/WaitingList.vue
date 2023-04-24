@@ -14,12 +14,14 @@ import IconBan from '../../../assets/icons/ban.svg'
 import IconArrowsTurnToDots from '../../../assets/icons/arrows-turn-to-dots.svg'
 import IconCircleStop from '../../../assets/icons/circle-stop.svg'
 import IconPlay from '../../../assets/icons/play.svg'
+import useBitacora from "../../bitacora/composables"
+import useAuth from "../../auth/composables/useAuth"
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { bus } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado } = useFillers()
-const { fetchLastAssignment, getLastAssignment } = useWaitingTank()
-const { getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment } = useDashboard()
+const { fetchLastAssignment, getLastAssignment, getFirstTank } = useWaitingTank()
+const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, changeBarreraVerificacion } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
 const loadData = ref(false)
@@ -28,8 +30,16 @@ const getFiller = ref(false)
 const filler = ref()
 const listWaitingTank = computed(() => getLastAssignment())
 const fillerStatus = computed(() => getLlenaderasEstado())
-let dataWaitingTanks = ref([])
 let dataFillerStatus = ref({})
+
+const { insertBitacora } = useBitacora()
+const { getCurrentUser } = useAuth()
+const currentUser = computed(() => getCurrentUser())
+const dataWaitingTank = computed(() => getFirstTank())
+
+const loadDataBarrierStatus = ref(false)
+let dataBarrierVerificationStatus = ref({})
+const barrierVerification = computed(() => getBarreraVerificacion())
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -38,8 +48,9 @@ let dataFillerStatus = ref({})
  * @param {*} data 
  */
 const setDataFromResult = (data) => {
-    dataWaitingTanks.value = data
+    //dataWaitingTanks.value = data
     loadData.value = false
+    loadDataBarrierStatus.value = false
 }
 
 /**
@@ -51,6 +62,12 @@ const setDataFromResult = (data) => {
 const setDataFromFetchingWaitingTanks = (data) => {
     dataFillerStatus.value = data
     loadDataFillerStatus.value = false
+    loadDataBarrierStatus.value = false
+}
+
+const setDataFromFetchDataBarrierVerification = (data) => {
+    dataBarrierVerificationStatus.value = data
+    loadDataBarrierStatus.value = false
 }
 
 /**
@@ -96,7 +113,7 @@ const fetchFillerStatus = async () => {
         const res = await fetchEstadoLlenadera()
         const { data, status } = res
         if (status == 201) {
-            setDataFromFetchingWaitingTanks(data)
+            setDataFromFetchingWaitingTanks(data.estado)
         } else {
             addToast({
                 message: {
@@ -124,7 +141,7 @@ const currentFiller = async () => {
     try {
         const res = await getCurrentFiller()
         const { data, status } = res
-        if (status == 201) {
+        if (status == 200) {
             filler.value = data.llenaderaDisponible
             getFiller.value = true
         } else {
@@ -153,11 +170,11 @@ const currentFiller = async () => {
 
 const setTipo = (tipo) => {
     switch (tipo) {
-        case 1:
+        case 0:
             return 'Sencillo'
-        case 2:
+        case 1:
             return 'Full A'
-        case 3:
+        case 2:
             return 'Full B'
     }
 }
@@ -299,16 +316,88 @@ const unassign = async () => {
     }
 }
 
+const fetchDataBarrierVerification = async () => {
+    try {
+        const res = await fetchBarreraVerificacion()
+        console.log("🚀 ~ file: WaitingList.vue:322 ~ fetchDataBarrierVerification ~ res:", res)
+        const { data, status } = res
+        if (status == 200) {
+            setDataFromFetchDataBarrierVerification(data.estado)
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: data.message,
+                    type: "error",
+                    component: "LastEntry - fetchDataBarrierEntry()"
+                },
+            })
+        }
+    } catch (error) {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: `Error: ${error.message}`,
+                type: "error",
+                component: "LastEntry | Catch - fetchDataBarrierEntry()"
+            },
+        })
+    }
+}
+
 watch(() => bus.value.get('reloadData'), (val) => {
     fetchWaitingTanks()
     currentFiller()
     fetchFillerStatus()
+    fetchDataBarrierVerification()
 })
+
+watch(
+    () => dataBarrierVerificationStatus.value, async(estadoBarrera) => {
+        console.log("🚀 ~ file: WaitingList.vue:357 ~ estadoBarrera:", estadoBarrera)
+        const res = await changeBarreraVerificacion(estadoBarrera)
+        console.log("🚀 ~ file: WaitingList.vue:359 ~ res:", res)
+        const { data, status } = res
+        if (status == 201) {
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera? 'Abierta': 'Cerrada'}.`,
+                evento: estadoBarrera ? 20 : 21,
+            }
+            console.log("🚀 ~ file: WaitingList.vue:367 ~ objBitacora:", objBitacora)
+            insertBitacora(objBitacora)
+            addToast({
+                message: {
+                    title: "Éxito!",
+                    message: `Se cambio el estado de la barrera de verificación.`,
+                    type: "success"
+                },
+            })  
+        } else {
+            addToast({
+                message: {
+                    title: "¡Error!",
+                    message: `Error: No se pudo cambiar el estado de la barrera de verificación`,
+                    type: "error",
+                    component: "WaitingList | Catch - changeBarreraVerificacion()"
+                },
+            })
+        }
+    }
+)
 
 onMounted(() => {
     fetchWaitingTanks()
     fetchFillerStatus()
     currentFiller()
+    if (barrierVerification.value.length != 0) {
+        console.log("🚀 ~ file: LastEntry.vue:392 ~ onMounted ~ barrierVerification.value:", barrierVerification.value.estado)
+        // Establece la información del store
+        setDataFromFetchDataBarrierVerification(barrierVerification.value.estado)
+    } else {
+        // Realiza la petición al servidor
+        fetchBarreraVerificacion()
+    }
 })
 </script>
 <template>
@@ -324,7 +413,7 @@ onMounted(() => {
                         leave-active-class="transition duration-75 ease-in"
                         leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
                         <MenuItems
-                            class="absolute left-0 mt-2 w-44 origin-top-right divide-y divide-slate-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            class="absolute left-0 mt-2 origin-top-right bg-white divide-y shadow-lg w-44 divide-slate-100 ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <div class="px-1 py-1 divide-y">
                                 <MenuItem v-slot="{ active }">
                                 <button @click="nextAssignment()" :class="[
@@ -332,7 +421,7 @@ onMounted(() => {
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
 
-                                    <IconArrowsTurnRight class="mr-2 h-5 w-5 text-green-400" />
+                                    <IconArrowsTurnRight class="w-5 h-5 mr-2 text-green-400" />
                                     Siguiente llenadera
                                 </button>
                                 </MenuItem>
@@ -341,7 +430,7 @@ onMounted(() => {
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
-                                    <IconCheckToSlot class="mr-2 h-5 w-5 text-blue-400" />
+                                    <IconCheckToSlot class="w-5 h-5 mr-2 text-blue-400" />
 
                                     Acepatar asignación
                                 </button>
@@ -351,7 +440,7 @@ onMounted(() => {
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
-                                    <IconBan class="mr-2 h-5 w-5 text-orange-400" />
+                                    <IconBan class="w-5 h-5 mr-2 text-orange-400" />
 
                                     Cancelar asignación
                                 </button>
@@ -361,7 +450,7 @@ onMounted(() => {
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
-                                    <IconArrowsTurnToDots class="mr-2 h-5 w-5 text-indigo-400" />
+                                    <IconArrowsTurnToDots class="w-5 h-5 mr-2 text-indigo-400" />
                                     Reasignar llenader
                                 </button>
                                 </MenuItem>
@@ -370,7 +459,7 @@ onMounted(() => {
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
-                                    <IconCircleStop class="mr-2 h-5 w-5 text-red-400" />
+                                    <IconCircleStop class="w-5 h-5 mr-2 text-red-400" />
                                     Detenener despacho
                                 </button>
                                 </MenuItem>
@@ -379,7 +468,7 @@ onMounted(() => {
                                     active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
                                     'group flex w-full items-center px-1 py-1 text-sm',
                                 ]">
-                                    <IconPlay class="mr-2 h-5 w-5 text-lime-400" />
+                                    <IconPlay class="w-5 h-5 mr-2 text-lime-400" />
                                     Liberar despacho
                                 </button>
                                 </MenuItem>
@@ -391,13 +480,13 @@ onMounted(() => {
             </div>
             <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-                <LCardListItem label="Número de autotanque" :value="dataWaitingTanks.atName" />
-                <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTanks.atTipo)" />
-                <LCardListItem label="Volumen programado" :value="dataWaitingTanks.volProg" />
-                <LCardListItem label="Tipo de conector" :value="setConector(dataWaitingTanks.conector)" />
+                <LCardListItem label="Número de autotanque" :value="dataWaitingTank? dataWaitingTank.atName : ''" />
+                <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTank? dataWaitingTank.atTipo : 1)" />
+                <LCardListItem label="Volumen programado" :value="dataWaitingTank? dataWaitingTank.capacidad : 0" />
+                <LCardListItem label="Tipo de conector" :value="setConector(dataWaitingTank? dataWaitingTank.conector : 3)" />
 
                 <LCardListItem label="Llenadera disponible">
-                    <span v-if="getFiller">{{ llenadera }}</span>
+                    <span v-if="getFiller">{{ filler }}</span>
                     <div class="flex justify-between mx-2 text-sm font-semibold text-red-500" v-else>
                         <span>Error</span>
                         <IconArrowsRotate class="w-4 h-4 ml-2 cursor-pointer text-slate-400 "
@@ -419,7 +508,7 @@ onMounted(() => {
                         </p>
                     </div>
                     <div class="flex items-center justify-center mx-2">
-                        <Toggle v-model="dataFillerStatus" offLabel="Cerrada" onLabel="Abierta" :classes="{
+                        <Toggle v-model="dataBarrierVerificationStatus" offLabel="Cerrada" onLabel="Abierta" :classes="{
                             toggle: 'flex w-[5.5rem] py-2 relative cursor-pointer transition items-center box-content text-sm leading-none',
                             toggleOn: 'bg-green-200 dark:bg-green-700 border-salte-300 dark:border-salte-800 justify-start text-green-900 dark:text-white',
                             toggleOff: 'bg-red-200 dark:bg-red-700 border-salte-300 dark:border-salte-800 justify-end text-red-900 dark:text-white',

@@ -14,9 +14,15 @@ const useBitacora = () => {
     return store.records
   }
 
+  const insertBitacora = async (bitacora) => {
+    const res = await store.insertBitacora(bitacora)
+    return res
+  }
+
   return {
     fetchBitacora,
     getBitacora,
+    insertBitacora,
   }
 }
 
