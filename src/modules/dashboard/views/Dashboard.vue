@@ -27,16 +27,16 @@
           <div class="p-2 border border-solid border-slate-300">
             <legend class="text-base font-medium text-slate-900 dark:text-white">Estatus Llenaderas</legend>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListActionButton label-button="Desasignar" value-filler="5" />
-              <LCardListActionButton label-button="Desasignar" value-filler="6" />
-              <LCardListActionButton label-button="Desasignar" value-filler="7" />
-              <LCardListActionButton label-button="Desasignar" value-filler="8" />
-              <LCardListActionButton label-button="Desasignar" value-filler="9" />
-              <LCardListActionButton label-button="Desasignar" value-filler="10" />
-              <LCardListActionButton label-button="Desasignar" value-filler="11" />
-              <LCardListActionButton label-button="Desasignar" value-filler="12" />
-              <LCardListActionButton label-button="Desasignar" value-filler="13" />
-              <LCardListActionButton label-button="Desasignar" value-filler="14" />
+              <LCardListActionButton label-button="Desasignar" value-filler=5 />
+              <LCardListActionButton label-button="Desasignar" value-filler=6 />
+              <LCardListActionButton label-button="Desasignar" value-filler=7 />
+              <LCardListActionButton label-button="Desasignar" value-filler=8 />
+              <LCardListActionButton label-button="Desasignar" value-filler=9 />
+              <LCardListActionButton label-button="Desasignar" value-filler=10 />
+              <LCardListActionButton label-button="Desasignar" value-filler=11 />
+              <LCardListActionButton label-button="Desasignar" value-filler=12 />
+              <LCardListActionButton label-button="Desasignar" value-filler=13 />
+              <LCardListActionButton label-button="Desasignar" value-filler=14 />
             </ul>
           </div>
         </div>
@@ -52,46 +52,6 @@
       </div>
     </div>
   </div>
-  <!--
-  <div class="flex flex-col w-full m-2 sm:mx-12 sm:my-2">
-    <div class="flex items-start justify-between w-full">
-      <div class="flex items-start justify-between w-full">
-        <div class="flex flex-col items-center justify-between w-full">
-          <div class="flex items-start justify-around w-full">
-            <div class="flex items-center justify-center">
-              <TarjetaUltimaEntrada :data="dataLastEntry" :barrera="dataBarreraEntrada" @openForm="openForm"
-                @toggleChange="toggleEntrada" />
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <TarjetaAsignacion :llenaderas="dataLlenaderas" :barrera="dataBarreraVerificacion"
-                :data="dataTanksEspera.length > 0 ? dataTanksEspera[0] : {}" :estado="dataEstadoLlenadera"
-                @toggleChange="toggleVerificacion" @despachar="setDespacho" @aceptarAsignacion="aceptarAsignacion"
-                @reasignarAsignacion="reasignarAsignacion" @siguienteAsignacion="siguienteAsignacion"
-                @cancelarAsignacion="cancelarAsignacion" />
-            </div>
-            <div class="flex items-center justify-center">
-              <TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-col justify-center items center">
-          <div class="flex items-center justify-center">
-            <TarjetaUltimasCargas />
-          </div>
-          <div class="flex items-center justify-center">
-            <TarjetaLlenaderas :data="dataEstadoLlenadera" @desasignarLlenadera="desasignarLlenadera" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex items-center justify-center h-56 overflow-y-scroll">
-      <div
-        class="flex items-center justify-center w-full p-2 m-2 mt-24 bg-white border shadow-md border-slate-200">
-        <TablaEspera :tanques="dataTanksEspera" />
-      </div>
-    </div>
-  </div>
-  -->
 </template>
 
 <script>

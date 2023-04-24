@@ -5,8 +5,8 @@ defineProps({
         default: 'Label'
     },
     valueFiller: {
-        type: String,
-        default: 'Value'
+        type: Number,
+        default: 0
     },
     Lname: {
         type: String,
