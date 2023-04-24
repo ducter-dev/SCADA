@@ -206,6 +206,42 @@ export const useDashboardStore = defineStore('dashboard', {
           return { ok: false, message: error }
         }
       }
-    }
+    },
+    
+    /**
+     *  Función para liberar una llenadera
+     * 
+     * @returns Boolean 
+    */
+    async liberarLlenadera(llenadera) {
+      try {
+        const res = await scadaApi.post(`/llenaderas/liberar/${llenadera}`)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    /**
+     *  Función para liberar una llenadera
+     * 
+     * @returns Boolean 
+    */
+    async desAsignarLlenadera(llenadera) {
+      try {
+        const res = await scadaApi.post(`/llenaderas/desasignar/${llenadera}`)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
   },
 })

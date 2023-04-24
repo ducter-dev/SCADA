@@ -96,6 +96,14 @@ const useDashboard = () => {
     return await store.getCurrentFillerSt()
   }
 
+  const liberarLlenadera = async (llenadera) => {
+    return await store.liberarLlenadera(llenadera)
+  } 
+
+  const desAsignarLlenadera = async (llenadera) => {
+    return await store.desAsignarLlenadera(llenadera)
+  } 
+
   return {
     fetchAntenaEntrada,
     fetchAntenaVerificacion,
@@ -117,6 +125,8 @@ const useDashboard = () => {
     reassignAllocation,
     cancelAllocation,
     getCurrentFiller,
+    liberarLlenadera,
+    desAsignarLlenadera,
   }
 }
 

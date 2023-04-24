@@ -109,7 +109,7 @@ async function submitEntryTank(body){
         resetForm()
         closeModal()
         const objBitacora = {
-            user: currentUser.id,
+            user: currentUser.value.id,
             actividad: `El usuario ${currentUser.value.username} agregó al tanque la lista de entradas ${data.atName}.`,
             evento: 4,
         }
@@ -143,7 +143,7 @@ async function submitWaitTank (body){
         resetForm()
         closeModal()
         const objBitacora = {
-            user: currentUser.id,
+            user: currentUser.value.id,
             actividad: `El usuario ${currentUser.value.username} agregó al tanque la lista de espera ${data.atName}.`,
             evento: 4,
         }

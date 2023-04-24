@@ -180,7 +180,7 @@ onMounted(() => {
                                 </tr>
                             </template>
                             <template #body>
-                                <tr v-for="(item, index) in dataResult" v-if="dataResult.length > 0" :key="item.id">
+                                <tr v-for="(item) in dataResult" :key="item.id">
                                     <LBodyTh :value="item.id" center />
                                     <LBodyTd :value="item.atName" center />
                                     <LBodyTd :value="setTipo(item.atTipo)" center />
@@ -188,9 +188,6 @@ onMounted(() => {
                                     <LBodyTd :value="item.llenadera" center />
                                     <LBodyTd :value="item.horaEntrada" center />
                                     <LBodyTd :value="item.fechaEntrada" center />
-                                </tr>
-                                <tr v-else>
-                                    <LBodyTh value="Sin información" colspan="7" center />
                                 </tr>
                             </template>
                         </LTable>

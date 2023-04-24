@@ -27,16 +27,16 @@
           <div class="p-2 border border-solid border-slate-300">
             <legend class="text-base font-medium text-slate-900 dark:text-white">Estatus Llenaderas</legend>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <LCardListActionButton label-button="Desasignar" value-filler=5 />
-              <LCardListActionButton label-button="Desasignar" value-filler=6 />
-              <LCardListActionButton label-button="Desasignar" value-filler=7 />
-              <LCardListActionButton label-button="Desasignar" value-filler=8 />
-              <LCardListActionButton label-button="Desasignar" value-filler=9 />
-              <LCardListActionButton label-button="Desasignar" value-filler=10 />
-              <LCardListActionButton label-button="Desasignar" value-filler=11 />
-              <LCardListActionButton label-button="Desasignar" value-filler=12 />
-              <LCardListActionButton label-button="Desasignar" value-filler=13 />
-              <LCardListActionButton label-button="Desasignar" value-filler=14 />
+              <LCardListActionButton label-button="Desasignar" value-filler='5' />
+              <LCardListActionButton label-button="Desasignar" value-filler='6' />
+              <LCardListActionButton label-button="Desasignar" value-filler='7' />
+              <LCardListActionButton label-button="Desasignar" value-filler='8' />
+              <LCardListActionButton label-button="Desasignar" value-filler='9' />
+              <LCardListActionButton label-button="Desasignar" value-filler='10' />
+              <LCardListActionButton label-button="Desasignar" value-filler='11' />
+              <LCardListActionButton label-button="Desasignar" value-filler='12' />
+              <LCardListActionButton label-button="Desasignar" value-filler='13' />
+              <LCardListActionButton label-button="Desasignar" value-filler='14' />
             </ul>
           </div>
         </div>
