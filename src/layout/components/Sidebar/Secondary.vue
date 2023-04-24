@@ -3,6 +3,10 @@ import IconHouse from "../../../assets/icons/house.svg"
 import IconGasPump from "../../../assets/icons/gas-pump.svg"
 import IconTruckFast from "../../../assets/icons/truck-fast.svg"
 import IconTruck from "../../../assets/icons/truck.svg"
+import IconPause from '../../../assets/icons/pause.svg'
+import IconSliders from '../../../assets/icons/sliders.svg'
+import IconFile from '../../../assets/icons/file-arrow-down-solid.svg'
+import IconBook from '../../../assets/icons/book-solid.svg'
 </script>
 <template>
   <div class="flex-1 overflow-y-auto">
@@ -30,19 +34,19 @@ import IconTruck from "../../../assets/icons/truck.svg"
         <router-link :to="{ name: 'entries' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruck class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Entradas</span>
         </router-link>
         <router-link :to="{ name: 'waitinglist' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruck class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconPause class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Espera</span>
         </router-link>
         <router-link :to="{ name: 'services' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruck class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconGasPump class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Servicio</span>
         </router-link>
         <router-link :to="{ name: 'exits' }"
@@ -54,19 +58,19 @@ import IconTruck from "../../../assets/icons/truck.svg"
         <router-link :to="{ name: 'reports' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconFile class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Reportes</span>
         </router-link>
         <router-link :to="{ name: 'records' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconBook fill="currentColor" class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Bitácora</span>
         </router-link>
         <router-link :to="{ name: 'configuration' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconSliders class="w-5 h-5 mr-3 -ml-1 shrink-0" />
           <span class="truncate">Configuración</span>
         </router-link>
       </div>
