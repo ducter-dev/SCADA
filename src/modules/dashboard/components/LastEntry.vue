@@ -15,6 +15,7 @@ const { fetchBarreraEntrada, getBarreraEntrada, changeBarreraEntrada } = useDash
 
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
+const currentUser = computed(() => getCurrentUser())
 
 const { addToast } = useToast()
 const { bus } = useEventsBus()
@@ -24,7 +25,6 @@ let dataBarrierEntryStatus = ref({})
 const barrierEntry = computed(() => getBarreraEntrada())
 let dataLastEntry = ref({})
 
-const currentUser = computed(() => getCurrentUser())
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -96,6 +96,7 @@ const fetchDataBarrierEntry = async () => {
     try {
         const res = await fetchBarreraEntrada()
         const { data, status } = res
+        console.log("🚀 ~ file: LastEntry.vue:99 ~ fetchDataBarrierEntry ~ data:", data)
         if (status == 200) {
             setDataFromFetchDataBarrierEntry(data.estado)
         } else {
@@ -124,49 +125,20 @@ watch(() => bus.value.get('reloadData'), (val) => {
     fetchDataBarrierEntry()
     fetchDataLastEntry()
 })
-/*
-watch(() => dataBarrierEntryStatus.value, (data) => {
-    const res = changeBarreraEntrada(data)
-    const { data, status } = res
-    //const estado = data? 'Abierta' : 'Cerrada'
-     if (status == 200) {
-        const objBitacora = {
-            user: currentUser.id,
-            actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estado}.`,
-            evento: 4,
-        }
-        insertBitacora(objBitacora)
-        addToast({
-            message: {
-                title: "Éxito!",
-                message: `Se cambio el estado de la barrera de entrada.`,
-                type: "success"
-            },
-        })
-    } else {
-        addToast({
-            message: {
-                title: "¡Error!",
-                message: `Error: ${error.message}`,
-                type: "error",
-                component: "LastEntry | Catch - changeBarreraEntrada()"
-            },
-        })
-    } 
-
-})
-*/
 
 watch(
     () => dataBarrierEntryStatus.value, async(estadoBarrera) => {
-        const res = changeBarreraEntrada(estadoBarrera.estado)
+        console.log("🚀 ~ file: LastEntry.vue:130 ~ estadoBarrera:", estadoBarrera)
+        const res = await changeBarreraEntrada(estadoBarrera)
+        console.log("🚀 ~ file: LastEntry.vue:132 ~ res:", res)
         const { data, status } = res
-        if (status == 200) {
-                const objBitacora = {
-                user: currentUser.id,
-                actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera.estado}.`,
-                evento: 4,
+        if (status == 201) {
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera? 'Abierta': 'Cerrada'}.`,
+                evento: estadoBarrera ? 18 : 19,
             }
+            console.log("🚀 ~ file: LastEntry.vue:141 ~ objBitacora:", objBitacora)
             insertBitacora(objBitacora)
             addToast({
                 message: {
@@ -194,9 +166,9 @@ onMounted(() => {
 
     //Condicional para verificar existencia de información en el store
     if (barrierEntry.value.length != 0) {
-        console.log("🚀 ~ file: LastEntry.vue:197 ~ onMounted ~ barrierEntry.value:", barrierEntry.value)
+        console.log("🚀 ~ file: LastEntry.vue:166 ~ onMounted ~ barrierEntry.value:", barrierEntry.value.estado)
         // Establece la información del store
-        setDataFromFetchDataBarrierEntry(barrierEntry.value)
+        setDataFromFetchDataBarrierEntry(barrierEntry.value.estado)
     } else {
         // Realiza la petición al servidor
         fetchDataBarrierEntry()

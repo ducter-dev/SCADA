@@ -111,7 +111,8 @@ export const useDashboardStore = defineStore('dashboard', {
       }
     },
 
-    async changeBarreraSalida() {
+    async changeBarreraSalida(toggle) {
+      console.log("🚀 ~ file: dashboardStore.js:115 ~ changeBarreraSalida ~ toggle:", toggle)
       try {
         const dataForm = {
           estado: toggle
