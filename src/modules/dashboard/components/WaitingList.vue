@@ -20,7 +20,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { bus } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado } = useFillers()
-const { fetchLastAssignment, getLastAssignment } = useWaitingTank()
+const { fetchLastAssignment, getLastAssignment, getFirstTank } = useWaitingTank()
 const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, changeBarreraVerificacion } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
@@ -30,12 +30,12 @@ const getFiller = ref(false)
 const filler = ref()
 const listWaitingTank = computed(() => getLastAssignment())
 const fillerStatus = computed(() => getLlenaderasEstado())
-let dataWaitingTanks = ref([])
 let dataFillerStatus = ref({})
 
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
 const currentUser = computed(() => getCurrentUser())
+const dataWaitingTank = computed(() => getFirstTank())
 
 const loadDataBarrierStatus = ref(false)
 let dataBarrierVerificationStatus = ref({})
@@ -48,7 +48,7 @@ const barrierVerification = computed(() => getBarreraVerificacion())
  * @param {*} data 
  */
 const setDataFromResult = (data) => {
-    dataWaitingTanks.value = data
+    //dataWaitingTanks.value = data
     loadData.value = false
     loadDataBarrierStatus.value = false
 }
@@ -170,11 +170,11 @@ const currentFiller = async () => {
 
 const setTipo = (tipo) => {
     switch (tipo) {
-        case 1:
+        case 0:
             return 'Sencillo'
-        case 2:
+        case 1:
             return 'Full A'
-        case 3:
+        case 2:
             return 'Full B'
     }
 }
@@ -480,10 +480,10 @@ onMounted(() => {
             </div>
             <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-                <LCardListItem label="Número de autotanque" :value="dataWaitingTanks.atName" />
-                <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTanks.atTipo)" />
-                <LCardListItem label="Volumen programado" :value="dataWaitingTanks.volProg" />
-                <LCardListItem label="Tipo de conector" :value="setConector(dataWaitingTanks.conector)" />
+                <LCardListItem label="Número de autotanque" :value="dataWaitingTank? dataWaitingTank.atName : ''" />
+                <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTank? dataWaitingTank.atTipo : 1)" />
+                <LCardListItem label="Volumen programado" :value="dataWaitingTank? dataWaitingTank.capacidad : 0" />
+                <LCardListItem label="Tipo de conector" :value="setConector(dataWaitingTank? dataWaitingTank.conector : 3)" />
 
                 <LCardListItem label="Llenadera disponible">
                     <span v-if="getFiller">{{ filler }}</span>

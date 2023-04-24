@@ -45,6 +45,10 @@ const useTanqueEspera = () => {
   const getLastAssignment = () =>{
     return store.lastTankAsign
   }
+
+  const getFirstTank = () => {
+    return store.firstTanqueInWaitingList
+  }
   
   return {
     fetchTanksInEspera,
@@ -57,6 +61,7 @@ const useTanqueEspera = () => {
     getTanqueInEspereaSel,
     getCountTanquesEspera,
     getLastAssignment,
+    getFirstTank,
   }
 }
 
