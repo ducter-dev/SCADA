@@ -76,6 +76,10 @@ const useDashboard = () => {
     return store.barreraSalida
   }
 
+  const preAsignment = async (tanque) => {
+    return await store.preAsignmentSt(tanque)
+  }
+
   const acceptAssignment = async () => {
     return await store.acceptAssignmentSt()
   }
@@ -124,6 +128,7 @@ const useDashboard = () => {
     getBarreraEntrada,
     getBarreraVerificacion,
     getBarreraSalida,
+    preAsignment,
     acceptAssignment,
     nextFiller,
     reassignAllocation,

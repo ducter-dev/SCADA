@@ -1,102 +1,46 @@
 <template>
   <table class="min-w-full">
-    <thead class="text-dark border border-b-dark">
+    <thead class="border text-dark border-b-dark">
       <tr>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           No.
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           AT
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            dark:text-gray-400
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700  dark:text-gray-400"
         >
           Tipo
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           Capacidad
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           Llenadera
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           Hora
         </th>
         <th
           scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-center text-gray-700
-            uppercase
-          "
+          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
         >
           Fecha
         </th>
@@ -104,47 +48,40 @@
     </thead>
     <tbody>
       <tr
-        class="odd:bg-white even:bg-gray-50 border-b"
+        class="border-b odd:bg-white even:bg-gray-50"
         v-for="(tanque, index) in tanques"
         :key="tanque.id"
       >
         <td
-          class="
-            py-4
-            px-4
-            text-sm text-center
-            font-medium
-            text-gray-500
-            whitespace-nowrap
-          "
+          class="px-4 py-4 text-sm font-medium text-center text-gray-500  whitespace-nowrap"
         >
           {{ index + 1 }}
         </td>
-        <td class="py-2 px-6 text-sm text-gray-500 text-center whitespace-nowrap">
+        <td class="px-6 py-2 text-sm text-center text-gray-500 whitespace-nowrap">
           {{ tanque.atName }}
         </td>
         <td
-          class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
+          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
         >
           {{ setTipo(tanque.atTipo) }}
         </td>
         <td
-          class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
+          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
         >
           {{ tanque.capacidad }}
         </td>
         <td
-          class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
+          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
         >
           {{ tanque.llenadera }}
         </td>
         <td
-          class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
+          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
         >
           {{ tanque.horaEntrada }}
         </td>
         <td
-          class="py-2 px-4 text-sm text-gray-500 text-center whitespace-nowrap"
+          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
         >
           {{ tanque.fechaEntrada }}
         </td>
@@ -168,11 +105,11 @@ export default {
 
     function setTipo(categoria) {
       switch (categoria) {
-        case 1:
+        case 0:
           return "Sencillo"
-        case 2:
+        case 1:
           return "Full A"
-        case 3:
+        case 2:
           return "Full B"
       }
     }

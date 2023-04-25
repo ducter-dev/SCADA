@@ -1,8 +1,7 @@
 <template>
   <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="p-2 border border-solid border-slate-300">
-      <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
-      <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
+      <legend class="text-base font-medium text-slate-900 dark:text-white">Menú de Asignación de AT'S</legend>
       <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
         <LCardListItem label="Número de autotanque" value="10" />
         <LCardListItem label="Tipo de autotanque" :value="setTipo(data.atTipo)" />
@@ -209,11 +208,11 @@ export default {
 
     const setTipo = (tipo) => {
       switch (tipo) {
-        case 1:
+        case 0:
           return 'Sencillo'
-        case 2:
+        case 1:
           return 'Full A'
-        case 3:
+        case 2:
           return 'Full B'
       }
     }

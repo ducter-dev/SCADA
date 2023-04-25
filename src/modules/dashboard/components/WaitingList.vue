@@ -22,7 +22,7 @@ const { bus } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado, resetLlenadera, desasignLlenadera, asignarLlenadera, changeEstadoLlenadera }  = useFillers()
 const { fetchLastAssignment, getLastAssignment, getFirstTank } = useWaitingTank()
 const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, 
-        changeBarreraVerificacion, liberarLlenadera, } = useDashboard()
+        changeBarreraVerificacion, liberarLlenadera, preAsignment } = useDashboard()
 const { addToast } = useToast()
 const loaderFiller = ref(false)
 const loadData = ref(false)
@@ -270,27 +270,30 @@ const reassignAssignment = async () => {
 
 const acceptAssignmentFunction = async () => {
     try {
-        const res = await acceptAssignment()
+        const res = await preAsignment(dataWaitingTank.value.atName)
         const { data, status } = res
         if (status == 201) {
-            addToast({
-                message: {
-                    title: "¡Éxito!",
-                    message: "Se acepto la asignación correctamente.",
-                    type: "success"
-                },
-            })
-            const objBitacora = {
-                user: currentUser.value.id,
-                actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
-                evento: 13,
+            const resA = await acceptAssignment()
+            if (resA.status == 201) {
+                addToast({
+                    message: {
+                        title: "¡Éxito!",
+                        message: "Se acepto la asignación correctamente.",
+                        type: "success"
+                    },
+                })
+                const objBitacora = {
+                    user: currentUser.value.id,
+                    actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
+                    evento: 13,
+                }
+                insertBitacora(objBitacora)
             }
-            insertBitacora(objBitacora)
         } else {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: data,
                     type: "error"
                 },
             });
@@ -579,9 +582,8 @@ onMounted(() => {
                         </MenuItems>
                     </transition>
                 </Menu>
-                <legend class="text-base font-medium text-slate-900 dark:text-white">Lista de espera</legend>
+                <legend class="text-base font-medium text-slate-900 dark:text-white">Menú de asignación de AT'S</legend>
             </div>
-            <p class="text-base font-medium text-center text-slate-800 dark:text-slate-500">Asignación de AT'S</p>
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <LCardListItem label="Número de autotanque" :value="dataWaitingTank? dataWaitingTank.atName : ''" />
                 <LCardListItem label="Tipo de autotanque" :value="setTipo(dataWaitingTank? dataWaitingTank.atTipo : 1)" />

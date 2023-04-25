@@ -93,11 +93,11 @@ const fetchDataBarreraSalida = async () => {
 const setTipo = (tipo) => {
     switch (tipo) {
         case 0:
-            return 'FULL A'
-        case 1:
-            return 'FULL B'
-        case 2:
             return 'Sencillo'
+        case 1:
+            return 'FULL A'
+        case 2:
+            return 'FULL B'
     }
 }
 

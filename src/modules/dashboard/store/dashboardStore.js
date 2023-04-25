@@ -127,6 +127,24 @@ export const useDashboardStore = defineStore('dashboard', {
     },
 
     /**
+     *  Función para enviar la solicitud al preasignar tanque
+     * 
+     * @returns object 
+     */
+    async preAsignmentSt(tanque) {
+      try {
+        const obj = {
+          tanque
+        }
+        const res = await scadaApi.post('/llenaderas/asignacion/preasignar', obj)
+        return res
+      } catch (error) {
+        return { ok: false, message: error }
+      }
+    },
+
+
+    /**
      *  Función para enviar la solicitud al servicio  Aceptar
      * 
      * @returns object 
