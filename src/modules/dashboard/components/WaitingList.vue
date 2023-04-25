@@ -273,22 +273,20 @@ const acceptAssignmentFunction = async () => {
         const res = await preAsignment(dataWaitingTank.value.atName)
         const { data, status } = res
         if (status == 201) {
-            const resA = await acceptAssignment()
-            if (resA.status == 201) {
-                addToast({
-                    message: {
-                        title: "¡Éxito!",
-                        message: "Se acepto la asignación correctamente.",
-                        type: "success"
-                    },
-                })
-                const objBitacora = {
-                    user: currentUser.value.id,
-                    actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
-                    evento: 13,
-                }
-                insertBitacora(objBitacora)
+            const objBitacora = {
+                user: currentUser.value.id,
+                actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
+                evento: 13,
             }
+            insertBitacora(objBitacora)
+            addToast({
+                message: {
+                    title: "¡Éxito!",
+                    message: "Se acepto la asignación correctamente.",
+                    type: "success"
+                },
+            })
+            
         } else {
             addToast({
                 message: {
