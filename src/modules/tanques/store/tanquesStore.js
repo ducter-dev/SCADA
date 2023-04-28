@@ -162,6 +162,19 @@ export const useTanqueStore = defineStore('tanques', {
       this.tanquesInEspera = []
     },
 
+    async calTankSt(tanque) {
+      try {
+        const res = await scadaApi.post('/tanques/espera/llamar', tanque)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
     // ------ Tanques de Entradas ------
     async fetchEntriesTanksSt(date) {
       try {

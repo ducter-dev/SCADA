@@ -14,7 +14,7 @@ import useEventsBus from "../../../layout/eventBus"
  * @var array<boolean, string, array>
  */
 const { bus } = useEventsBus()
-const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera, updateTankPosition } = useTanqueEspera()
+const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera, updateTankPosition, callTank } = useTanqueEspera()
 const waitingList = computed(() => getTanquesInEspera())
 const { addToast } = useToast()
 let dataTankWaitingList = ref([])
@@ -86,7 +86,7 @@ const moveTank = async (item) => {
             message: `Se movio el tanque ${data.atName} al inicio de la lista.`,
             type: "success"
           },
-        });
+        })
       } else {
         addToast({
           message: {
@@ -94,7 +94,7 @@ const moveTank = async (item) => {
             message: data.message,
             type: "info"
           },
-        });
+        })
       }
 
     } else {
@@ -105,7 +105,7 @@ const moveTank = async (item) => {
           type: "error",
           component: "TableEspera - moveTank()"
         },
-      });
+      })
     }
   } catch (error) {
     // En caso de tener error establece un mensaje de error
@@ -116,7 +116,7 @@ const moveTank = async (item) => {
         type: "error",
         component: "TableEspera | Catch - moveTank()"
       },
-    });
+    })
   }
 
 }
@@ -165,9 +165,45 @@ const editTanque = (item) => {
   console.log(`Editar tanque: ${item.id}`)
 }
 
-const callTanque = (tanque) => {
+const callTanque = async (item) => {
   // editar tanque
   console.log(`Llamar tanque: ${item.id}`)
+  const res = await callTank({ "tanque": item.atName })
+    const { data, status } = res
+
+    // Valida de acuerdo al estatus de la petición
+    // Si el código de estatus es diferente de 200 se marcara un error 
+    if (status == 200) {
+      if (data.hasOwnProperty('atName')) {
+        dataTankWaitingList.value = []
+        fetchDataTankWaitingList()
+        addToast({
+          message: {
+            title: "Éxito!",
+            message: `Se movio el tanque ${data.atName} al inicio de la lista.`,
+            type: "success"
+          },
+        });
+      } else {
+        addToast({
+          message: {
+            title: "Info",
+            message: data.message,
+            type: "info"
+          },
+        });
+      }
+
+    } else {
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: data.message,
+          type: "error",
+          component: "TableEspera - callTanque()"
+        },
+      });
+    }
 }
 
 function setTipo(categoria) {
