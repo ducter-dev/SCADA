@@ -80,8 +80,8 @@ const useDashboard = () => {
     return await store.preAsignmentSt(tanque)
   }
 
-  const acceptAssignment = async () => {
-    return await store.acceptAssignmentSt()
+  const acceptAssignment = async (tanque) => {
+    return await store.acceptAssignmentSt(tanque)
   }
 
   const nextFiller = async () => {

@@ -135,6 +135,7 @@ const fetchDataTankWaitingList = async () => {
     // Valida de acuerdo al estatus de la petición
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
+      dataTankWaitingList.value = []
       setDataFromResult(data)
     } else {
       addToast({
@@ -219,7 +220,7 @@ watch(() => bus.value.get('reloadData'), (val) => {
       <div class="flex items-center justify-between">
         <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de espera
 
-          <span class="text-slate-700 text-xs dark:text-slate-200">(Elementos en la lista: <strong>{{
+          <span class="text-xs text-slate-700 dark:text-slate-200">(Elementos en la lista: <strong>{{
             dataTankWaitingList.length }}</strong> )</span>
         </legend>
         <button class="p-2" @click="fetchDataTankWaitingList()">
@@ -266,14 +267,14 @@ watch(() => bus.value.get('reloadData'), (val) => {
                 </button>
                 <button type="button" v-if="index !== 0" @click="moveTank(item)"
                   class="px-2 py-1.5 text-sm font-medium text-blue-900 bg-transparent border-t border-b border-r border-blue-900 hover:bg-blue-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-500 focus:bg-blue-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:bg-blue-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="h-3 w-3" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-3 h-3" fill="currentColor">
                     <path
                       d="M350 177.5c3.8-8.8 2-19-4.6-26l-136-144C204.9 2.7 198.6 0 192 0s-12.9 2.7-17.4 7.5l-136 144c-6.6 7-8.4 17.2-4.6 26s12.5 14.5 22 14.5h88l0 192c0 17.7-14.3 32-32 32H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32l80 0c70.7 0 128-57.3 128-128l0-192h88c9.6 0 18.2-5.7 22-14.5z" />
                   </svg>
                 </button>
                 <button type="button" @click="deleteTankFromList(item)"
                   class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border-t border-b border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
-                  <DeleteIcon class="h-3 w-3" />
+                  <DeleteIcon class="w-3 h-3" />
                 </button>
                 <button type="button" @click="callTanque(item)"
                   class="px-2 py-1.5 text-sm font-medium text-slate-900 bg-transparent border border-slate-900 hover:bg-slate-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-slate-500 focus:bg-slate-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-slate-700 dark:focus:bg-slate-700">

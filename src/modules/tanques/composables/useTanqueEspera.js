@@ -27,6 +27,10 @@ const useTanqueEspera = () => {
     return resp
   }
 
+  const resetTanquesEspera = () => {
+    store.resetListaTanquesEspera()
+  }
+
   const updateTankPosition = async (tank) => {
     return  await store.updateTankPosition(tank)
   }
@@ -62,6 +66,7 @@ const useTanqueEspera = () => {
     getCountTanquesEspera,
     getLastAssignment,
     getFirstTank,
+    resetTanquesEspera,
   }
 }
 

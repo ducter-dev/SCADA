@@ -20,7 +20,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { bus } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado, resetLlenadera, desasignLlenadera, asignarLlenadera, changeEstadoLlenadera }  = useFillers()
-const { fetchLastAssignment, getLastAssignment, getFirstTank } = useWaitingTank()
+const { fetchLastAssignment, getLastAssignment, getFirstTank, fetchTanksInEspera, resetTanquesEspera } = useWaitingTank()
 const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, 
         changeBarreraVerificacion, liberarLlenadera, preAsignment } = useDashboard()
 const { addToast } = useToast()
@@ -273,20 +273,29 @@ const acceptAssignmentFunction = async () => {
         const res = await preAsignment(dataWaitingTank.value.atName)
         const { data, status } = res
         if (status == 201) {
-            const objBitacora = {
-                user: currentUser.value.id,
-                actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
-                evento: 13,
+
+            const resA = await acceptAssignment(dataWaitingTank.value.atName)
+            if (resA.status == 200) {
+
+                // Reseteamos la lista de espera 
+                resetTanquesEspera()
+
+                // Llenamos la lista de espera 
+                fetchTanksInEspera()
+                const objBitacora = {
+                    user: currentUser.value.id,
+                    actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
+                    evento: 13,
+                }
+                insertBitacora(objBitacora)
+                addToast({
+                    message: {
+                        title: "¡Éxito!",
+                        message: "Se acepto la asignación correctamente.",
+                        type: "success"
+                    },
+                })
             }
-            insertBitacora(objBitacora)
-            addToast({
-                message: {
-                    title: "¡Éxito!",
-                    message: "Se acepto la asignación correctamente.",
-                    type: "success"
-                },
-            })
-            
         } else {
             addToast({
                 message: {

@@ -158,6 +158,10 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    resetListaTanquesEspera() {
+      this.tanquesInEspera = []
+    },
+
     // ------ Tanques de Entradas ------
     async fetchEntriesTanksSt(date) {
       try {

@@ -149,9 +149,12 @@ export const useDashboardStore = defineStore('dashboard', {
      * 
      * @returns object 
      */
-    async acceptAssignmentSt() {
+    async acceptAssignmentSt(tanque) {
       try {
-        const res = await scadaApi.post('/llenaderas/asignacion/aceptar')
+        const obj = {
+          tanque
+        }
+        const res = await scadaApi.post('/llenaderas/asignacion/asignar', obj)
         return res
       } catch (error) {
         return { ok: false, message: error }
