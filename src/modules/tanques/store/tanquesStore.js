@@ -148,10 +148,6 @@ export const useTanqueStore = defineStore('tanques', {
     async borrarTanqueEspera(tank) {
       try {
         const res = await scadaApi.delete(`tanques/espera/${tank.id}`)
-        const { data } = res
-        const tanques = this.tanquesInEspera.filter(t => t.id !== data.id)
-        this.tanquesInEspera = []
-        this.tanquesInEspera = tanques
         return res
       } catch (error) {
         return { ok: false, message: error.message }
