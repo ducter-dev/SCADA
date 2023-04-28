@@ -39,6 +39,7 @@ const deleteTankFromList = async (item) => {
     // Valida de acuerdo al estatus de la petición
     // Si el código de estatus es diferente de 200 se marcara un error 
     if (status == 200) {
+      dataTankWaitingList.value = []
       fetchDataTankWaitingList()
       addToast({
         message: {
