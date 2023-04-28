@@ -53,6 +53,10 @@ const useTanqueEspera = () => {
   const getFirstTank = () => {
     return store.firstTanqueInWaitingList
   }
+
+  const callTank = async (tanque) => {
+    return await store.calTankSt(tanque)
+  }
   
   return {
     fetchTanksInEspera,
@@ -67,6 +71,7 @@ const useTanqueEspera = () => {
     getLastAssignment,
     getFirstTank,
     resetTanquesEspera,
+    callTank,
   }
 }
 

@@ -49,7 +49,7 @@ const barrierVerification = computed(() => getBarreraVerificacion())
  * @param {*} data 
  */
 const setDataFromResult = (data) => {
-    //dataWaitingTanks.value = data
+    dataWaitingTanks.value = data
     loadData.value = false
     loadDataBarrierStatus.value = false
 }
@@ -77,7 +77,7 @@ const setDataFromFetchDataBarrierVerification = (data) => {
  *  En caso de error en la petición @throws crea una instancia con el metodo @method addToast 
  *  en la cual guarda un mensaje para visualizar en la interfaz.
  */
-const fetchWaitingTanks = async () => {
+/* const fetchWaitingTanks = async () => {
     try {
         const res = await fetchLastAssignment()
         const { data, status } = res
@@ -107,7 +107,7 @@ const fetchWaitingTanks = async () => {
             },
         });
     }
-}
+} */
 
 const fetchFillerStatus = async () => {
     try {
@@ -459,7 +459,6 @@ const releaseDispacth = async () => {
 }
 
 watch(() => bus.value.get('reloadData'), (val) => {
-    fetchWaitingTanks()
     currentFiller()
     fetchFillerStatus()
     fetchDataBarrierVerification()
@@ -500,7 +499,6 @@ watch(
 )
 
 onMounted(() => {
-    fetchWaitingTanks()
     fetchFillerStatus()
     currentFiller()
     if (barrierVerification.value.length != 0) {
