@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import EditIcon from "../../../assets/icons/edit.svg"
 import DeleteIcon from "../../../assets/icons/trash-can-solid.svg"
+import EditUser from '../components/EditUser.vue'
 
 export default {
   props: {
@@ -13,14 +14,10 @@ export default {
   components: {
     EditIcon,
     DeleteIcon,
+    EditUser,
   },
   setup(context) {
     const router = useRouter()
-
-    const editUser = async(user) => {
-      context.emit()
-      router.push('/dashboard/usuarios/editar')
-    }
 
     const setCategoria = (categoria) => {
       switch (categoria) {
@@ -53,7 +50,6 @@ export default {
     return {
       setCategoria,
       setDepartamento,
-      editUser,
     }
   },
 }
@@ -79,10 +75,7 @@ export default {
         <LBodyTd :value="setDepartamento(user.departamento)" center />
         <LBodyTd center>
           <div class="inline-flex shadow-sm" role="group">
-            <button type="button" @click="editUser(user)"
-              class="px-2 py-1.5 text-sm font-medium text-yellow-900 bg-transparent border border-yellow-900 hover:bg-yellow-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-yellow-500 focus:bg-yellow-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-yellow-700 dark:focus:bg-yellow-700">
-              <EditIcon class="w-3 h-3" />
-            </button>
+            <EditUser :user="user" />
             <button type="button" @click="openModalDelete(user)"
               class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
               <DeleteIcon class="w-3 h-3" />

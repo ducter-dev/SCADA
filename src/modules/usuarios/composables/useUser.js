@@ -15,7 +15,9 @@ const useUsuario = () => {
   }
 
   const updateUsuario = async(usuario) => {
+    console.log("🚀 ~ file: useUser.js:18 ~ updateUsuario ~ usuario:", usuario)
     const resp = await store.update(usuario)
+    console.log("🚀 ~ file: useUser.js:20 ~ updateUsuario ~ resp:", resp)
     return resp
   }
 

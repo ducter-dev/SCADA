@@ -49,6 +49,11 @@ export default {
       users.value = usuarios.value
     })
 
+    watch(() => bus.value.get('successUpdateUser'), (val) => {
+      users.value = []
+      getUsers()
+    })
+
     return {
       users,
     }
@@ -61,7 +66,7 @@ export default {
     <div class="flex flex-row items-center justify-between w-full h-20">
       <div class="flex flex-row items-center justify-center">
         <div class="flex items-center justify-center mr-2">Usuarios</div>
-        <CreateUser/>    
+        <CreateUser/>
       </div>
     </div>
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
