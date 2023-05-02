@@ -21,31 +21,24 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async insert(usuario) {
-      const userForm = {
-        ...usuario,
-        estado: 1
-      }
-      const { data } = await scada.post('/auth/register', userForm)
-      const user = data
-      this.usuarios.push(user)
+      const res = await scada.post('/auth/register', usuario)
+      const { data } = res
+      this.usuarios.push(data)
+      console.log("🚀 ~ file: usuarioStore.js:25 ~ insert ~ res:", res)
       return res
     },
 
     async update(user) {
       try {
-        const { usuario, categoria, departamento } = user
-        const dataForm = {
-          username: usuario,
-          categoria,
-          departamento
-        }
-        const res = await scadaApi.put(`/users/${user.id}`, dataForm )
-        console.log(res)
+        console.log("🚀 ~ file: usuarioStore.js:32 ~ update ~ user:", user)
+        const res = await scada.put(`/users/${user.id}`, user )
+        console.log("🚀 ~ file: usuarioStore.js:36 ~ update ~ res:", res)
         const { data } = res
         const userUpdate = data
-        console.log(userUpdate)
-        const usuarioStore = state.users.find( u => u.id == userUpdate.id)
-
+        console.log("🚀 ~ file: usuarioStore.js:38 ~ update ~ userUpdate:", userUpdate)
+        console.log("🚀 ~ file: usuarioStore.js:39 ~ update ~ this.usuarios:", this.usuarios)
+        const usuarioStore = this.usuarios.find( u => u.id == userUpdate.id)
+        console.log("🚀 ~ file: usuarioStore.js:41 ~ update ~ usuarioStore:", usuarioStore)
         usuarioStore.username = userUpdate.username
         usuarioStore.categoria = userUpdate.categoria
         usuarioStore.departamento = userUpdate.departamento
