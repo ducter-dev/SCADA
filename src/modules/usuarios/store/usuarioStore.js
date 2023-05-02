@@ -21,13 +21,10 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async insert(usuario) {
-      const userForm = {
-        ...usuario,
-        estado: 1
-      }
-      const { data } = await scada.post('/auth/register', userForm)
-      const user = data
-      this.usuarios.push(user)
+      const res = await scada.post('/auth/register', usuario)
+      const { data } = res
+      this.usuarios.push(data)
+      console.log("🚀 ~ file: usuarioStore.js:25 ~ insert ~ res:", res)
       return res
     },
 

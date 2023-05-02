@@ -1,146 +1,7 @@
-<template>
-  <table class="min-w-full">
-    <thead class="bg-gray-100 dark:bg-gray-700">
-      <tr>
-        <th
-          scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-left text-gray-700
-            uppercase
-            dark:text-gray-400
-          "
-        >
-          No.
-        </th>
-        <th
-          scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-left text-gray-700
-            uppercase
-            dark:text-gray-400
-          "
-        >
-          Nombre
-        </th>
-        <th
-          scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-left text-gray-700
-            uppercase
-            dark:text-gray-400
-          "
-        >
-          Categoria
-        </th>
-        <th
-          scope="col"
-          class="
-            py-3
-            px-6
-            text-xs
-            font-medium
-            tracking-wider
-            text-left text-gray-700
-            uppercase
-            dark:text-gray-400
-          "
-        >
-          Departamento
-        </th>
-        <th scope="col" class="relative py-3 px-6">
-          <span class="sr-only">Edit</span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        class="odd:bg-white even:bg-gray-50 border-b"
-        v-for="(user, index) in usuarios"
-        :key="user.id"
-      >
-        <td
-          class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"
-        >
-          {{ index + 1 }}
-        </td>
-        <td
-          class="
-            py-4
-            px-6
-            text-sm text-gray-500
-            whitespace-nowrap
-            dark:text-gray-400
-          "
-        >
-          {{ user.username }}
-        </td>
-        <td
-          class="
-            py-4
-            px-6
-            text-sm text-gray-500
-            whitespace-nowrap
-            dark:text-gray-400
-          "
-        >
-          {{ setCategoria(user.categoria) }}
-        </td>
-        <td
-          class="
-            py-4
-            px-6
-            text-sm text-gray-500
-            whitespace-nowrap
-            dark:text-gray-400
-          "
-        >
-          {{ setDepartamento(user.departamento) }}
-        </td>
-        <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-          <button
-            type="button"
-            class="
-              text-white
-              bg-black
-              hover:bg-dark
-              focus:ring-4 focus:ring-gray-300
-              font-medium
-              rounded-lg
-              text-sm
-              px-5
-              py-2.5
-              text-center
-              mr-2
-              mb-2
-            "
-            @click="submitUser(user)"
-          >
-            Editar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-
 <script>
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import EditIcon from "../../../assets/icons/edit.svg"
+import DeleteIcon from "../../../assets/icons/trash-can-solid.svg"
 
 export default {
   props: {
@@ -149,16 +10,19 @@ export default {
       default: []
     },
   },
-  setup() {
+  components: {
+    EditIcon,
+    DeleteIcon,
+  },
+  setup(context) {
     const router = useRouter()
-    const store = useStore()
 
-    function submitUser(user) {
-      store.dispatch("user/selectUser", user)
+    const editUser = async(user) => {
+      context.emit()
       router.push('/dashboard/usuarios/editar')
     }
 
-    function setCategoria(categoria) {
+    const setCategoria = (categoria) => {
       switch (categoria) {
         case 1:
           return 'Administrador'
@@ -171,7 +35,7 @@ export default {
       }
     }
 
-    function setDepartamento(departamento) {
+    const setDepartamento = (departamento) => {
       switch (departamento) {
         case 1:
           return 'Administración'
@@ -187,10 +51,46 @@ export default {
     }
 
     return {
-      submitUser,
       setCategoria,
       setDepartamento,
+      editUser,
     }
   },
 }
 </script>
+
+
+<template>
+  <LTable>
+    <template #head>
+      <tr>
+        <LHeaderTh value="No." center />
+        <LHeaderTh value="Nombre" center />
+        <LHeaderTh value="Categoría" center />
+        <LHeaderTh value="Departamento" center />
+        <LHeaderTh value="Acciones" center />
+      </tr>
+    </template>
+    <template #body>
+      <tr v-for="(user, index) in usuarios" :key="user.id">
+        <LBodyTh :value="index + 1" center />
+        <LBodyTd :value="user.username" center />
+        <LBodyTd :value="setCategoria(user.categoria)" center />
+        <LBodyTd :value="setDepartamento(user.departamento)" center />
+        <LBodyTd center>
+          <div class="inline-flex shadow-sm" role="group">
+            <button type="button" @click="editUser(user)"
+              class="px-2 py-1.5 text-sm font-medium text-yellow-900 bg-transparent border border-yellow-900 hover:bg-yellow-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-yellow-500 focus:bg-yellow-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-yellow-700 dark:focus:bg-yellow-700">
+              <EditIcon class="w-3 h-3" />
+            </button>
+            <button type="button" @click="openModalDelete(user)"
+              class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
+              <DeleteIcon class="w-3 h-3" />
+            </button>
+          </div>
+        </LBodyTd>
+      </tr>
+    </template>
+  </LTable>
+</template>
+
