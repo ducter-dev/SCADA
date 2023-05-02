@@ -54,6 +54,12 @@ export default {
       getUsers()
     })
 
+    watch(() => bus.value.get('deleteUser'), (val) => {
+      console.log("🚀 ~ file: Usuarios.vue:58 ~ watch ~ val:", val)
+      users.value = []
+      getUsers()
+    })
+
     return {
       users,
     }
