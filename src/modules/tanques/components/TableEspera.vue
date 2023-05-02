@@ -7,6 +7,7 @@ import CallIcon from "../../../assets/icons/call.svg"
 import useToast from "../../dashboard/composables/useToast"
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useEventsBus from "../../../layout/eventBus"
+import ModalDelete from '../../../layout/components/Modal/Delete.vue'
 
 /**
  * Declaración de los atributos que son asignables.
@@ -19,6 +20,9 @@ const waitingList = computed(() => getTanquesInEspera())
 const { addToast } = useToast()
 let dataTankWaitingList = ref([])
 let loadData = ref(true)
+const configModalDelete = ref({})
+const showModal = ref(false)
+const tanqueSelected = ref({})
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -31,9 +35,29 @@ const setDataFromResult = (data) => {
   loadData.value = false
 }
 
-const deleteTankFromList = async (item) => {
+const openModalDelete = (item) => {
+  showModal.value = true
+  configModalDelete.value = {
+    text: `¿Desea eliminar el tanque ${item.atName} de la lista de espera?`,
+    okText: 'Eliminar',
+    cancelText: 'Cancelar'
+  }
+  tanqueSelected.value = item
+}
+
+
+
+const deleteTankFromList = async (result) => {
+  console.log("🚀 ~ file: TableEspera.vue:51 ~ deleteTankFromList ~ result:", result)
   try {
-    const res = await deleteTanqueEspera(item)
+
+    if (!result) {
+      showModal.value = false
+      tanqueSelected.value = {}
+      return
+    }
+    
+    const res = await deleteTanqueEspera(tanqueSelected.value)
     const { data, status } = res
 
     // Valida de acuerdo al estatus de la petición
@@ -250,8 +274,10 @@ watch(() => bus.value.get('successRegistration'), (val) => {
 watch(() => bus.value.get('reloadData'), (val) => {
   fetchDataTankWaitingList()
 })
+
 </script>
 <template>
+  <ModalDelete :config="configModalDelete" :class="showModal ? '' : 'hidden'" @submitModal="deleteTankFromList" />
   <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="border border-solid border-slate-300">
       <div class="flex items-center justify-between">
@@ -309,7 +335,7 @@ watch(() => bus.value.get('reloadData'), (val) => {
                       d="M350 177.5c3.8-8.8 2-19-4.6-26l-136-144C204.9 2.7 198.6 0 192 0s-12.9 2.7-17.4 7.5l-136 144c-6.6 7-8.4 17.2-4.6 26s12.5 14.5 22 14.5h88l0 192c0 17.7-14.3 32-32 32H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32l80 0c70.7 0 128-57.3 128-128l0-192h88c9.6 0 18.2-5.7 22-14.5z" />
                   </svg>
                 </button>
-                <button type="button" @click="deleteTankFromList(item)"
+                <button type="button" @click="openModalDelete(item)"
                   class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border-t border-b border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
                   <DeleteIcon class="w-3 h-3" />
                 </button>
