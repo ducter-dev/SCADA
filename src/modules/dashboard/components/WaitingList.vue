@@ -197,6 +197,7 @@ const nextAssignment = async () => {
         const res = await nextFiller()
         const { data, status } = res
         if (status == 201) {
+            currentFiller()
             addToast({
                 message: {
                     title: "¡Éxito!",
