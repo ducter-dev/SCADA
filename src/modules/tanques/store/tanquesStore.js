@@ -145,12 +145,31 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    async updateTanqueEspera(tank) {
+      try {
+        console.log("🚀 ~ file: tanquesStore.js:150 ~ updateTanqueEspera ~ tank:", tank)
+        const res = await scadaApi.put(`tanques/espera/${tank.id}`, tank)
+        console.log("🚀 ~ file: tanquesStore.js:152 ~ updateTanqueEspera ~ res:", res)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
     async borrarTanqueEspera(tank) {
       try {
         const res = await scadaApi.delete(`tanques/espera/${tank.id}`)
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 

@@ -13,7 +13,6 @@ import {
     ListboxOption,
     ListboxLabel,
 } from '@headlessui/vue'
-import { format } from 'date-fns'
 import useWaitTank from '../../tanques/composables/useTanqueEspera'
 import useTanque from '../../tanques/composables/useTanque'
 import useToast from "../../dashboard/composables/useToast"
@@ -53,16 +52,6 @@ const tankConnectors = [
     { id: 3, name: 'Ambos', unavailable: false }
 ]
 
-const formatDate = (value) => {
-    return format(value, 'yyyy-MM-dd')
-}
-
-const formatTime = (value) => {
-    return format(value, 'H:m:s')
-}
-
-const date = ref(new Date())
-
 const getInitialFormData = () => ({
     posicion: 0,
     atId: '',
@@ -72,10 +61,6 @@ const getInitialFormData = () => ({
     conector: ref(tankConnectors[0]),
     password: '',
     embarque: 0,
-    horaEntrada: null,
-    fechaEntrada: null,
-    reporte24: null,
-    reporte05: null,
 })
 
 const entryForm = reactive(getInitialFormData())
