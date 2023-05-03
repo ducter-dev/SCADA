@@ -23,7 +23,7 @@ import EditIcon from "../../../assets/icons/edit.svg"
 const props = defineProps({
   tanque: {}
 })
-console.log("🚀 ~ file: EditTankWaitingList.vue:23 ~ props.tanque:", props.tanque)
+//console.log("🚀 ~ file: EditTankWaitingList.vue:23 ~ props.tanque:", props.tanque)
 
 const { addToast } = useToast()
 const { emit } = useEventsBus()
@@ -45,9 +45,9 @@ const openModal = () => {
 }
 
 const currentUser = computed(() => getCurrentUser())
-console.log("🚀 ~ file: EditTankWaitingList.vue:48 ~ currentUser.value :", currentUser.value )
+//console.log("🚀 ~ file: EditTankWaitingList.vue:48 ~ currentUser.value :", currentUser.value )
 const tanqueSel = props.tanque
-console.log("🚀 ~ file: EditTankWaitingList.vue:45 ~ tanqueSel:", tanqueSel)
+//console.log("🚀 ~ file: EditTankWaitingList.vue:45 ~ tanqueSel:", tanqueSel)
 
 const tanksTypes = [
   { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
@@ -62,9 +62,7 @@ const tankConnectors = [
 ]
 
 const tipoInitial = tanksTypes.find(t => t.id == tanqueSel.atTipo)
-console.log("🚀 ~ file: EditTankWaitingList.vue:60 ~ tipoInitial:", tipoInitial)
 const conectorInitial = tankConnectors.find(d => d.id == tanqueSel.conector)
-console.log("🚀 ~ file: EditTankWaitingList.vue:62 ~ conectorInitial:", conectorInitial)
 
 const getInitialFormData = () => ({
   id: tanqueSel.id,
