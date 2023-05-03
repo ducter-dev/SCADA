@@ -119,9 +119,9 @@ watch(() => bus.value.get('reloadData'), (val) => {
 
 watch(
     () => dataBarrierExitStatus.value, async(estadoBarrera) => {
-        console.log("🚀 ~ file: LastOutput.vue:121 ~ estadoBarrera:", estadoBarrera)
+        //console.log("🚀 ~ file: LastOutput.vue:121 ~ estadoBarrera:", estadoBarrera)
         const res = await changeBarreraSalida(estadoBarrera)
-        console.log("🚀 ~ file: LastOutput.vue:123 ~ res:", res)
+        //console.log("🚀 ~ file: LastOutput.vue:123 ~ res:", res)
         
         const { data, status } = res
         if (status == 201) {
@@ -130,7 +130,7 @@ watch(
                 actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera? 'Abierta': 'Cerrada'}.`,
                 evento: estadoBarrera ? 22 : 23,
             }
-            console.log("🚀 ~ file: LastOutput.vue:133 ~ objBitacora:", objBitacora)
+            //console.log("🚀 ~ file: LastOutput.vue:133 ~ objBitacora:", objBitacora)
             insertBitacora(objBitacora)
             addToast({
                 message: {
@@ -156,7 +156,7 @@ onMounted(() => {
     fetchDataLastOutput()
 
     if (barrierExit.value.length != 0) {
-        console.log("🚀 ~ file: LastOutput.vue:157 ~ onMounted ~ barrierExit.value:", barrierExit.value.estado)
+        //console.log("🚀 ~ file: LastOutput.vue:157 ~ onMounted ~ barrierExit.value:", barrierExit.value.estado)
         
         // Establece la información del store
         setDataFromFetchDataBarrierExit(barrierExit.value.estado)

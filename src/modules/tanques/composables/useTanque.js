@@ -52,6 +52,10 @@ const useTanque = () => {
     return store.lastTankEntry
   }
 
+  const getLlenaderas = () => {
+    return store.llenaderas
+  }
+
   return {
     fetchTanques,
     editarTanque,
@@ -64,7 +68,8 @@ const useTanque = () => {
     getLastTankEntry,
     setSelectTank,
     getTanksEntries,
-    fetchEntriesTanks
+    fetchEntriesTanks,
+    getLlenaderas,
   }
 }
 
