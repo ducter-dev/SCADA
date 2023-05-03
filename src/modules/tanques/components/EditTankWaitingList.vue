@@ -17,13 +17,22 @@ import useToast from "../../dashboard/composables/useToast"
 import useEventsBus from "../../../layout/eventBus"
 import useBitacora from '../../bitacora/composables'
 import useAuth from '../../auth/composables/useAuth'
-import useUsuario from '../composables/useUser'
+import useTanqueEspera from '../composables/useTanqueEspera'
+import useTanque from '../composables/useTanque'
+import EditIcon from "../../../assets/icons/edit.svg"
+const props = defineProps({
+  tanque: {}
+})
+console.log("🚀 ~ file: EditTankWaitingList.vue:23 ~ props.tanque:", props.tanque)
 
 const { addToast } = useToast()
 const { emit } = useEventsBus()
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
-const { insertUsuario } = useUsuario()
+const { updateTanqueEspera } = useTanqueEspera()
+const { getTanques } = useTanque()
+
+const tanques = computed(() => getTanques())
 
 const isOpen = ref(false)
 const loader = ref(false)
@@ -36,60 +45,77 @@ const openModal = () => {
 }
 
 const currentUser = computed(() => getCurrentUser())
-const categorias = [
-  { id: 1, nombre: 'Administrador', unavailable: false },
-  { id: 2, nombre: 'Supervisor', unavailable: false },
-  { id: 3, nombre: 'Operador', unavailable: false },
-  { id: 4, nombre: 'Auditor Fiscal', unavailable: false },
+console.log("🚀 ~ file: EditTankWaitingList.vue:48 ~ currentUser.value :", currentUser.value )
+const tanqueSel = props.tanque
+console.log("🚀 ~ file: EditTankWaitingList.vue:45 ~ tanqueSel:", tanqueSel)
+
+const tanksTypes = [
+  { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
+  { id: 1, name: 'Full A', sufix: 'A', unavailable: false },
+  { id: 2, name: 'Full B', sufix: 'B', unavailable: false }
 ]
 
-const departamentos = [
-  { id: 1, nombre: 'Administración', unavailable: false },
-  { id: 2, nombre: 'Cuarto de Control', unavailable: false },
-  { id: 3, nombre: 'Acceso', unavailable: false },
-  { id: 4, nombre: 'Báscula', unavailable: false },
-  { id: 5, nombre: 'Exterior', unavailable: false },
+const tankConnectors = [
+  { id: 1, name: 'Izquierdo', unavailable: false },
+  { id: 2, name: 'Derecho', unavailable: false },
+  { id: 3, name: 'Ambos', unavailable: false }
 ]
+
+const tipoInitial = tanksTypes.find(t => t.id == tanqueSel.atTipo)
+console.log("🚀 ~ file: EditTankWaitingList.vue:60 ~ tipoInitial:", tipoInitial)
+const conectorInitial = tankConnectors.find(d => d.id == tanqueSel.conector)
+console.log("🚀 ~ file: EditTankWaitingList.vue:62 ~ conectorInitial:", conectorInitial)
 
 const getInitialFormData = () => ({
-  usuario: '',
-  password: '',
-  categoria: ref(categorias[0]),
-  departamento: ref(departamentos[0]),
+  id: tanqueSel.id,
+  atId: tanqueSel.atId,
+  atTipo: tipoInitial,
+  atName: tanqueSel.atName,
+  password: tanqueSel.password,
+  embarque: tanqueSel.embarque,
+  capacidad: tanqueSel.capacidad,
+  conector: conectorInitial,
+  posicion: tanqueSel.posicion,
 })
 
-const userForm = reactive(getInitialFormData())
+const tanqueForm = reactive(getInitialFormData())
 
-const resetForm = () => Object.assign(userForm, getInitialFormData())
+const resetForm = () => Object.assign(tanqueForm, getInitialFormData())
 
 async function onSubmit() {
   loader.value = true
   const body = {
-    username: userForm.usuario,
-    password: userForm.password,
-    categoria: userForm.categoria.id,
-    departamento: userForm.departamento.id,
-    registra: currentUser.value.id
+    id: tanqueForm.id,
+    atId: tanqueForm.atId,
+    atTipo: tanqueForm.atTipo.id,
+    atName: tanqueForm.atName,
+    password: tanqueForm.password,
+    embarque: tanqueForm.embarque,
+    capacidad: tanqueForm.capacidad,
+    conector: tanqueForm.conector.id,
+    posicion: tanqueForm.posicion,
   }
+  console.log("🚀 ~ file: EditTanque.vue:93 ~ onSubmit ~ body:", body)
 
-  const { data, status } = await insertUsuario(body)
-  console.log("🚀 ~ file: CreateUser.vue:76 ~ onSubmit ~ data:", data)
-  console.log("🚀 ~ file: CreateUser.vue:76 ~ onSubmit ~ status:", status)
+  const { data, status } = await updateTanqueEspera(body)
+  console.log("🚀 ~ file: EditTanque.vue:96 ~ onSubmit ~ status:", status)
+  console.log("🚀 ~ file: EditTanque.vue:97 ~ onSubmit ~ data:", data)
+
   if (status == 200) {
     loader.value = false
-    emit("successRegistrationUser", true)
-    resetForm()
+    emit("successUpdateTanqueWaiting", true)
     closeModal()
+    resetForm()
     const objBitacora = {
       user: currentUser.value.id,
-      actividad: `El usuario ${currentUser.value.username} registro al usuario ${data.username}.`,
-      evento: 3,
+      actividad: `El usuario ${currentUser.value.username} actualizó al tanque ${data.atName} de la lista de espera.`,
+      evento: 28,
     }
     insertBitacora(objBitacora)
     addToast({
       message: {
         title: "Éxito!",
-        message: `El usuario ${data.username} ha sido registrado.`,
+        message: `El tanque ${data.atName} de la lista de espera ha sido actualizado.`,
         type: "success"
       },
     })
@@ -100,22 +126,43 @@ async function onSubmit() {
         title: "¡Error!",
         message: data,
         type: "error",
-        component: "create - onSubmit()"
+        component: "editTankWaitingList - onSubmit()"
       },
     })
   }
 
 }
 
+watch(() => tanqueForm.atId, () => {
+    const { sufix } = tanksTypes.find(t => t.id == tanqueForm.atTipo.id)
+    console.log("🚀 ~ file: EditTankWaitingList.vue:131 ~ watch ~ tanqueForm.atId:", tanqueForm.atId)
+    tanqueForm.atName = tanqueForm.atId < 999 ? `PG-0${tanqueForm.atId}${sufix}` : `PG-${tanqueForm.atId}${sufix}`
+    tanqueForm.password = tanqueForm.atTipo.id
+    const pgFinded = tanques.value.find( t => t.atName === tanqueForm.atName)
+    if (pgFinded) { 
+        tanqueForm.capacidad = pgFinded.capacidad90
+        tanqueForm.conector = tankConnectors.find(t => t.id == pgFinded.conector)
+    }
+})
+
+watch(() => tanqueForm.atTipo, () => {
+    const { sufix } = tanksTypes.find(t => t.id == tanqueForm.atTipo.id)
+    console.log("🚀 ~ file: EditTankWaitingList.vue:143 ~ watch ~ tanqueForm.atId:", tanqueForm.atId)
+    tanqueForm.atName = tanqueForm.atId < 999 ? `PG-0${tanqueForm.atId}${sufix}` : `PG-${tanqueForm.atId}${sufix}`
+    tanqueForm.password = tanqueForm.atTipo.id
+    const pgFinded = tanques.value.find( t => t.atName === tanqueForm.atName)
+    if (pgFinded) { 
+        tanqueForm.capacidad = pgFinded.capacidad90
+        tanqueForm.conector = tankConnectors.find(t => t.id == pgFinded.conector)
+    }
+})
+
 </script>
 
 <template>
-  <button class="p-2" @click="openModal">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 text-blue-600 dark:text-blue-300"
-      fill="currentColor">
-      <path
-        d="M200 344V280H136C122.7 280 112 269.3 112 256C112 242.7 122.7 232 136 232H200V168C200 154.7 210.7 144 224 144C237.3 144 248 154.7 248 168V232H312C325.3 232 336 242.7 336 256C336 269.3 325.3 280 312 280H248V344C248 357.3 237.3 368 224 368C210.7 368 200 357.3 200 344zM0 96C0 60.65 28.65 32 64 32H384C419.3 32 448 60.65 448 96V416C448 451.3 419.3 480 384 480H64C28.65 480 0 451.3 0 416V96zM48 96V416C48 424.8 55.16 432 64 432H384C392.8 432 400 424.8 400 416V96C400 87.16 392.8 80 384 80H64C55.16 80 48 87.16 48 96z" />
-    </svg>
+  <button type="button" @click="openModal"
+    class="px-2 py-1.5 text-sm font-medium text-yellow-900 bg-transparent border border-yellow-900 hover:bg-yellow-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-yellow-500 focus:bg-yellow-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-yellow-700 dark:focus:bg-yellow-700">
+    <EditIcon class="w-3 h-3" />
   </button>
   <TransitionRoot appear :show="isOpen" as="template">
     <Dialog as="div" @close="closeModal" class="relative z-10">
@@ -136,7 +183,7 @@ async function onSubmit() {
                 <!-- Modal header -->
                 <div class="flex items-start justify-between p-3 border-b rounded-t dark:border-slate-600">
                   <DialogTitle as="h3" class="text-xl font-semibold text-slate-900 dark:text-white">
-                    Agregar usuario
+                    Editar tanque - Lista de espera
                   </DialogTitle>
                   <button type="button" @click="closeModal"
                     class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white">
@@ -154,16 +201,13 @@ async function onSubmit() {
               <div class="p-3 space-y-6">
                 <div class="grid grid-cols-6 gap-4">
                   <div class="col-span-6 md:col-span-3">
-                    <LFloatInput v-model="userForm.usuario" label="Usuario" square />
+                    <LFloatInput v-model.number="tanqueForm.atId" mask="#####" label="PG" square />
                   </div>
                   <div class="col-span-6 md:col-span-3">
-                    <LFloatInput v-model="userForm.password" label="Password" square />
-                  </div>
-                  <div class="col-span-6 md:col-span-3">
-                    <Listbox v-model="userForm.categoria">
+                    <Listbox v-model="tanqueForm.atTipo">
                       <div class="relative mt-1">
                         <ListboxButton class="w-full">
-                          <LFloatInput label="Categoría" v-model="userForm.categoria.nombre" square with-append-icon readonly>
+                          <LFloatInput label="Tipo" v-model="tanqueForm.atTipo.name" square with-append-icon readonly>
                             <template #append-icon>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 text-gray-500">
@@ -177,7 +221,7 @@ async function onSubmit() {
                           leave-to-class="opacity-0">
                           <ListboxOptions
                             class="absolute z-20 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            <ListboxOption as="template" v-for="item in categorias" :key="item.id" :value="item"
+                            <ListboxOption as="template" v-for="item in tanksTypes" :key="item.id" :value="item"
                               :disabled="item.unavailable" v-slot="{ active, selected }">
                               <li :class="[
                                   active
@@ -189,7 +233,7 @@ async function onSubmit() {
                                   <span :class="[
                                       selected ? 'font-semibold' : 'font-normal',
                                       'ml-3 block truncate',
-                                    ]">{{ item.nombre }}</span>
+                                    ]">{{ item.name }}</span>
                                 </div>
 
                                 <span v-if="selected" :class="[
@@ -211,10 +255,13 @@ async function onSubmit() {
                     </Listbox>
                   </div>
                   <div class="col-span-6 md:col-span-3">
-                    <Listbox v-model="userForm.departamento">
+                    <LFloatInput v-model.number="tanqueForm.atName" label="Nombre" square />
+                  </div>
+                  <div class="col-span-6 md:col-span-3">
+                    <Listbox v-model="tanqueForm.conector">
                       <div class="relative mt-1">
                         <ListboxButton class="w-full">
-                          <LFloatInput label="Departamento" v-model="userForm.departamento.nombre" square with-append-icon
+                          <LFloatInput label="Conector" v-model="tanqueForm.conector.name" square with-append-icon
                             readonly>
                             <template #append-icon>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -229,7 +276,7 @@ async function onSubmit() {
                           leave-to-class="opacity-0">
                           <ListboxOptions
                             class="absolute z-20 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            <ListboxOption as="template" v-for="item in departamentos" :key="item.id" :value="item"
+                            <ListboxOption as="template" v-for="item in tankConnectors" :key="item.id" :value="item"
                               :disabled="item.unavailable" v-slot="{ active, selected }">
                               <li :class="[
                                   active
@@ -241,7 +288,7 @@ async function onSubmit() {
                                   <span :class="[
                                       selected ? 'font-semibold' : 'font-normal',
                                       'ml-3 block truncate',
-                                    ]">{{ item.nombre }}</span>
+                                    ]">{{ item.name }}</span>
                                 </div>
 
                                 <span v-if="selected" :class="[
@@ -262,7 +309,9 @@ async function onSubmit() {
                       </div>
                     </Listbox>
                   </div>
-                  
+                  <div class="col-span-6 md:col-span-3">
+                    <LFloatInput v-model="tanqueForm.capacidad" label="Capacidad" square />
+                  </div>
                 </div>
               </div>
               <!-- Modal footer -->

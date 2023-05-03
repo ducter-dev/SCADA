@@ -8,6 +8,8 @@ import useToast from "../../dashboard/composables/useToast"
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useEventsBus from "../../../layout/eventBus"
 import ModalDelete from '../../../layout/components/Modal/Delete.vue'
+import EditTankWaitingList from "./EditTankWaitingList.vue"
+
 
 /**
  * Declaración de los atributos que son asignables.
@@ -185,11 +187,6 @@ const fetchDataTankWaitingList = async () => {
   }
 }
 
-const editTanque = (item) => {
-  // editar tanque
-  console.log(`Editar tanque: ${item.id}`)
-}
-
 const callTanque = async (item) => {
   // editar tanque
   console.log(`Llamar tanque: ${item.id}`)
@@ -275,6 +272,16 @@ watch(() => bus.value.get('reloadData'), (val) => {
   fetchDataTankWaitingList()
 })
 
+watch(() => bus.value.get('successUpdateTanqueWaiting'), (val) => {
+  fetchDataTankWaitingList()
+})
+
+watch(() => bus.value.get('successUpdateTanqueWaiting'), (val) => {
+  console.log('successUpdateTanqueWaiting')
+  dataTankWaitingList.value = []
+  fetchDataTankWaitingList()
+})
+
 </script>
 <template>
   <ModalDelete :config="configModalDelete" :class="showModal ? '' : 'hidden'" @submitModal="deleteTankFromList" />
@@ -324,10 +331,7 @@ watch(() => bus.value.get('reloadData'), (val) => {
             <LBodyTd center>
 
               <div class="inline-flex shadow-sm" role="group">
-                <button type="button" @click="editTanque(item)"
-                  class="px-2 py-1.5 text-sm font-medium text-yellow-900 bg-transparent border border-yellow-900 hover:bg-yellow-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-yellow-500 focus:bg-yellow-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-yellow-700 dark:focus:bg-yellow-700">
-                  <EditIcon class="w-3 h-3" />
-                </button>
+                <EditTankWaitingList :tanque="item"/>
                 <button type="button" v-if="index !== 0" @click="moveTank(item)"
                   class="px-2 py-1.5 text-sm font-medium text-blue-900 bg-transparent border-t border-b border-r border-blue-900 hover:bg-blue-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-500 focus:bg-blue-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:bg-blue-700">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-3 h-3" fill="currentColor">

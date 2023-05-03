@@ -22,6 +22,13 @@ const useTanqueEspera = () => {
     return await store.addEntryTankSt(tank)
   }
 
+  const updateTanqueEspera = async (tank) => {
+    console.log("🚀 ~ file: useTanqueEspera.js:26 ~ updateTanqueEspera ~ tank:", tank)
+    const res = await store.updateTanqueEspera(tank)
+    console.log("🚀 ~ file: useTanqueEspera.js:28 ~ updateTanqueEspera ~ res:", res)
+    return res
+  }
+
   const deleteTanqueEspera = async (tank) => {
     const resp = await store.borrarTanqueEspera(tank)
     return resp
@@ -58,6 +65,8 @@ const useTanqueEspera = () => {
     return await store.calTankSt(tanque)
   }
   
+  
+
   return {
     fetchTanksInEspera,
     fetchLastAssignment,
@@ -72,6 +81,7 @@ const useTanqueEspera = () => {
     getFirstTank,
     resetTanquesEspera,
     callTank,
+    updateTanqueEspera,
   }
 }
 

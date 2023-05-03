@@ -40,7 +40,7 @@ const openModal = () => {
 }
 
 const currentUser = computed(() => getCurrentUser())
-console.log("🚀 ~ file: EditUser.vue:43 ~ props.user:", props.user)
+console.log("🚀 ~ file: EditUser.vue:43 ~ currentUser.value:", currentUser.value)
 const userSel = props.user
 console.log("🚀 ~ file: EditUser.vue:45 ~ userSel:", userSel)
 const categorias = [
@@ -93,7 +93,7 @@ async function onSubmit() {
     closeModal()
     const objBitacora = {
       user: currentUser.value.id,
-      actividad: `El usuario ${currentUser.username} actualizó al usuario ${data.username}.`,
+      actividad: `El usuario ${currentUser.value.username} actualizó al usuario ${data.username}.`,
       evento: 26,
     }
     insertBitacora(objBitacora)
