@@ -190,6 +190,19 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    async alarmTanksSt() {
+      try {
+        const res = await scadaApi.post('/tanques/alarmar')
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
     // ------ Tanques de Entradas ------
     async fetchEntriesTanksSt(date) {
       try {

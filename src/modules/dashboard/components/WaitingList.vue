@@ -19,7 +19,7 @@ import useAuth from "../../auth/composables/useAuth"
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import useTanque from '../../tanques/composables/useTanque'
 
-const { bus } = useEventsBus()
+const { bus, emit } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado, changeEstadoLlenadera } = useFillers()
 const { getLastAssignment, fetchTanksInEspera, resetTanquesEspera, getTanquesInEspera } = useWaitingTank()
 const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment,
@@ -95,6 +95,9 @@ const fetchFillerStatus = async () => {
     const { data, status } = res
     if (status == 200) {
       setDataFromFetchingWaitingTanks(data.estado)
+      if (data.estado == 0)  {
+        showTankForAssigment.value = true
+      }
     } else {
       addToast({
         message: {
@@ -123,8 +126,7 @@ const currentFiller = async () => {
     const res = await getCurrentFiller()
     const { data, status } = res
     if (status == 200) {
-      //filler.value = data.llenaderaDisponible
-      filler.value = 5
+      filler.value = data.llenaderaDisponible
       getFiller.value = true
       getTankToAssigment()
     } else {
@@ -165,9 +167,9 @@ const setTipo = (tipo) => {
 const setConector = (conector) => {
   switch (conector) {
     case 1:
-      return 'Izq.'
-    case 2:
       return 'Der.'
+    case 2:
+      return 'Izq.'
     case 3:
       return 'Ambos'
   }
@@ -266,11 +268,13 @@ const acceptAssignmentFunction = async () => {
         fetchTanksInEspera()
 
         // Ocultamos tanque de asignacion si esta detenido el despacho
-
+        currentFiller()
         if (fillerStatus.estado != 0) {
           showTankForAssigment.value = false
         }
-
+        
+        // Emitir evento para que actualice la lista de espera
+        emit('successAcceptAssignment', true)
         const objBitacora = {
           user: currentUser.value.id,
           actividad: `El usuario ${currentUser.value.username} aceptó la asignación.`,
@@ -516,8 +520,9 @@ watch(
 )
 
 onMounted(() => {
-  fetchFillerStatus()
+  
   currentFiller()
+  fetchFillerStatus()
   if (barrierVerification.value.length != 0) {
     //console.log("🚀 ~ file: LastEntry.vue:392 ~ onMounted ~ barrierVerification.value:", barrierVerification.value.estado)
     // Establece la información del store
@@ -525,6 +530,7 @@ onMounted(() => {
   } else {
     // Realiza la petición al servidor
     fetchBarreraVerificacion()
+
   }
 })
 </script>

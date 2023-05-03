@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia'
-import scada from '@/api'
+import scadaApi from '@/api'
 
 export const useUsuarioStore = defineStore('usuario', {
   id: 'usuario',
@@ -11,7 +11,7 @@ export const useUsuarioStore = defineStore('usuario', {
   actions: {
     async fetch () {
       try {
-        const res = await scada.get('/users')
+        const res = await scadaApi.get('/users')
         const { data } = res
         this.usuarios = data
         return res
@@ -21,7 +21,7 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async insert(usuario) {
-      const res = await scada.post('/auth/register', usuario)
+      const res = await scadaApi.post('/auth/register', usuario)
       const { data } = res
       this.usuarios.push(data)
       console.log("🚀 ~ file: usuarioStore.js:25 ~ insert ~ res:", res)
@@ -31,7 +31,7 @@ export const useUsuarioStore = defineStore('usuario', {
     async update(user) {
       try {
         console.log("🚀 ~ file: usuarioStore.js:32 ~ update ~ user:", user)
-        const res = await scada.put(`/users/${user.id}`, user )
+        const res = await scadaApi.put(`/users/${user.id}`, user )
         console.log("🚀 ~ file: usuarioStore.js:36 ~ update ~ res:", res)
         const { data } = res
         const userUpdate = data
@@ -51,7 +51,7 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async delete(usuario) {
-      const { data } = await scada.delete(`/users/${usuario.id}`)
+      const { data } = await scadaApi.delete(`/users/${usuario.id}`)
       this.usuarios = this.usuarios.filter(user => user.id != usuario.id)
       return res
     },

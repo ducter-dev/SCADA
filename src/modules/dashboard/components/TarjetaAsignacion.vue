@@ -220,9 +220,9 @@ export default {
     const setConector = (conector) => {
       switch (conector) {
         case 1:
-          return 'Izq.'
-        case 2:
           return 'Der.'
+        case 2:
+          return 'Izq.'
         case 3:
           return 'Ambos'
       }

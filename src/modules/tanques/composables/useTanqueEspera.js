@@ -42,6 +42,11 @@ const useTanqueEspera = () => {
     return  await store.updateTankPosition(tank)
   }
 
+  const alarmTanks = async () => {
+    const resp = await store.alarmTanksSt()
+    return resp
+  }
+
   const getTanquesInEspera = () => {
     return store.tanquesInEspera
   }
@@ -82,6 +87,7 @@ const useTanqueEspera = () => {
     resetTanquesEspera,
     callTank,
     updateTanqueEspera,
+    alarmTanks,
   }
 }
 
