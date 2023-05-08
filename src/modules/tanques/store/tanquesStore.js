@@ -40,7 +40,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanques = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -59,7 +63,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanqueSelect = {}
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -70,7 +78,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanques.push(data)
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -83,7 +95,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanques = tanques
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -99,7 +115,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.lastTankEntry = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -111,7 +131,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanquesInEspera = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -121,7 +145,11 @@ export const useTanqueStore = defineStore('tanques', {
         const res = await scadaApi.post('tanques/espera/mover-inicio',item)
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -132,7 +160,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanquesInEspera.push(data)
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -141,7 +173,11 @@ export const useTanqueStore = defineStore('tanques', {
         const res = await scadaApi.post('tanques/entrada', tank)
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -211,7 +247,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanksEntries = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -223,7 +263,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanquesInServicio = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -234,7 +278,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.lastTankAsign = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -246,7 +294,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.tanquesInSalida = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -257,7 +309,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.lastTankExit = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -269,7 +325,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderas = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -280,7 +340,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderasEstado = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -291,7 +355,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderasLibres = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -302,7 +370,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderasLibres = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -319,7 +391,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderaAceptaAsignacion = 0
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -331,7 +407,11 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderasEstado = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -346,9 +426,27 @@ export const useTanqueStore = defineStore('tanques', {
         this.llenaderasEstado = data
         return res
       } catch (error) {
-        return { ok: false, message: error.message }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    async changeTankPositionSt(formPosition) {
+      try {
+        console.log("🚀 ~ file: tanquesStore.js:354 ~ changeTankPositionSt ~ formPosition:", formPosition)
+        const res = await scadaApi.post('/tanques/espera/mover-posicion', formPosition)
+        console.log(res)
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
   },
-
 })

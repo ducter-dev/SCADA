@@ -70,6 +70,10 @@ const useTanqueEspera = () => {
     return await store.calTankSt(tanque)
   }
   
+  const changeTankPosition = async (formPosition) => {
+    console.log("🚀 ~ file: useTanqueEspera.js:74 ~ changeTankPosition ~ formPosition:", formPosition)
+    return await store.changeTankPositionSt(formPosition)
+  }
   
 
   return {
@@ -88,6 +92,7 @@ const useTanqueEspera = () => {
     callTank,
     updateTanqueEspera,
     alarmTanks,
+    changeTankPosition,
   }
 }
 

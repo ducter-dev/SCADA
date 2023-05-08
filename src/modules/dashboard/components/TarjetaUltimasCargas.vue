@@ -69,9 +69,9 @@ const fecthInformationOnTanksLastDepartures = async () => {
   }
 }
 
-watch(() => bus.value.get('reloadData'), (val) => {
+/* watch(() => bus.value.get('reloadData'), (val) => {
   fecthInformationOnTanksLastDepartures()
-})
+}) */
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información

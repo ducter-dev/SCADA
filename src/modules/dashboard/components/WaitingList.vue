@@ -480,9 +480,9 @@ const getTankToAssigment = () => {
 }
 
 watch(() => bus.value.get('reloadData'), (val) => {
-  currentFiller()
-  fetchFillerStatus()
-  fetchDataBarrierVerification()
+  //currentFiller()
+  //fetchFillerStatus()
+  //fetchDataBarrierVerification()
 })
 
 watch(
