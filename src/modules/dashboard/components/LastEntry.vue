@@ -56,9 +56,9 @@ const setTipo = (tipo) => {
 const setConnector = (connector) => {
     switch (connector) {
         case 1:
-            return 'Izq.'
-        case 2:
             return 'Der.'
+        case 2:
+            return 'Izq.'
         case 3:
             return 'Ambos'
     }
@@ -121,10 +121,10 @@ const fetchDataBarrierEntry = async () => {
     }
 }
 
-watch(() => bus.value.get('reloadData'), (val) => {
+/* watch(() => bus.value.get('reloadData'), (val) => {
     fetchDataBarrierEntry()
     fetchDataLastEntry()
-})
+}) */
 
 watch(
     () => dataBarrierEntryStatus.value, async(estadoBarrera) => {

@@ -8,6 +8,7 @@ import useToast from "../../dashboard/composables/useToast"
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useEventsBus from "../../../layout/eventBus"
 import ModalDelete from '../../../layout/components/Modal/Delete.vue'
+import ModalPosicion from '../../../layout/components/Modal/Posicion.vue'
 import EditTankWaitingList from "./EditTankWaitingList.vue"
 
 
@@ -17,14 +18,17 @@ import EditTankWaitingList from "./EditTankWaitingList.vue"
  * @var array<boolean, string, array>
  */
 const { bus } = useEventsBus()
-const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera, updateTankPosition, callTank, alarmTanks } = useTanqueEspera()
+const { fetchTanksInEspera, getTanquesInEspera, deleteTanqueEspera, updateTankPosition, callTank, alarmTanks, changeTankPosition } = useTanqueEspera()
 const waitingList = computed(() => getTanquesInEspera())
 const { addToast } = useToast()
 let dataTankWaitingList = ref([])
 let loadData = ref(true)
 const configModalDelete = ref({})
 const showModal = ref(false)
+const configModalPosicion = ref({})
+const showModalPosicion = ref(false)
 const tanqueSelected = ref({})
+
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -47,7 +51,15 @@ const openModalDelete = (item) => {
   tanqueSelected.value = item
 }
 
-
+const openModalPosition = (item) => {
+  showModalPosicion.value = true
+  configModalPosicion.value = {
+    text: `¿En qué posición desea mover el tanque ${item.atName}?`,
+    okText: 'Mover Tanque',
+    cancelText: 'Cancelar'
+  }
+  tanqueSelected.value = item
+}
 
 const deleteTankFromList = async (result) => {
   console.log("🚀 ~ file: TableEspera.vue:51 ~ deleteTankFromList ~ result:", result)
@@ -57,6 +69,21 @@ const deleteTankFromList = async (result) => {
       showModal.value = false
       tanqueSelected.value = {}
       return
+    }
+    
+    console.log("🚀 ~ file: TableEspera.vue:74 ~ deleteTankFromList ~ result.destino:", result.destino)
+    console.log("🚀 ~ file: TableEspera.vue:75 ~ deleteTankFromList ~ tanqueSelected.value.posicion:", tanqueSelected.value.posicion)
+    if (result.destino == tanqueSelected.value.posicion) {
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: 'Ha seleccionado la misma posición.',
+          type: "error"
+        },
+      })
+      tanqueSelected.value = {}
+      showModalPosicion.value = false
+      return 
     }
     
     const res = await deleteTanqueEspera(tanqueSelected.value)
@@ -96,39 +123,46 @@ const deleteTankFromList = async (result) => {
 
 }
 
-const moveTank = async (item) => {
+const moveTank = async (result) => {
   try {
-    const res = await updateTankPosition({ "tanque": item.atName })
+    if (!result.action) {
+      tanqueSelected.value = {}
+      configModalPosicion.value = {}
+      showModalPosicion.value = false
+      return
+    }
+
+    const formPosition = {
+      inicial: tanqueSelected.value.posicion,
+      destino: result.destino
+    }
+
+    const res = await changeTankPosition(formPosition)
     const { data, status } = res
+    console.log("🚀 ~ file: TableEspera.vue:142 ~ moveTank ~ res:", res)
+    console.log("🚀 ~ file: TableEspera.vue:142 ~ moveTank ~ data:", data)
 
     // Valida de acuerdo al estatus de la petición
     // Si el código de estatus es diferente de 200 se marcara un error 
-    if (status == 200) {
-      if (data.hasOwnProperty('atName')) {
+    if (status == 201) {
+      
         dataTankWaitingList.value = []
         fetchDataTankWaitingList()
+        tanqueSelected.value = {}
+        configModalPosicion.value = {}
+        showModalPosicion.value = false
         addToast({
           message: {
             title: "Éxito!",
-            message: `Se movio el tanque ${data.atName} al inicio de la lista.`,
+            message: data.message,
             type: "success"
           },
         })
-      } else {
-        addToast({
-          message: {
-            title: "Info",
-            message: data.message,
-            type: "info"
-          },
-        })
-      }
-
     } else {
       addToast({
         message: {
           title: "¡Error!",
-          message: data.message,
+          message: res.message,
           type: "error",
           component: "TableEspera - moveTank()"
         },
@@ -136,10 +170,11 @@ const moveTank = async (item) => {
     }
   } catch (error) {
     // En caso de tener error establece un mensaje de error
+    console.log(error)
     addToast({
       message: {
         title: "¡Error!",
-        message: `Error: ${error.message}`,
+        message: `Error: ${res.message}`,
         type: "error",
         component: "TableEspera | Catch - moveTank()"
       },
@@ -318,6 +353,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
 </script>
 <template>
   <ModalDelete :config="configModalDelete" :class="showModal ? '' : 'hidden'" @submitModal="deleteTankFromList" />
+  <ModalPosicion :config="configModalPosicion" :class="showModalPosicion ? '' : 'hidden'" @submitModal="moveTank" />
   <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="border border-solid border-slate-300">
       <div class="flex items-center justify-between">
@@ -369,7 +405,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
 
               <div class="inline-flex shadow-sm" role="group">
                 <EditTankWaitingList :tanque="item"/>
-                <button type="button" v-if="index !== 0" @click="moveTank(item)"
+                <button type="button" @click="openModalPosition(item)"
                   class="px-2 py-1.5 text-sm font-medium text-blue-900 bg-transparent border-t border-b border-r border-blue-900 hover:bg-blue-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-500 focus:bg-blue-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:bg-blue-700">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-3 h-3" fill="currentColor">
                     <path

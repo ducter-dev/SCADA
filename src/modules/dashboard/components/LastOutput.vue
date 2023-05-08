@@ -104,18 +104,18 @@ const setTipo = (tipo) => {
 const setConnector = (connector) => {
     switch (connector) {
         case 1:
-            return 'Izq.'
-        case 2:
             return 'Der.'
+        case 2:
+            return 'Izq.'
         case 3:
             return 'Ambos'
     }
 }
 
-watch(() => bus.value.get('reloadData'), (val) => {
+/* watch(() => bus.value.get('reloadData'), (val) => {
     fetchDataLastOutput()
     fetchDataBarreraSalida()
-})
+}) */
 
 watch(
     () => dataBarrierExitStatus.value, async(estadoBarrera) => {

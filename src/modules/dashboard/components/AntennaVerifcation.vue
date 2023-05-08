@@ -77,9 +77,9 @@ const setTipo = (tipo) => {
     }
 }
 
-watch(() => bus.value.get('reloadData'), (val) => {
+/* watch(() => bus.value.get('reloadData'), (val) => {
     fetchAntennaVerificationData()
-})
+}) */
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
