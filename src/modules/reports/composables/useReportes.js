@@ -11,6 +11,15 @@ const useReportes = () => {
     }
   }
 
+  const getUltimasCargas = (fecha) => {
+    try {
+      open(`${api_url}/reportes/ultimas-cargas/${fecha}`, '_blank')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   const getReportEsferas = (fecha, esfera) => {
     // esfera a ó b
     try {
@@ -56,6 +65,7 @@ const useReportes = () => {
 
   return {
     getCargasDiarias,
+    getUltimasCargas,
     getReportEsferas,
     getReportPatines,
     getReportCromatografo,
