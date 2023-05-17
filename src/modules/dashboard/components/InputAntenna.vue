@@ -12,7 +12,7 @@ import useEventsBus from "../../../layout/eventBus"
  */
 const inputAntenna = computed(() => getAntenaEntrada())
 const { addToast } = useToast()
-const { getAntenaEntrada, fetchAntenaEntrada } = useInputAntenna()
+const { getAntenaEntrada, fetchEntryRadiofrecuency } = useInputAntenna()
 const dataResult = ref({})
 let loadData = ref(true)
 const { bus } = useEventsBus()
@@ -36,8 +36,9 @@ const setDataFromResult = (data) => {
  */
 const fetchInputAntennaData = async () => {
     try {
-        const res = await fetchAntenaEntrada()
-        const { data, status } = res
+        const res = await fetchEntryRadiofrecuency()
+        console.log("🚀 ~ file: InputAntenna.vue:40 ~ fetchInputAntennaData ~ res:", res)
+        const { data, status, message } = res
 
         // Valida de acuerdo al estatus de la petición
         // Si el código de estatus es diferente de 200 se marcara un error 
@@ -47,11 +48,11 @@ const fetchInputAntennaData = async () => {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: message,
                     type: "error",
                     component:"InputAntenna - fetchInputAntennaData()"
                 },
-            });
+            })
         }
     } catch (error) {
         // En caso de tener error establece un mensaje de error
@@ -62,7 +63,7 @@ const fetchInputAntennaData = async () => {
                 type: "error",
                 component:"InputAntenna | Catch - fetchInputAntennaData()"
             },
-        });
+        })
     }
 }
 
@@ -77,9 +78,9 @@ const setTipo = (tipo) => {
     }
 }
 
-/* watch(() => bus.value.get('reloadData'), (val) => {
+watch(() => bus.value.get('reloadData'), (val) => {
     fetchInputAntennaData()
-}) */
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información

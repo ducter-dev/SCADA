@@ -9,6 +9,11 @@ const useDashboard = () => {
     return res
   }
 
+  const fetchEntryRadiofrecuency = async () => {
+    const res = await store.fetchEntryRadiofrecuency()
+    return res
+  }
+
   const fetchAntenaVerificacion = async () => {
     const res = await store.fetchAntenaVerificacion()
     return res
@@ -114,6 +119,7 @@ const useDashboard = () => {
 
   return {
     fetchAntenaEntrada,
+    fetchEntryRadiofrecuency,
     fetchAntenaVerificacion,
     fetchAntenaSalida,
     fetchBarreraEntrada,

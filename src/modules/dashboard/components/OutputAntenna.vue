@@ -10,7 +10,7 @@ import useEventsBus from "../../../layout/eventBus"
  * 
  * @var array<boolean, string, array>
  */
- const { bus } = useEventsBus()
+const { bus } = useEventsBus()
 const { addToast } = useToast()
 const { getAntenaSalida, fetchAntenaSalida } = useOutputAntenna()
 const outputAntenna = computed(() => getAntenaSalida())
@@ -37,7 +37,7 @@ const setDataFromResult = (data) => {
 const fetchOutputAntennaData = async () => {
     try {
         const res = await fetchAntenaSalida()
-        const { data, status } = res
+        const { data, status, message } = res
 
         // Valida de acuerdo al estatus de la petición
         // Si el código de estatus es diferente de 200 se marcara un error 
@@ -47,7 +47,7 @@ const fetchOutputAntennaData = async () => {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: message,
                     type: "error",
                     component:"OutputAntenna - fetchOutputAntennaData()"
                 },
