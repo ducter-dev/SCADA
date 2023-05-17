@@ -7,9 +7,9 @@ export const useDashboardStore = defineStore('dashboard', {
     antenaEntrada: {},
     antenaVerificacion: {},
     antenaSalida: {},
-    barreraEntrada: { estado: true },
-    barreraVerificacion: { estado: true },
-    barreraSalida: { estado: true },
+    barreraEntrada: null,
+    barreraVerificacion: null,
+    barreraSalida: null,
   }),
   getters: {},
   actions: {
@@ -21,7 +21,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.antenaEntrada = data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -32,7 +36,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.antenaVerificacion = data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -43,7 +51,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.antenaSalida= data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -51,11 +63,16 @@ export const useDashboardStore = defineStore('dashboard', {
     async fetchBarreraEntrada() {
       try {
         const res = await scadaApi.get('/barrera/entrada')
+        console.log("🚀 ~ file: dashboardStore.js:54 ~ fetchBarreraEntrada ~ res:", res)
         const { data } = res
-        this.barreraEntrada = data
+        this.barreraEntrada = data.estado
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -66,10 +83,14 @@ export const useDashboardStore = defineStore('dashboard', {
         }
         const res = await scadaApi.post('/barrera/entrada', dataForm)
         const { data } = res
-        this.barreraVerificacion = data
+        this.barreraVerificacion = data.estado
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -78,10 +99,14 @@ export const useDashboardStore = defineStore('dashboard', {
       try {
         const res = await scadaApi.get('/barrera/verificacion')
         const { data } = res
-        this.barreraVerificacion = data
+        this.barreraVerificacion = data.estado
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -95,7 +120,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.barreraVerificacion = data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -107,7 +136,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.barreraSalida = data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -122,7 +155,11 @@ export const useDashboardStore = defineStore('dashboard', {
         this.barreraSalida = data
         return res
       } catch (error) {
-        return { ok: false, message: error }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 
@@ -285,5 +322,25 @@ export const useDashboardStore = defineStore('dashboard', {
         }
       }
     },
+
+    /**
+     *  Función para verificar si ha entrado un tanque nuevo por transfonder
+     * 
+     * @returns EntryTank
+    */
+
+    async fetchEntryRadiofrecuency() {
+      try {
+        const res = await scadaApi.post('/tanques/entrada/radiofrecuencia')
+        return res
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+    
   },
 })

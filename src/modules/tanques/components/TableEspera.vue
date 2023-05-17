@@ -334,8 +334,8 @@ watch(() => bus.value.get('successRegistration'), (val) => {
 })
 
 watch(() => bus.value.get('reloadData'), (val) => {
-  dataTankWaitingList.value = []
-  fetchDataTankWaitingList()
+  // dataTankWaitingList.value = []
+  // fetchDataTankWaitingList()
 })
 
 watch(() => bus.value.get('successUpdateTanqueWaiting'), (val) => {

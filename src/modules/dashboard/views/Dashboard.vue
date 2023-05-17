@@ -102,153 +102,17 @@ export default {
     const { emit } = useEventsBus()
     const { pause, resume, isActive } = useIntervalFn(() => {
       emit("reloadData", true)
-    }, 20000)
+    }, 100000)
 
     const { fetchTanques } = useTanque()
     const { fetchLlenaderas } = useLlenaderas()
-
-    const dataAntenaSalida = ref({})
-    const dataBarreraEntrada = ref({})
-    const dataBarreraVerificacion = ref({})
-    const dataBarreraSalida = ref({})
-    let dataEstadoLlenadera = ref({})
-    let dataTanksEspera = ref([])
-    let dataLastEntry = ref({})
-    let dataLastAsign = ref({})
-    let dataLastExit = ref({})
-    let dataLlenaderas = ref([])
-
-    const openForm = () => {
-      router.push('/dashboard/entrada/manual')
-    }
-
-    const toggleEntrada = async (toggle) => {
-      return
-      try {
-        const res = await changeBarreraEntrada(toggle)
-        const { data, status } = res
-        if (status == 201) {
-          dataBarreraEntrada.value = data
-          addToast({
-            message: {
-              title: "Barrera de Entrada",
-              message: `La barrera de entrada ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
-              type: "success"
-            },
-          })
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error",
-              component:"Dashboard | - toggleEntrada()"
-            },
-          })
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error",
-            component:"Dashboard | Catch - toggleEntrada()"
-          },
-        })
-      }
-    }
-
-    const toggleVerificacion = async (toggle) => {
-      //
-      try {
-        const res = await changeBarreraVerificacion(toggle)
-        const { data, status } = res
-        if (status == 201) {
-          dataBarreraVerificacion.value = data
-          addToast({
-            message: {
-              title: "Barrera de Verificación",
-              message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
-              type: "success"
-            },
-          })
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error"
-            },
-          })
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error"
-          },
-        })
-      }
-    }
-
-    const toggleSalida = async (toggle) => {
-      //
-      try {
-        const res = await changeBarreraSalida(toggle)
-        const { data, status } = res
-        if (status == 201) {
-          dataBarreraSalida.value = data
-
-          addToast({
-            message: {
-              title: "Barrera de Verificación",
-              message: `La barrera de verificación ha sido ${data.estado ? 'Abierta' : 'Cerrada'}.`,
-              type: "success"
-            },
-          })
-        } else {
-          addToast({
-            message: {
-              title: "¡Error!",
-              message: data.message,
-              type: "error"
-            },
-          })
-        }
-      } catch (error) {
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: `Error: ${error.message}`,
-            type: "error"
-          },
-        })
-      }
-    }
-
 
     onMounted(() => {
       fetchTanques()
       fetchLlenaderas()
     })
 
-    return {
-      dataAntenaSalida,
-      openForm,
-      dataBarreraEntrada,
-      dataBarreraVerificacion,
-      dataBarreraSalida,
-      toggleEntrada,
-      toggleVerificacion,
-      toggleSalida,
-      dataEstadoLlenadera,
-      dataTanksEspera,
-      dataLastEntry,
-      dataLastAsign,
-      dataLastExit,
-      dataLlenaderas,
-    }
+    return {}
   },
 }
 </script>

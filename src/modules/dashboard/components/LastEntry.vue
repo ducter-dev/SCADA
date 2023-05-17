@@ -21,7 +21,7 @@ const { addToast } = useToast()
 const { bus } = useEventsBus()
 
 const loadDataBarrierStatus = ref(false)
-let dataBarrierEntryStatus = ref({})
+let dataBarrierEntryStatus = ref(null)
 const barrierEntry = computed(() => getBarreraEntrada())
 let dataLastEntry = ref({})
 
@@ -95,15 +95,14 @@ const fetchDataLastEntry = async () => {
 const fetchDataBarrierEntry = async () => {
     try {
         const res = await fetchBarreraEntrada()
-        const { data, status } = res
-        //console.log("🚀 ~ file: LastEntry.vue:99 ~ fetchDataBarrierEntry ~ data:", data)
+        const { data, status, message } = res
         if (status == 200) {
             setDataFromFetchDataBarrierEntry(data.estado)
         } else {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: message,
                     type: "error",
                     component: "LastEntry - fetchDataBarrierEntry()"
                 },
@@ -163,12 +162,13 @@ watch(
 onMounted(() => {
 
     fetchDataLastEntry()
+    console.log("🚀 ~ file: LastEntry.vue:166 ~ onMounted ~ barrierEntry.value:", barrierEntry.value)
 
     //Condicional para verificar existencia de información en el store
-    if (barrierEntry.value.length != 0) {
-        //console.log("🚀 ~ file: LastEntry.vue:166 ~ onMounted ~ barrierEntry.value:", barrierEntry.value.estado)
+    if (barrierEntry.value) {
         // Establece la información del store
-        setDataFromFetchDataBarrierEntry(barrierEntry.value.estado)
+
+        setDataFromFetchDataBarrierEntry(barrierEntry.value)
     } else {
         // Realiza la petición al servidor
         fetchDataBarrierEntry()

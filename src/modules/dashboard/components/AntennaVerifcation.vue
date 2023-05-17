@@ -10,12 +10,12 @@ import useEventsBus from "../../../layout/eventBus"
  * 
  * @var array<boolean, string, array>
  */
+const { bus } = useEventsBus()
 const { addToast } = useToast()
 const { getAntenaVerificacion, fetchAntenaVerificacion } = useInputAntenna()
 const verificationAntenna = computed(() => getAntenaVerificacion())
 const dataResult = ref({})
 let loadData = ref(true)
-const { bus } = useEventsBus()
 
 /**
  * Método para establecer valor a la variable `dataResult` y cambia el estatus del indicador de carga `loadData`
@@ -37,17 +37,17 @@ const setDataFromResult = (data) => {
 const fetchAntennaVerificationData = async () => {
     try {
         const res = await fetchAntenaVerificacion()
-        const { data, status } = res
+        const { data, status, message } = res
 
         // Valida de acuerdo al estatus de la petición
         // Si el código de estatus es diferente de 200 se marcara un error 
         if (status == 200) {
-            setDataFromResult(data)
+            setDataFromResult(data.estado)
         } else {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: message,
                     type: "error",
                     component:"AntennaVerification - fetchAntennaVerificationData()"
                 },
@@ -89,7 +89,7 @@ const setTipo = (tipo) => {
  */
 onMounted(() => {
    //Condicional para verificar existencia de información en el store
-    if (verificationAntenna.value && Object.keys(verificationAntenna.value).length > 0) {
+    if (verificationAntenna.value) {
         // Establece la información del store
         setDataFromResult(verificationAntenna.value)
     } else {

@@ -45,7 +45,7 @@ const currentUser = computed(() => getCurrentUser())
 const dataWaitingTank = ref({})
 
 const loadDataBarrierStatus = ref(false)
-let dataBarrierVerificationStatus = ref({})
+let dataBarrierVerificationStatus = ref(null)
 const barrierVerification = computed(() => getBarreraVerificacion())
 
 // ** Variable para mostrar el tanque para asignar.
@@ -353,14 +353,14 @@ const fetchDataBarrierVerification = async () => {
   try {
     const res = await fetchBarreraVerificacion()
     //console.log("🚀 ~ file: WaitingList.vue:322 ~ fetchDataBarrierVerification ~ res:", res)
-    const { data, status } = res
+    const { data, status, message } = res
     if (status == 200) {
       setDataFromFetchDataBarrierVerification(data.estado)
     } else {
       addToast({
         message: {
           title: "¡Error!",
-          message: data.message,
+          message: message,
           type: "error",
           component: "LastEntry - fetchDataBarrierEntry()"
         },
@@ -523,7 +523,7 @@ onMounted(() => {
   
   currentFiller()
   fetchFillerStatus()
-  if (barrierVerification.value.length != 0) {
+  if (barrierVerification.value) {
     //console.log("🚀 ~ file: LastEntry.vue:392 ~ onMounted ~ barrierVerification.value:", barrierVerification.value.estado)
     // Establece la información del store
     setDataFromFetchDataBarrierVerification(barrierVerification.value.estado)

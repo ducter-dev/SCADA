@@ -64,15 +64,14 @@ const fetchDataLastOutput = async () => {
 const fetchDataBarreraSalida = async () => {
     try {
         const res = await fetchBarreraSalida()
-        const { data, status } = res
-        console.log("🚀 ~ file: LastOutput.vue:68 ~ fetchDataBarreraSalida ~ data:", data)
+        const { data, status, message } = res
         if (status == 200) {
             setDataFromFetchDataBarrierExit(data.estado)
         } else {
             addToast({
                 message: {
                     title: "¡Error!",
-                    message: data.message,
+                    message: message,
                     type: "error",
                     component: "LastOutput  - fetchDataBarreraSalida()"
                 },
@@ -119,9 +118,7 @@ const setConnector = (connector) => {
 
 watch(
     () => dataBarrierExitStatus.value, async(estadoBarrera) => {
-        //console.log("🚀 ~ file: LastOutput.vue:121 ~ estadoBarrera:", estadoBarrera)
         const res = await changeBarreraSalida(estadoBarrera)
-        //console.log("🚀 ~ file: LastOutput.vue:123 ~ res:", res)
         
         const { data, status } = res
         if (status == 201) {
@@ -155,11 +152,11 @@ watch(
 onMounted(() => {
     fetchDataLastOutput()
 
-    if (barrierExit.value.length != 0) {
+    if (barrierExit.value) {
         //console.log("🚀 ~ file: LastOutput.vue:157 ~ onMounted ~ barrierExit.value:", barrierExit.value.estado)
         
         // Establece la información del store
-        setDataFromFetchDataBarrierExit(barrierExit.value.estado)
+        setDataFromFetchDataBarrierExit(barrierExit.value)
     } else {
         // Realiza la petición al servidor
         fetchDataBarreraSalida()
