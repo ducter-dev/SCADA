@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import useReportes from '../composables/useReportes'
 import useToast from '../../dashboard/composables/useToast'
+import Toggle from '@vueform/toggle'
 
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -18,6 +19,7 @@ defineProps({
 
 const date = ref(new Date())
 const fileOpen = ref(false)
+const typeReport05 = ref(true)
 
 const { addToast } = useToast()
 
@@ -98,6 +100,12 @@ const formatPicker = () => {
 	return format(date.value, 'yyyy-MM-dd')
 }
 
+watch(
+		() => typeReport05.value, (tipoReporte) => {
+				console.log(tipoReporte)
+		}
+)
+
 </script>
 
 <template>
@@ -109,6 +117,24 @@ const formatPicker = () => {
 			<div>
 				<Datepicker v-model="date" :format-locale="es" locale="es" cancelText="Cancelar" selectText="Seleccionar"
 					placeholder="Seleccione una fecha" :enableTimePicker="false" :format="formatPicker" autoApply />
+			</div>
+			<div class="flex items-center justify-center ml-4 mr-2">
+				Tipo de Reportes:
+			</div>
+			<div class="flex items-center justify-center mx-2">
+				<Toggle v-model="typeReport05" offLabel="24" onLabel="05" :classes="{
+						toggle: 'flex w-[5.5rem] py-2 relative cursor-pointer transition items-center box-content text-sm leading-none',
+						toggleOn: 'bg-green-200 dark:bg-green-700 border-salte-300 dark:border-salte-800 justify-start text-green-900 dark:text-white',
+						toggleOff: 'bg-red-200 dark:bg-red-700 border-salte-300 dark:border-salte-800 justify-end text-red-900 dark:text-white',
+						toggleOnDisabled: 'bg-slate-200 border-slate-200 dark:bg-slate-700 dark:border-slate-800 justify-start text-slate-400 dark:text-slate-400 cursor-not-allowed',
+						toggleOffDisabled: 'bg-slate-200 border-slate-200 dark:bg-slate-700 dark:border-slate-800 justify-end text-slate-400 dark:text-slate-400 cursor-not-allowed',
+						handle: 'inline-block bg-white dark:bg-slate-600 w-5 h-5 p-1 mx-1 top-1 absolute transition-all',
+						handleOn: 'left-20 transform -translate-x-full',
+						handleOff: 'left-0',
+						handleOnDisabled: 'bg-slate-100  left-20 transform -translate-x-full',
+						handleOffDisabled: 'bg-slate-100  left-0',
+						label: 'text-center border-box whitespace-nowrap select-none mx-2',
+				}" />
 			</div>
 		</div>
 	</div>
