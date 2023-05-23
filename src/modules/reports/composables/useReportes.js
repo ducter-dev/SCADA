@@ -100,6 +100,16 @@ const useReportes = () => {
     }
   }
 
+  const getBalanceDiario = (fecha, tipo) => {
+    try {
+      const url = `${api_url}/reportes/balance-diario/${fecha}/tipo/${tipo}`
+      open(url, 'Download')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getUltimasCargas,
@@ -111,6 +121,7 @@ const useReportes = () => {
     getListaLlegada,
     getLlenaderas,
     getBitacora,
+    getBalanceDiario,
   }
 }
 
