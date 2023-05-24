@@ -110,6 +110,16 @@ const useReportes = () => {
     }
   }
 
+  const getReciboPatin = (fecha, tipo, patin) => {
+    try {
+      const url = `${api_url}/reportes/patin-pares/${fecha}/tipo/${tipo}/patin/${patin}`
+      open(url, 'Download')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getUltimasCargas,
@@ -122,6 +132,7 @@ const useReportes = () => {
     getLlenaderas,
     getBitacora,
     getBalanceDiario,
+    getReciboPatin,
   }
 }
 
