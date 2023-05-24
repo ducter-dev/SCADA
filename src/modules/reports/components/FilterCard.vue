@@ -25,7 +25,7 @@ const sufix = ref('05')
 const { addToast } = useToast()
 
 const { getCargasDiarias, getUltimasCargas, getReportEsferas, getReportPatines, getReportCromatografo, getReportBombas, getListaLlegada, 
-			getLlenaderas, getDespachoDiario, getBitacora, getBalanceDiario } = useReportes()
+			getLlenaderas, getDespachoDiario, getBitacora, getBalanceDiario,getReciboPatin } = useReportes()
 
 const getReportServicio = async (type) => {
 	console.log("🚀 ~ file: FilterCard.vue:27 ~ getReportServicio ~ type:", type)
@@ -148,6 +148,14 @@ const getReportServicio = async (type) => {
 		case 'balance-diario':
 			fileOpen.value = getBalanceDiario(fecha, reportType)
 			detail = `Reporte de balance diario del día ${fecha}`
+			break
+		case 'patin-401':
+			fileOpen.value = getReciboPatin(fecha, reportType, 401)
+			detail = `Reporte de patines 401 diario del día ${fecha}`
+			break
+		case 'patin-402':
+			fileOpen.value = getReciboPatin(fecha, reportType, 402)
+			detail = `Reporte de patines 401 diario del día ${fecha}`
 			break
 			default:
 				break
@@ -368,9 +376,17 @@ watch(
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
-						<span> {{ formatPicker() }}_Patines_{{ sufix }}</span>
+						<span> {{ formatPicker() }}_Patines_401_{{ sufix }}</span>
 					</div>
-					<IconCircleDown @click="getReportServicio('patin-ambos')"
+					<IconCircleDown @click="getReportServicio('patin-401')"
+						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
+				</div>
+				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
+					<div class="flex items-center">
+						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
+						<span> {{ formatPicker() }}_Patines_402_{{ sufix }}</span>
+					</div>
+					<IconCircleDown @click="getReportServicio('patin-402')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
