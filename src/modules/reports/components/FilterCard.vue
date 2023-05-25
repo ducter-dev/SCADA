@@ -157,6 +157,10 @@ const getReportServicio = async (type) => {
 			fileOpen.value = getReciboPatin(fecha, reportType, 402)
 			detail = `Reporte de patines 401 diario del día ${fecha}`
 			break
+		case 'patin-recibo':
+			fileOpen.value = getReciboPatin(fecha, reportType, 400)
+			detail = `Reporte de recibo de patines diario del día ${fecha}`
+			break
 		case 'densidades':
 			fileOpen.value = getDensidades(fecha, reportType)
 			detail = `Reporte de densidades diario del día ${fecha}`
@@ -391,6 +395,14 @@ watch(
 						<span> {{ formatPicker() }}_Patines_402_{{ sufix }}</span>
 					</div>
 					<IconCircleDown @click="getReportServicio('patin-402')"
+						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
+				</div>
+				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
+					<div class="flex items-center">
+						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
+						<span> {{ formatPicker() }}_Recibo_Patín_{{ sufix }}</span>
+					</div>
+					<IconCircleDown @click="getReportServicio('patin-recibo')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>
