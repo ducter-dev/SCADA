@@ -25,7 +25,7 @@ const sufix = ref('05')
 const { addToast } = useToast()
 
 const { getCargasDiarias, getUltimasCargas, getReportEsferas, getReportPatines, getReportCromatografo, getReportBombas, getListaLlegada, 
-			getLlenaderas, getDespachoDiario, getBitacora, getBalanceDiario,getReciboPatin } = useReportes()
+			getLlenaderas, getDespachoDiario, getBitacora, getBalanceDiario,getReciboPatin, getDensidades } = useReportes()
 
 const getReportServicio = async (type) => {
 	console.log("🚀 ~ file: FilterCard.vue:27 ~ getReportServicio ~ type:", type)
@@ -156,6 +156,10 @@ const getReportServicio = async (type) => {
 		case 'patin-402':
 			fileOpen.value = getReciboPatin(fecha, reportType, 402)
 			detail = `Reporte de patines 401 diario del día ${fecha}`
+			break
+		case 'densidades':
+			fileOpen.value = getDensidades(fecha, reportType)
+			detail = `Reporte de densidades diario del día ${fecha}`
 			break
 			default:
 				break
@@ -433,6 +437,16 @@ watch(
 						<span> {{ formatPicker() }}_Cromatografo_EB04_C3_{{ sufix }}</span>
 					</div>
 					<IconCircleDown @click="getReportServicio('croma-eb04-3')"
+						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
+				</div>
+			</div>
+			<div class="grid grid-cols-4 gap-1">
+				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
+					<div class="flex items-center">
+						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
+						<span> {{ formatPicker() }}_Densidades_{{ sufix }}</span>
+					</div>
+					<IconCircleDown @click="getReportServicio('densidades')"
 						class="invisible w-5 h-5 mr-3 cursor-pointer stroke-white group-hover:visible" />
 				</div>
 			</div>

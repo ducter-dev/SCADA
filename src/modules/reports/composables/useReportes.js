@@ -120,6 +120,16 @@ const useReportes = () => {
     }
   }
 
+  const getDensidades = (fecha, tipo, patin) => {
+    try {
+      const url = `${api_url}/reportes/densidades/${fecha}/tipo/${tipo}`
+      open(url, 'Download')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getUltimasCargas,
@@ -133,6 +143,7 @@ const useReportes = () => {
     getBitacora,
     getBalanceDiario,
     getReciboPatin,
+    getDensidades,
   }
 }
 
