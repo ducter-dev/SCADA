@@ -74,6 +74,10 @@ const setTipo = (tipo) => {
             return 'FULL A'
         case 2:
             return 'FULL B'
+        case 3:
+            return 'FULL B'
+        case 4:
+            return tipo
     }
 }
 

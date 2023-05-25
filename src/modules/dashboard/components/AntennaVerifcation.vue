@@ -42,7 +42,7 @@ const fetchAntennaVerificationData = async () => {
         // Valida de acuerdo al estatus de la petición
         // Si el código de estatus es diferente de 200 se marcara un error 
         if (status == 200) {
-            setDataFromResult(data.estado)
+            setDataFromResult(data)
         } else {
             addToast({
                 message: {
@@ -74,12 +74,16 @@ const setTipo = (tipo) => {
             return 'FULL A'
         case 2:
             return 'FULL B'
+        case 3:
+            return tipo
+        case 4:
+            return tipo
     }
 }
 
-/* watch(() => bus.value.get('reloadData'), (val) => {
+watch(() => bus.value.get('reloadData'), (val) => {
     fetchAntennaVerificationData()
-}) */
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
@@ -89,7 +93,7 @@ const setTipo = (tipo) => {
  */
 onMounted(() => {
    //Condicional para verificar existencia de información en el store
-    if (verificationAntenna.value) {
+    if (verificationAntenna.value && Object.keys(verificationAntenna.value).length > 0) {
         // Establece la información del store
         setDataFromResult(verificationAntenna.value)
     } else {

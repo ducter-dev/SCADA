@@ -39,7 +39,7 @@ const fecthInformationOnTanksLastDepartures = async () => {
   try {
     const date = ref(new Date())
     const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
-    const res = await fetchTanksSalidas(dateToUse.value)
+    const res = await fetchTanksSalidas(dateToUse.value, 12)
     const { data, status } = res
 
     // Valida de acuerdo al estatus de la petición
@@ -69,9 +69,9 @@ const fecthInformationOnTanksLastDepartures = async () => {
   }
 }
 
-/* watch(() => bus.value.get('reloadData'), (val) => {
+watch(() => bus.value.get('reloadData'), (val) => {
   fecthInformationOnTanksLastDepartures()
-}) */
+})
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
@@ -98,14 +98,14 @@ onMounted(() => {
           </tr>
         </template>
         <template #body>
-          <tr v-for="(item, index) in dataResult" v-if="dataResult.length > 0" :key="item.id">
+          <tr v-for="(item) in dataResult" :key="item.id">
             <LBodyTh :value="item.id" center />
             <LBodyTd :value="item.llenadera" center />
             <LBodyTd :value="item.atName" center />
             <LBodyTd :value="item.masaTons" center />
             <LBodyTd :value="item.densidadCor" center />
           </tr>
-          <tr v-else>
+          <tr v-show="dataResult.length < 1">
             <LBodyTh value="Sin información" colspan="5" center />
           </tr>
         </template>

@@ -287,9 +287,9 @@ export const useTanqueStore = defineStore('tanques', {
     },
 
     // ------ Tanques de Salidas ------
-    async fetchTanksSalidas(fecha) {
+    async fetchTanksSalidas(fecha, limit) {
       try {
-        const res = await scadaApi.get(`/tanques/salida/fecha/${fecha}`)
+        const res = await scadaApi.get(`/tanques/salida/fecha/${fecha}/limit/${limit}`)
         const { data } = res
         this.tanquesInSalida = data
         return res

@@ -12,7 +12,7 @@ import useEventsBus from "../../../layout/eventBus"
  */
 const inputAntenna = computed(() => getAntenaEntrada())
 const { addToast } = useToast()
-const { getAntenaEntrada, fetchEntryRadiofrecuency } = useInputAntenna()
+const { getAntenaEntrada, fetchAntenaEntrada } = useInputAntenna()
 const dataResult = ref({})
 let loadData = ref(true)
 const { bus } = useEventsBus()
@@ -36,7 +36,7 @@ const setDataFromResult = (data) => {
  */
 const fetchInputAntennaData = async () => {
     try {
-        const res = await fetchEntryRadiofrecuency()
+        const res = await fetchAntenaEntrada()
         console.log("🚀 ~ file: InputAntenna.vue:40 ~ fetchInputAntennaData ~ res:", res)
         const { data, status, message } = res
 
@@ -75,6 +75,10 @@ const setTipo = (tipo) => {
             return 'FULL A'
         case 2:
             return 'FULL B'
+        case 3:
+            return 'FULL B'
+        case 4:
+            return tipo
     }
 }
 
