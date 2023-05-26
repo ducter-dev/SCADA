@@ -130,6 +130,16 @@ const useReportes = () => {
     }
   }
 
+  const getCromatografoMensual = (fecha, tipo, croma) => {
+    try {
+      const url = `${api_url}/reportes/cromatografo-mensual/${fecha}/croma/${croma}/tipo/${tipo}`
+      open(url, 'Download')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getUltimasCargas,
@@ -144,6 +154,7 @@ const useReportes = () => {
     getBalanceDiario,
     getReciboPatin,
     getDensidades,
+    getCromatografoMensual,
   }
 }
 
