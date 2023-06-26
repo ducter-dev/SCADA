@@ -15,7 +15,7 @@ const showDiarios = ref(true)
 					<a 
 						href="#"
 						class="inline-block p-2 rounded-t-lg" 
-						:class="showDiarios? 'border-b-2 text-primary border-primary':'text-dark'" 
+						:class="showDiarios? 'border-b-2 text-primary border-primary dark:text-white dark:border-blue-600':'text-dark'" 
 						aria-current="page" 
 						@click="showDiarios = true">
 						Reportes díarios
@@ -25,7 +25,7 @@ const showDiarios = ref(true)
 					<a
 						href="#"
 						class="inline-block p-2 border-b-2 rounded-t-lg" 
-						:class="!showDiarios? 'border-b-2 text-primary border-primary':'text-dark'" 
+						:class="!showDiarios? 'border-b-2 text-primary border-primary dark:text-white dark:border-blue-600':'text-dark'" 
 						aria-current="page"
 						@click="showDiarios = false">
 						Reportes mensuales

@@ -71,13 +71,13 @@ export default {
   <div class="flex flex-col w-full">
     <div class="flex flex-row items-center justify-between w-full h-20">
       <div class="flex flex-row items-center justify-center">
-        <div class="flex items-center justify-center mr-2">Usuarios</div>
+        <div class="flex items-center justify-center mr-2 text-dark dark:text-white">Usuarios</div>
         <CreateUser/>
       </div>
     </div>
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-        <div class="overflow-hidden shadow-md sm:rounded-lg">
+        <div class="overflow-hidden shadow-md sm:rounded-lg text-dark dark:text-white">
           <Table :usuarios="users" />
         </div>
       </div>

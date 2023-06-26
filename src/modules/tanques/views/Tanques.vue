@@ -1,24 +1,12 @@
 <template>
-  <div class="w-full flex flex-col">
-    <div class="w-full flex flex-row justify-between items-center h-20">
-      <div class="flex flex-row justify-center items-center">
-        <div class="flex justify-center items-center mr-2">Autotanques</div>
+  <div class="flex flex-col w-full">
+    <div class="flex flex-row items-center justify-between w-full h-20">
+      <div class="flex flex-row items-center justify-center">
+        <div class="flex items-center justify-center mr-2 text-dark dark:text-white">Autotanques</div>
         <router-link to="/dashboard/tanques/nuevo">
           <button
             type="button"
-            class="
-              text-dark
-              border border-dark
-              hover:bg-black hover:text-white
-              focus:ring-4 focus:ring-blue-300
-              font-medium
-              rounded-full
-              text-sm
-              p-2
-              text-center
-              inline-flex
-              items-center
-            "
+            class="inline-flex items-center p-2 text-sm font-medium text-center border rounded-full text-dark dark:text-white border-dark hover:bg-black hover:text-white focus:ring-4 focus:ring-blue-300"
           >
             <svg
               class="w-5 h-5"
@@ -35,10 +23,10 @@
           </button>
         </router-link>
       </div>
-      <div class="flex-flex-row justify-end items-center">Filtro</div>
+      <div class="items-center justify-end flex-flex-row">Filtro</div>
     </div>
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
         <div class="overflow-hidden shadow-md sm:rounded-lg">
           <TableTanques :tanques="tanks" @deleteTank="deleteTank" />
         </div>
