@@ -99,24 +99,24 @@ const fetchFillerStatus = async () => {
         showTankForAssigment.value = true
       }
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: data.message,
           type: "error",
           component: "WaitingList - fetchFillerStatus()"
         },
-      })
+      }) */
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error",
         component: "WaitingList | Catch - fetchFillerStatus()"
       },
-    })
+    }) */
   }
 }
 
@@ -130,26 +130,26 @@ const currentFiller = async () => {
       getFiller.value = true
       getTankToAssigment()
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: res.message,
           type: "error",
           component: "WaitingList - currentFiller()"
         },
-      })
+      }) */
     }
     loaderFiller.value = false
   } catch (error) {
     loaderFiller.value = false
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error",
         component: "WaitingList | Catch - currentFiller()"
       },
-    })
+    }) */
   }
 }
 
@@ -190,22 +190,22 @@ const nextAssignment = async () => {
       })
 
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: data.message,
           type: "error"
         },
-      })
+      }) */
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -227,13 +227,13 @@ const reassignAssignment = async () => {
       }
       insertBitacora(objBitacora)
     } else if (!res.ok) {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: res.message,
           type: "error"
         },
-      })
+      }) */
       const objBitacora = {
         user: currentUser.value.id,
         actividad: `El usuario ${currentUser.value.username} reasignó la llenadera.`,
@@ -242,13 +242,13 @@ const reassignAssignment = async () => {
       insertBitacora(objBitacora)
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -291,23 +291,23 @@ const acceptAssignmentFunction = async () => {
       }
     } else {
       showTankForAssigment.value = false
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: data,
           type: "error"
         },
-      })
+      }) */
     }
   } catch (error) {
     showTankForAssigment.value = false
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -330,22 +330,22 @@ const unassign = async () => {
       }
       insertBitacora(objBitacora)
     } else if (!res.ok) {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: res.message,
           type: "error"
         },
-      })
+      }) */
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -367,14 +367,14 @@ const fetchDataBarrierVerification = async () => {
       })
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error",
         component: "LastEntry | Catch - fetchDataBarrierEntry()"
       },
-    })
+    }) */
   }
 }
 
@@ -397,22 +397,22 @@ const stopDispacth = async () => {
       }
       insertBitacora(objBitacora)
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: data.message,
           type: "error"
         },
-      })
+      }) */
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -437,22 +437,22 @@ const releaseDispacth = async () => {
       }
       insertBitacora(objBitacora)
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: data.message,
           type: "error"
         },
-      })
+      }) */
     }
   } catch (error) {
-    addToast({
+    /* addToast({
       message: {
         title: "¡Error!",
         message: `Error: ${error.message}`,
         type: "error"
       },
-    })
+    }) */
   }
 }
 
@@ -474,9 +474,9 @@ const getTankToAssigment = () => {
   // Recorremos los tanques de la lista de espera para encontrar el tanque apropiado.
 
   const tank = tanksWaiting.value.find( t => t.conector == llenaderaSt.conector || t.conector == 3)
-  console.log("🚀 ~ file: WaitingList.vue:470 ~ getTankToAssigment ~ tank:", tank)
+  /* console.log("🚀 ~ file: WaitingList.vue:470 ~ getTankToAssigment ~ tank:", tank) */
   dataWaitingTank.value = tank  
-  console.log("🚀 ~ file: WaitingList.vue:472 ~ getTankToAssigment ~ dataWaitingTank.value:", dataWaitingTank.value)
+  /* console.log("🚀 ~ file: WaitingList.vue:472 ~ getTankToAssigment ~ dataWaitingTank.value:", dataWaitingTank.value) */
 }
 
 watch(() => bus.value.get('reloadData'), (val) => {
@@ -507,14 +507,14 @@ watch(
         },
       })
     } else {
-      addToast({
+      /* addToast({
         message: {
           title: "¡Error!",
           message: `Error: No se pudo cambiar el estado de la barrera de verificación`,
           type: "error",
           component: "WaitingList | Catch - changeBarreraVerificacion()"
         },
-      })
+      }) */
     }
   }
 )
@@ -547,64 +547,64 @@ onMounted(() => {
             leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
             leave-to-class="transform scale-95 opacity-0">
             <MenuItems
-              class="absolute left-0 mt-2 origin-top-right bg-white divide-y shadow-lg w-44 divide-slate-100 ring-1 ring-black ring-opacity-5 focus:outline-none">
+              class="absolute left-0 mt-2 origin-top-right bg-white divide-y shadow-lg dark:bg-slate-600 w-44 divide-slate-100 ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div class="px-1 py-1 divide-y">
                 <MenuItem v-slot="{ active }">
-                <button @click="nextAssignment()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
+                  <button @click="nextAssignment()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
 
-                  <IconArrowsTurnRight class="w-5 h-5 mr-2 text-green-400" />
-                  Siguiente llenadera
-                </button>
+                    <IconArrowsTurnRight class="w-5 h-5 mr-2 text-green-400" />
+                    Siguiente llenadera
+                  </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                <button @click="acceptAssignmentFunction()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
-                  <IconCheckToSlot class="w-5 h-5 mr-2 text-blue-400" />
+                  <button @click="acceptAssignmentFunction()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
+                    <IconCheckToSlot class="w-5 h-5 mr-2 text-blue-400" />
 
-                  Aceptar asignación
-                </button>
+                    Aceptar asignación
+                  </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                <button @click="unassign()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
-                  <IconBan class="w-5 h-5 mr-2 text-orange-400" />
+                  <button @click="unassign()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
+                    <IconBan class="w-5 h-5 mr-2 text-orange-400" />
 
-                  Cancelar asignación
-                </button>
+                    Cancelar asignación
+                  </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                <button @click="reassignAssignment()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
-                  <IconArrowsTurnToDots class="w-5 h-5 mr-2 text-indigo-400" />
-                  Reasignar llenadera
-                </button>
+                  <button @click="reassignAssignment()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
+                    <IconArrowsTurnToDots class="w-5 h-5 mr-2 text-indigo-400" />
+                    Reasignar llenadera
+                  </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                <button @click="stopDispacth()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
-                  <IconCircleStop class="w-5 h-5 mr-2 text-red-400" />
-                  Detener despacho
-                </button>
+                  <button @click="stopDispacth()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
+                    <IconCircleStop class="w-5 h-5 mr-2 text-red-400" />
+                    Detener despacho
+                  </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                <button @click="releaseDispacth()" :class="[
-                    active ? 'bg-slate-50 dark:text-white' : 'text-slate-900',
-                    'group flex w-full items-center px-1 py-1 text-sm',
-                  ]">
-                  <IconPlay class="w-5 h-5 mr-2 text-lime-400" />
-                  Liberar despacho
-                </button>
+                  <button @click="releaseDispacth()" :class="[
+                      active ? 'bg-slate-50 dark:text-slate-600' : 'text-slate-900',
+                      'group flex w-full items-center px-1 py-1 text-sm',
+                    ]">
+                    <IconPlay class="w-5 h-5 mr-2 text-lime-400" />
+                    Liberar despacho
+                  </button>
                 </MenuItem>
               </div>
             </MenuItems>
