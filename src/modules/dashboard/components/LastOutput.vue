@@ -47,17 +47,17 @@ const fetchDataLastOutput = async () => {
                     type: "error",
                     component: "LastOutput - fetchDataLastOutput()"
                 },
-            });
+            })
         }
     } catch (error) {
-        addToast({
+        /* addToast({
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
                 component: "LastOutput | Catch - fetchDataLastOutput()"
             },
-        });
+        }) */
     }
 }
 
@@ -68,24 +68,24 @@ const fetchDataBarreraSalida = async () => {
         if (status == 200) {
             setDataFromFetchDataBarrierExit(data.estado)
         } else {
-            addToast({
+            /* addToast({
                 message: {
                     title: "¡Error!",
                     message: message,
                     type: "error",
                     component: "LastOutput  - fetchDataBarreraSalida()"
                 },
-            });
+            }) */
         }
     } catch (error) {
-        addToast({
+        /* addToast({
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
                 component: "LastOutput | Catch - fetchDataBarreraSalida()"
             },
-        });
+        }) */
     }
 }
 
@@ -137,14 +137,14 @@ watch(
                 },
             })  
         } else {
-            addToast({
+            /* addToast({
                 message: {
                     title: "¡Error!",
                     message: `Error: No se pudo cambiar el estado de la barrera de salida`,
                     type: "error",
                     component: "LastExit | Catch - changeBarreraSalida()"
                 },
-            })
+            }) */
         }
     }
 )
