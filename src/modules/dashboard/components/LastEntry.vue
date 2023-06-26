@@ -71,24 +71,24 @@ const fetchDataLastEntry = async () => {
         if (status == 200) {
             setDataFromFetchDataLastEntry(data)
         } else {
-            addToast({
+            /* addToast({
                 message: {
                     title: "¡Error!",
                     message: data.message,
                     type: "error",
                     component: "LastEntry - fetchDataLastEntry()"
                 },
-            })
+            }) */
         }
     } catch (error) {
-        addToast({
+        /* addToast({
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
                 component: "LastEntry | Catch - fetchDataLastEntry()"
             },
-        })
+        }) */
     }
 }
 
@@ -99,24 +99,24 @@ const fetchDataBarrierEntry = async () => {
         if (status == 200) {
             setDataFromFetchDataBarrierEntry(data.estado)
         } else {
-            addToast({
+            /* addToast({
                 message: {
                     title: "¡Error!",
                     message: message,
                     type: "error",
                     component: "LastEntry - fetchDataBarrierEntry()"
                 },
-            })
+            }) */
         }
     } catch (error) {
-        addToast({
+        /* addToast({
             message: {
                 title: "¡Error!",
                 message: `Error: ${error.message}`,
                 type: "error",
                 component: "LastEntry | Catch - fetchDataBarrierEntry()"
             },
-        })
+        }) */
     }
 }
 
@@ -147,14 +147,14 @@ watch(
                 },
             })  
         } else {
-            addToast({
+            /* addToast({
                 message: {
                     title: "¡Error!",
                     message: `Error: No se pudo cambiar el estado de la barrera de entrada`,
                     type: "error",
                     component: "LastEntry | Catch - changeBarreraEntrada()"
                 },
-            })
+            }) */
         }
     }
 )
