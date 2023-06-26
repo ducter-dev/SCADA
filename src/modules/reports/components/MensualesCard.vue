@@ -74,14 +74,14 @@ watch(
 <template>
 	<div class="flex flex-row items-center justify-between w-full h-20">
 		<div class="flex flex-row items-center justify-center">
-			<div class="flex items-center justify-center mr-2">
+			<div class="flex items-center justify-center mr-2 dark:text-white">
 				Fecha
 			</div>
 			<div>
 				<Datepicker v-model="date" :format-locale="es" locale="es" cancelText="Cancelar" selectText="Seleccionar"
 					placeholder="Seleccione una fecha" :enableTimePicker="false" :format="formatPicker" autoApply />
 			</div>
-			<div class="flex items-center justify-center ml-4 mr-2">
+			<div class="flex items-center justify-center ml-4 mr-2 dark:text-white">
 				Tipo de Reportes:
 			</div>
 			<div class="flex items-center justify-center mx-2">
@@ -104,7 +104,7 @@ watch(
 	<div>
 		<div class="py-3 border-t border-slate-400/20">
 			<div class="mb-1.5 text-xs font-semibold text-dark">Lista de reportes Cromatógrafos</div>
-			<div class="grid grid-cols-4 gap-1">
+			<div class="grid grid-cols-4 gap-1 dark:text-white">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />
@@ -139,7 +139,7 @@ watch(
 				</div>
 				<div class="mb-1.5 text-xs font-semibold text-dark">Lista de reportes Cromatógrafos</div>
 			</div>
-			<div class="grid grid-cols-4 gap-1">
+			<div class="grid grid-cols-4 gap-1 dark:text-white">
 				<div class="flex justify-between items-center rounded-md p-1.5 hover:bg-primary hover:text-white group">
 					<div class="flex items-center">
 						<IconSquarePollVerticall class="mr-2.5 h-5 w-5 flex-none text-slate-400 group-hover:text-white" />

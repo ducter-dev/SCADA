@@ -1,89 +1,24 @@
 <template>
-  <table class="min-w-full">
-    <thead class="border text-dark border-b-dark">
+  <LTable>
+    <template #head>
       <tr>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          No.
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Autotanque
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Tipo
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Conector
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Capacidad 90
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Transportadora
-        </th>
-        <th
-          scope="col"
-          class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-700 uppercase "
-        >
-          Acciones
-        </th>
+        <LHeaderTh value="No." center />
+        <LHeaderTh value="Autotanque" center />
+        <LHeaderTh value="Tipo" center />
+        <LHeaderTh value="Conector" center />
+        <LHeaderTh value="Capacidad" center />
+        <LHeaderTh value="Acciones" center />
       </tr>
-    </thead>
-    <tbody>
-      <tr
-        class="border-b odd:bg-white even:bg-gray-50"
-        v-for="(tanque, index) in tanques"
-        :key="tanque.id"
-      >
-        <td
-          class="px-4 py-4 text-sm font-medium text-center text-gray-500  whitespace-nowrap"
-        >
-          {{ index + 1 }}
-        </td>
-        <td class="px-6 py-2 text-sm text-center text-gray-500 whitespace-nowrap">
-          {{ tanque.atName }}
-        </td>
-        <td
-          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
-        >
-          {{ setTipo(tanque.atTipo) }}
-        </td>
-        <td
-          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
-        >
-          {{ setConector(tanque.conector) }}
-        </td>
-        <td
-          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
-        >
-          {{ tanque.capacidad90 }}
-        </td>
-        <td
-          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
-        >
-          {{ tanque.transportadora }}
-        </td>
-        <td
-          class="px-4 py-2 text-sm text-center text-gray-500 whitespace-nowrap"
-        >
-          <div class="flex items-center justify-center">
+    </template>
+    <template #body>
+      <tr v-for="(tanque, index) in tanques" :key="tanque.id">
+        <LBodyTh :value="index + 1" center />
+        <LBodyTd :value="tanque.atName" center />
+        <LBodyTd :value="setTipo(tanque.atTipo)" center />
+        <LBodyTd :value="setConector(tanque.conector)" center />
+        <LBodyTd :value="tanque.capacidad90" center />
+        <LBodyTd center>
+          <div class="inline-flex shadow-sm" role="group">
             <button
               type="button"
               class="
@@ -125,10 +60,10 @@
               Eliminar
             </button>
           </div>
-        </td>
+        </LBodyTd>
       </tr>
-    </tbody>
-  </table>
+    </template>
+  </LTable>
 </template>
 
 <script>
