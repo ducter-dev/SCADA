@@ -29,7 +29,6 @@
             <p class="text-sm font-medium truncate text-slate-700 dark:text-slate-300">Barrera de verificación</p>
           </div>
           <div class="flex items-center justify-center mx-2">
-           
           </div>
         </div>
       </div>
@@ -156,7 +155,7 @@ import IconCircleStop from '../../../assets/icons/circle-stop.svg'
 import IconPlay from '../../../assets/icons/play.svg'
 import IconArrowsRotate from '../../../assets/icons/arrows-rotate.svg'
 import useDashboard from '../composables/useDashboard'
-import useToast from "../../dashboard/composables/useToast";
+import useToast from "../../dashboard/composables/useToast"
 
 const { addToast } = useToast()
 
@@ -267,24 +266,24 @@ export default {
           llenadera.value = data.llenaderaDisponible
           obtenerLlenadera.value = true
         } else {
-          addToast({
+          /* addToast({
             message: {
               title: "¡Error!",
               message: res.message,
               type: "error"
             },
-          });
+          }) */
         }
         loaderLlenadera.value = false
       } catch (error) {
         loaderLlenadera.value = false
-        addToast({
+        /* addToast({
           message: {
             title: "¡Error!",
             message: `Error: ${error.message}`,
             type: "error"
           },
-        });
+        }) */
       }
     }
 
