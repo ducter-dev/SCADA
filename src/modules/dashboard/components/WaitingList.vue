@@ -22,8 +22,7 @@ import useTanque from '../../tanques/composables/useTanque'
 const { bus, emit } = useEventsBus()
 const { fetchEstadoLlenadera, getLlenaderasEstado, changeEstadoLlenadera } = useFillers()
 const { getLastAssignment, fetchTanksInEspera, resetTanquesEspera, getTanquesInEspera } = useWaitingTank()
-const { fetchBarreraVerificacion, getBarreraVerificacion, getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment,
-  changeBarreraVerificacion, preAsignment } = useDashboard()
+const {  getCurrentFiller, nextFiller, reassignAllocation, cancelAllocation, acceptAssignment, preAsignment } = useDashboard()
 const { getLlenaderas } = useTanque()
 
 const { addToast } = useToast()
@@ -43,10 +42,6 @@ const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
 const currentUser = computed(() => getCurrentUser())
 const dataWaitingTank = ref({})
-
-const loadDataBarrierStatus = ref(false)
-let dataBarrierVerificationStatus = ref(null)
-const barrierVerification = computed(() => getBarreraVerificacion())
 
 // ** Variable para mostrar el tanque para asignar.
 const showTankForAssigment = ref(false)
@@ -72,12 +67,6 @@ const showTankForAssigment = ref(false)
 const setDataFromFetchingWaitingTanks = (data) => {
   dataFillerStatus.value = data
   loadDataFillerStatus.value = false
-  loadDataBarrierStatus.value = false
-}
-
-const setDataFromFetchDataBarrierVerification = (data) => {
-  dataBarrierVerificationStatus.value = data
-  loadDataBarrierStatus.value = false
 }
 
 /**
@@ -349,35 +338,6 @@ const unassign = async () => {
   }
 }
 
-const fetchDataBarrierVerification = async () => {
-  try {
-    const res = await fetchBarreraVerificacion()
-    //console.log("🚀 ~ file: WaitingList.vue:322 ~ fetchDataBarrierVerification ~ res:", res)
-    const { data, status, message } = res
-    if (status == 200) {
-      setDataFromFetchDataBarrierVerification(data.estado)
-    } else {
-      addToast({
-        message: {
-          title: "¡Error!",
-          message: message,
-          type: "error",
-          component: "LastEntry - fetchDataBarrierEntry()"
-        },
-      })
-    }
-  } catch (error) {
-    /* addToast({
-      message: {
-        title: "¡Error!",
-        message: `Error: ${error.message}`,
-        type: "error",
-        component: "LastEntry | Catch - fetchDataBarrierEntry()"
-      },
-    }) */
-  }
-}
-
 const stopDispacth = async () => {
   try {
     const res = await changeEstadoLlenadera(1)
@@ -485,53 +445,10 @@ watch(() => bus.value.get('reloadData'), (val) => {
   //fetchDataBarrierVerification()
 })
 
-watch(
-  () => dataBarrierVerificationStatus.value, async (estadoBarrera) => {
-    //console.log("🚀 ~ file: WaitingList.vue:357 ~ estadoBarrera:", estadoBarrera)
-    const res = await changeBarreraVerificacion(estadoBarrera)
-    //console.log("🚀 ~ file: WaitingList.vue:359 ~ res:", res)
-    const { data, status } = res
-    if (status == 201) {
-      const objBitacora = {
-        user: currentUser.value.id,
-        actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera ? 'Abierta' : 'Cerrada'}.`,
-        evento: estadoBarrera ? 20 : 21,
-      }
-      //console.log("🚀 ~ file: WaitingList.vue:367 ~ objBitacora:", objBitacora)
-      insertBitacora(objBitacora)
-      addToast({
-        message: {
-          title: "Éxito!",
-          message: `Se cambio el estado de la barrera de verificación.`,
-          type: "success"
-        },
-      })
-    } else {
-      /* addToast({
-        message: {
-          title: "¡Error!",
-          message: `Error: No se pudo cambiar el estado de la barrera de verificación`,
-          type: "error",
-          component: "WaitingList | Catch - changeBarreraVerificacion()"
-        },
-      }) */
-    }
-  }
-)
-
 onMounted(() => {
   
   currentFiller()
   fetchFillerStatus()
-  if (barrierVerification.value) {
-    //console.log("🚀 ~ file: LastEntry.vue:392 ~ onMounted ~ barrierVerification.value:", barrierVerification.value.estado)
-    // Establece la información del store
-    setDataFromFetchDataBarrierVerification(barrierVerification.value.estado)
-  } else {
-    // Realiza la petición al servidor
-    fetchBarreraVerificacion()
-
-  }
 })
 </script>
 <template>
@@ -631,7 +548,7 @@ onMounted(() => {
       </ul>
     </div>
   </div>
-  <div class="max-w-sm mt-5 bg-transparent">
+  <!-- <div class="max-w-sm mt-5 bg-transparent">
     <div class="p-2 border border-solid border-slate-300">
       <div class="py-1">
         <div class="flex items-center space-x-4">
@@ -663,5 +580,5 @@ onMounted(() => {
       class="px-2 py-1 text-sm font-medium text-center border text-slate-900 border-slate-800 hover:text-white hover:bg-slate-900 focus:ring-2 focus:outline-none focus:ring-slate-300 dark:border-slate-600 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-600 dark:focus:ring-slate-800">
       Imprimir ticket para carga
     </button>
-  </div>
+  </div> -->
 </template>
