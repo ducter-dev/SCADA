@@ -6,6 +6,7 @@ import EditUser from '../components/EditUser.vue'
 import ModalDelete from '../../../layout/components/Modal/Delete.vue'
 import useUsuario from '../composables/useUser'
 import useEventsBus from "../../../layout/eventBus"
+import useToast from "@/modules/dashboard/composables/useToast"
 
 
 export default {
@@ -22,6 +23,7 @@ export default {
     ModalDelete,
   },
   setup() {
+    const { addToast } = useToast()
     const { emit } = useEventsBus()
     const showModal = ref(false)
     const configModalDelete = ref({})
@@ -78,7 +80,9 @@ export default {
         }
         
         const res = await deleteUsuario(usuarioSelected.value)
-        const { data, status } = res
+        console.log("🚀 ~ file: Table.vue:83 ~ deleteUserFromList ~ res:", res)
+        return
+        const { data, status, message } = res
 
         // Valida de acuerdo al estatus de la petición
         // Si el código de estatus es diferente de 200 se marcara un error 
@@ -87,7 +91,7 @@ export default {
           addToast({
             message: {
               title: "Éxito!",
-              message: `Se elimino ${data.atName} de la lista de espera.`,
+              message: `Se elimino ${data.username} de la lista de usuarios.`,
               type: "success"
             },
           })
@@ -95,7 +99,7 @@ export default {
           addToast({
             message: {
               title: "¡Error!",
-              message: data.message,
+              message: message,
               type: "error"
             },
           })

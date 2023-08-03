@@ -38,6 +38,11 @@ const useAuth = () => {
     return store.user
   }
 
+  const getLocalUser = () => {
+    store.user = JSON.parse(localStorage.user)
+    return store.user
+  }
+
   return {
     login,
     logout,
@@ -45,6 +50,7 @@ const useAuth = () => {
     getUserName,
     setlocked,
     getCurrentUser,
+    getLocalUser,
   }
 }
 

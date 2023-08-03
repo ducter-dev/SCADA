@@ -3,8 +3,13 @@ import { useTanqueStore } from '../store/tanquesStore'
 const useTanque = () => {
   const store = useTanqueStore()
 
-  const fetchTanques = async () => {
-    const resp = await store.fetchTanks()
+  const fetchTanques = async (params) => {
+    const resp = await store.fetchTanks(params)
+    return resp
+  }
+  
+  const fetchTanquesAll = async () => {
+    const resp = await store.fetchTanksAll()
     return resp
   }
   
@@ -58,6 +63,7 @@ const useTanque = () => {
 
   return {
     fetchTanques,
+    fetchTanquesAll,
     editarTanque,
     registrarTanque,
     eliminarTanque,

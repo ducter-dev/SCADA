@@ -10,17 +10,17 @@
   <div class="mt-5 space-y-5 h-max">
     <div class="grid gap-5 grid-cols-15">
       <div class="flex flex-col col-span-3">
-        <InputAntenna/>
-        <LastEntry/> 
+        <InputAntenna />
+        <LastEntry />
       </div>
       <div class="flex flex-col col-span-3">
-        <AntennaVerification/>
-        <WaitingList/>
+        <AntennaVerification />
+        <WaitingList />
       </div>
       <div class="flex flex-col col-span-3">
-        <OutputAntenna/>
+        <OutputAntenna />
         <!--<TarjetaUltimaSalida :barrera="dataBarreraSalida" :data="dataLastExit" @toggleChange="toggleSalida" />-->
-        <LastOutput/>
+        <LastOutput />
       </div>
       <div class="col-span-2">
         <div class="max-w-sm p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
@@ -48,13 +48,23 @@
     <div class="border-t border-slate-300 dark:border-slate-700"></div>
     <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12">
-        <TablaEspera/>
+        <TablaEspera />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useIntervalFn } from '@vueuse/core'
+import useEventsBus from "../../../layout/eventBus"
+import useTanque from '../../tanques/composables/useTanque'
+import useDashboard from '../composables/useDashboard'
+import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
+import useLlenaderas from '../../tanques/composables/useLlenaderas'
+import useAuth from '../../auth/composables/useAuth'
+
 import WaitingList from '../components/WaitingList.vue'
 import LastEntry from '../components/LastEntry.vue'
 import InputAntenna from '../components/InputAntenna.vue'
@@ -68,51 +78,28 @@ import TarjetaUltimaEntrada from '../components/TarjetaUltimaEntrada.vue'
 import TarjetaAsignacion from '../components/TarjetaAsignacion.vue'
 import TarjetaUltimaSalida from '../components/TarjetaUltimaSalida.vue'
 import TarjetaLlenaderas from '../components/TarjetaLlenaderas.vue'
-import useDashboard from '../composables/useDashboard'
-import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
-import useLlenaderas from '../../tanques/composables/useLlenaderas'
 import TablaEspera from '../../tanques/components/TableEspera.vue'
-import { useRouter } from 'vue-router'
-import useToast from "../../dashboard/composables/useToast"
-import { ref, onMounted } from 'vue'
-import { useIntervalFn } from '@vueuse/core'
-import useEventsBus from "../../../layout/eventBus"
-import useTanque from '../../tanques/composables/useTanque'
 
-export default {
-  components: {
-    TarjetaVerificacion,
-    TarjetaSalida,
-    TarjetaUltimasCargas,
-    TarjetaAsignacion,
-    TarjetaUltimaEntrada,
-    TarjetaUltimaSalida,
-    TarjetaLlenaderas,
-    TablaEspera,
-    WaitingList,
-    InputAntenna,
-    AntennaVerification,
-    OutputAntenna,
-    LastEntry,
-    LastOutput
-},
-  setup() {
-    const router = useRouter()
-    const { addToast } = useToast()
-    const { emit } = useEventsBus()
-    const { pause, resume, isActive } = useIntervalFn(() => {
-      emit("reloadData", true)
-    }, 100000)
+const { getCurrentUser, getLocalUser } = useAuth()
+const router = useRouter()
+const { emit } = useEventsBus()
+const { pause, resume, isActive } = useIntervalFn(() => {
+  emit("reloadData", true)
+}, 100000)
 
-    const { fetchTanques } = useTanque()
-    const { fetchLlenaderas } = useLlenaderas()
+const { fetchTanquesAll } = useTanque()
+const { fetchLlenaderas } = useLlenaderas()
 
-    onMounted(() => {
-      fetchTanques()
-      fetchLlenaderas()
-    })
-
-    return {}
-  },
+const checkUser = () => {
+  if (!getCurrentUser()) {
+    const user = getLocalUser()
+  }
 }
+
+onMounted(() => {
+  checkUser()
+  fetchTanquesAll()
+  fetchLlenaderas()
+})
+
 </script>

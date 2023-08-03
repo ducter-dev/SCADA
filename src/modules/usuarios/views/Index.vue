@@ -2,8 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import useUser from '../composables/useUser'
 import Table from '../components/Table.vue'
-import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css'
+import useToast from "../../dashboard/composables/useToast"
 import router from '../../../router'
 import CreateUser from "../components/CreateUser.vue"
 import useEventsBus from "../../../layout/eventBus"
@@ -19,6 +18,7 @@ export default {
 
     const usuarios = computed(() => getUsuarios())
     let users = ref(usuarios.value)
+    const { addToast } = useToast()
 
     async function getUsers () {
       try {
@@ -27,10 +27,22 @@ export default {
         if (status == 200) {
           users.value = data
         } else {
-          Swal.fire("Error", data.message, "error");
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: data.message,
+              type: "error"
+            },
+          })
         }
       } catch (error) {
-        Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+        addToast({
+          message: {
+            title: "¡Error!",
+            message: 'Error, revise sus crecenciales',
+            type: "error"
+          },
+        })
         router.push('/auth')
       }
     }
@@ -40,7 +52,7 @@ export default {
         // No hay usuarios en el store
         getUsers()
       } else {
-        console.log('Ya hay usaurios en el store')
+        console.log('Ya hay usuarios en el store')
       }
     })
   
