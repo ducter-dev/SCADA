@@ -6,7 +6,6 @@ import useDepartureTank from '../../tanques/composables/useTanqueSalida'
 import useEventsBus from "../../../layout/eventBus"
 import { format } from 'date-fns'
 
-
 /**
  * Declaración de los atributos que son asignables.
  * 
@@ -37,9 +36,9 @@ const setDataFromResult = (data) => {
  */
 const fecthInformationOnTanksLastDepartures = async () => {
   try {
-    const date = ref(new Date())
+    const date = ref(new Date(2023,4,31))
     const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
-    const res = await fetchTanksSalidas(dateToUse.value, 12)
+    const res = await fetchTanksSalidas(dateToUse.value, 0)
     const { data, status } = res
 
     // Valida de acuerdo al estatus de la petición
@@ -87,7 +86,7 @@ onMounted(() => {
   <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="border border-solid border-slate-300">
       <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Últimas salidas</legend>
-      <LTable :loader="loadData">
+      <LTable :loader="loadData" :full="false">
         <template #head>
           <tr>
             <LHeaderTh value="No." left />

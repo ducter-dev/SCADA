@@ -37,7 +37,7 @@ const useDashboard = () => {
 
   // Barrera de Verificación
   const fetchBarreraVerificacion = async () => {
-    const resp = await store.fetchBarreraEntrada()
+    const resp = await store.fetchBarreraVerificacion()
     return resp
   }
 

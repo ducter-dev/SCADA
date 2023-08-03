@@ -8,10 +8,14 @@ defineProps({
     type: String,
     default: 'LTable',
   },
+  full: {
+    type: Boolean,
+    default: true
+  }
 })
 </script>
 <template>
-  <div class="block w-full overflow-x-auto">
+  <div class="block w-full overflow-x-auto" :class="full ? '': 'overflow-y-auto h-96'">
     <table class="items-center w-full bg-transparent border-collapse ">
       <thead>
         <slot name="head" />

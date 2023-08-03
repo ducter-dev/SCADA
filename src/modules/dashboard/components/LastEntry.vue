@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue"
-import useDashboard from '../composables/useDashboard'
 import useToast from "../../dashboard/composables/useToast"
 import Toggle from '@vueform/toggle'
 import CreateEntry from "../../entries/components/create.vue"
@@ -11,7 +10,6 @@ import useAuth from "../../auth/composables/useAuth"
 
 
 const { fetchUltimaEntrada } = useTanqueEntrada()
-const { fetchBarreraEntrada, getBarreraEntrada, changeBarreraEntrada } = useDashboard()
 
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
@@ -19,10 +17,6 @@ const currentUser = computed(() => getCurrentUser())
 
 const { addToast } = useToast()
 const { bus } = useEventsBus()
-
-const loadDataBarrierStatus = ref(false)
-let dataBarrierEntryStatus = ref(null)
-const barrierEntry = computed(() => getBarreraEntrada())
 let dataLastEntry = ref({})
 
 
@@ -32,14 +26,9 @@ let dataLastEntry = ref({})
  * Retorna una matriz de datos o matriz vacia
  * @param {*} data 
  */
-const setDataFromFetchDataBarrierEntry = (data) => {
-    dataBarrierEntryStatus.value = data
-    loadDataBarrierStatus.value = false
-}
 
 const setDataFromFetchDataLastEntry = (data) => {
     dataLastEntry.value = data
-    loadDataBarrierStatus.value = false
 }
 
 const setTipo = (tipo) => {
@@ -92,89 +81,13 @@ const fetchDataLastEntry = async () => {
     }
 }
 
-const fetchDataBarrierEntry = async () => {
-    try {
-        const res = await fetchBarreraEntrada()
-        const { data, status, message } = res
-        if (status == 200) {
-            setDataFromFetchDataBarrierEntry(data.estado)
-        } else {
-            /* addToast({
-                message: {
-                    title: "¡Error!",
-                    message: message,
-                    type: "error",
-                    component: "LastEntry - fetchDataBarrierEntry()"
-                },
-            }) */
-        }
-    } catch (error) {
-        /* addToast({
-            message: {
-                title: "¡Error!",
-                message: `Error: ${error.message}`,
-                type: "error",
-                component: "LastEntry | Catch - fetchDataBarrierEntry()"
-            },
-        }) */
-    }
-}
 
-/* watch(() => bus.value.get('reloadData'), (val) => {
-    fetchDataBarrierEntry()
-    fetchDataLastEntry()
-}) */
-
-watch(
-    () => dataBarrierEntryStatus.value, async(estadoBarrera) => {
-        //console.log("🚀 ~ file: LastEntry.vue:130 ~ estadoBarrera:", estadoBarrera)
-        const res = await changeBarreraEntrada(estadoBarrera)
-        //console.log("🚀 ~ file: LastEntry.vue:132 ~ res:", res)
-        const { data, status } = res
-        if (status == 201) {
-            const objBitacora = {
-                user: currentUser.value.id,
-                actividad: `El usuario ${currentUser.value.username} cambió el estado de la barrera de entrada a: ${estadoBarrera? 'Abierta': 'Cerrada'}.`,
-                evento: estadoBarrera ? 18 : 19,
-            }
-            //console.log("🚀 ~ file: LastEntry.vue:141 ~ objBitacora:", objBitacora)
-            insertBitacora(objBitacora)
-            addToast({
-                message: {
-                    title: "Éxito!",
-                    message: `Se cambio el estado de la barrera de entrada.`,
-                    type: "success"
-                },
-            })  
-        } else {
-            /* addToast({
-                message: {
-                    title: "¡Error!",
-                    message: `Error: No se pudo cambiar el estado de la barrera de entrada`,
-                    type: "error",
-                    component: "LastEntry | Catch - changeBarreraEntrada()"
-                },
-            }) */
-        }
-    }
-)
 
 onMounted(() => {
-
     fetchDataLastEntry()
-    console.log("🚀 ~ file: LastEntry.vue:166 ~ onMounted ~ barrierEntry.value:", barrierEntry.value)
-
-    //Condicional para verificar existencia de información en el store
-    if (barrierEntry.value) {
-        // Establece la información del store
-
-        setDataFromFetchDataBarrierEntry(barrierEntry.value)
-    } else {
-        // Realiza la petición al servidor
-        fetchDataBarrierEntry()
-    }
 })
 </script>
+
 <template>
     <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
         <div class="p-2 border border-solid border-slate-300">
@@ -197,7 +110,7 @@ onMounted(() => {
             </ul>
         </div>
     </div>
-    <div class="max-w-sm mt-5 bg-transparent">
+    <!-- <div class="max-w-sm mt-5 bg-transparent">
         <div class="p-2 border border-solid border-slate-300">
             <div class="py-1">
                 <div class="flex items-center space-x-4">
@@ -224,5 +137,5 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
