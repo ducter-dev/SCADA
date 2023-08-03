@@ -4,7 +4,7 @@ export default {
   children: [
     {
       path: '',
-      name: 'Home',
+      name: 'dashboard.home',
       component: () => import('../views/Dashboard.vue')
     },
     {

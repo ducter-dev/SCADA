@@ -33,12 +33,41 @@ export const useTanqueStore = defineStore('tanques', {
   },
   actions: {
     // ------ Tanques ------
-    async fetchTanks() {
+    async fetchTanks(params) {
       try {
-        const res = await scadaApi.get('/tanques')
-        const { data } = res
+        const { page, size } = params
+        const { data, status } = await scadaApi.get(`/tanques?page=${page}&size=${size}`)
+        console.log("🚀 ~ file: tanquesStore.js:41 ~ fetchTanks ~ data:", data)
+        this.tanques = data.items
+        const pagination = {
+          links: data.links,
+          page: data.page,
+          pages: data.pages,
+          size: data.size,
+          total: data.total
+        }
+        console.log("🚀 ~ file: tanquesStore.js:49 ~ fetchTanks ~ pagination:", pagination)
+        const obj = {
+          ok: true, data: this.tanques, status, paginacion: pagination
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    async fetchTanksAll() {
+      try {
+        const { data, status } = await scadaApi.get(`/tanques/all`)
         this.tanques = data
-        return res
+        const obj = {
+          ok: true, data: this.tanques, status
+        }
+        return obj
       } catch (error) {
         if(error.response){
           return { ok: false, message: error.response.data.message }

@@ -80,13 +80,13 @@ onMounted(() => {
 })
 </script>
 <template>
-	<LBreadcrumb :back-route="{ name: 'Home' }">
+	<LBreadcrumb :back-route="{ name: 'dashboard.home' }">
 		<svg class="w-5 h-5 shrink-0 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
 			<path fill-rule="evenodd"
 				d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
 				clip-rule="evenodd" />
 		</svg>
-		<router-link :to="{ name: 'Home' }"
+		<router-link :to="{ name: 'dashboard.home' }"
 			class="text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-500">
 			Inicio
 		</router-link>
@@ -136,7 +136,7 @@ onMounted(() => {
 								</tr>
 							</template>
 							<template #body>
-								<tr v-for="(item, index) in dataResult" v-if="dataResult.length > 0" :key="item.id">
+								<tr v-for="item in dataResult" v-if="dataResult.length > 0" :key="item.id">
 									<LBodyTh :value="item.id" center />
 									<LBodyTd :value="item.atName" center />
 									<LBodyTd :value="setTipo(item.atTipo)" center />

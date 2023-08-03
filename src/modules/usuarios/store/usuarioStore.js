@@ -51,9 +51,21 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async delete(usuario) {
-      const { data } = await scadaApi.delete(`/users/${usuario.id}`)
-      this.usuarios = this.usuarios.filter(user => user.id != usuario.id)
-      return res
+      try {
+        const { data, status } = await scadaApi.delete(`/users/${usuario.id}`)
+        this.usuarios = this.usuarios.filter(user => user.id != usuario.id)
+        const user = data
+        const obj = {
+          ok: true, data: user, status
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
     },
 
     select(usuario) {

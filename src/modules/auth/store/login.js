@@ -26,6 +26,8 @@ export const useLoginStore = defineStore('login', {
         delete user.password
         this.user = data.user
         this.token = token
+        localStorage.setItem('token', token)
+        localStorage.setItem('user', JSON.stringify(this.user))
         if(!bloqueado){
           this.status = 'authenticated'
           localStorage.setItem('token', token)

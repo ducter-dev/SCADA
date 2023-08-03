@@ -1,0 +1,243 @@
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue'
+import useTanque from '../composables/useTanque'
+import TableTanques from '../components/TableTanques.vue'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+import { useRouter } from 'vue-router'
+import Paginate from '@/layout/components/Paginate/Index.vue'
+import useToast from "@/modules/dashboard/composables/useToast"
+import IconPlus from '@/assets/icons/plus-solid.svg'
+import RefreshIcon from "@/assets/icons/update.svg"
+import EditIcon from "@/assets/icons/pencil.svg"
+
+const router = useRouter()
+const { fetchTanques, eliminarTanque, getTanques, setSelectTank } = useTanque()
+const { addToast } = useToast()
+
+const tiposTanque = [
+  { id: 0, nombre: 'Sencillo' },
+  { id: 1, nombre: 'Full A' },
+  { id: 2, nombre: 'Full B' }
+]
+
+const conectorTanque = [
+  { id: 1, nombre: 'Izquierdo' },
+  { id: 2, nombre: 'Derecho' },
+  { id: 3, nombre: 'Ambos' }
+]
+
+const tanques = computed(() => getTanques())
+let tanks = ref([])
+let loading = ref(false)
+
+const links = ref([])
+let pagination = reactive({
+  current_page: 1,
+  size: 15,
+})
+
+const obtenerTanques = async () => {
+  try {
+    loading.value = true
+    const params = { page: pagination.current_page, size: pagination.size }
+    const res = await fetchTanques(params)
+    const { data, status, message, paginacion } = res
+
+    if (status == 200) {
+      const { first, last, next, prev, self } = paginacion.links
+      links.value.push(first)
+      links.value.push(last)
+      links.value.push(next)
+      links.value.push(prev)
+      links.value.push(self)
+      pagination = paginacion
+      pagination.from = (paginacion.size * (paginacion.page - 1)) + 1
+      pagination.to = paginacion.size * paginacion.page
+      pagination.current_page = paginacion.page
+      pagination.last_page = paginacion.pages
+      pagination.links = links.value
+      tanks.value = data
+      loading.value = false
+    } else {
+      loading.value = false
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: message,
+          type: "error"
+        },
+      })
+    }
+  } catch (error) {
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: error,
+        type: "error"
+      },
+    })
+    router.push('/auth')
+  }
+}
+
+const goToInsert = () => {
+  router.push({ name: 'tanques.create' })
+}
+
+const goToEdit = (item) => {
+  setSelectTank(item)
+  router.push({ name: 'tanques.edit' })
+}
+
+const deleteTank = async (tanque) => {
+  try {
+    const res = await eliminarTanque(tanque)
+    const { data, status } = res
+    if (status == 200) {
+      console.log(data)
+      tanks.value = getTanques()
+      Swal.fire('Eliminado', 'El autotanque ha sido eliminado', 'success')
+    } else {
+      Swal.fire("Error", data.message, "error")
+    }
+  } catch (error) {
+    Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+    router.push('/auth')
+  }
+}
+
+const setTipo = (tipo) => {
+	switch (tipo) {
+		case 0:
+			return "Sencillo"
+		case 1:
+			return "Full A"
+		case 2:
+			return "Full B"
+		case 3:
+			return ""
+	}
+}
+
+const setConector = (conector) => {
+  switch (conector) {
+    case 1:
+      return 'Derecho'
+    case 2:
+      return 'Izquierdo'
+    case 3:
+      return 'Ambos'
+  }
+}
+
+onMounted(() => {
+  if (tanques.value || tanques.value.length < 1) {
+    obtenerTanques()
+  } else {
+    tanks.value = tanques.value
+  }
+})
+</script>
+
+
+<template>
+  <LBreadcrumb :back-route="{ name: 'dashboard.home' }">
+    <ol role="list" class="flex items-center space-x-1">
+      <li>
+        <div>
+          <router-link :to="{ name: 'tanques.home' }" class="text-slate-400 hover:text-slate-500">
+            <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            <span class="sr-only">Inicio</span>
+          </router-link>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg class="flex-shrink-0 w-5 h-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd" />
+          </svg>
+          <router-link :to="{ name: 'tanques.home' }"
+            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700">Tanques</router-link>
+        </div>
+      </li>
+    </ol>
+  </LBreadcrumb>
+  <div
+    class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
+    <h2 class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate">
+      Tanques
+    </h2>
+  </div>
+  <div class="mt-5 space-y-5">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12">
+        <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="border border-solid border-slate-300">
+            <div class="flex items-center justify-between">
+              <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de tanques
+              </legend>
+              <div>
+                <button class="p-2" @click="goToInsert()">
+                  <span v-tippy="'Ingresar'">
+                    <IconPlus
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      fill="currentColor" />
+                  </span>
+                </button>
+                <button class="p-2" @click="fetchDataUsuarios()">
+                  <span v-tippy="'Actualizar'">
+                    <RefreshIcon
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      :class="loading ? 'animate-spin' : ''" fill="currentColor" />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <LTable :loader="loading">
+              <template #head>
+                <tr>
+                  <LHeaderTh value="Consecutivo" center />
+                  <LHeaderTh value="Autotanque" center />
+                  <LHeaderTh value="Tipo" center />
+                  <LHeaderTh value="Conector" center />
+                  <LHeaderTh value="Capacidad" center />
+                  <LHeaderTh value="Acciones" center />
+                </tr>
+              </template>
+              <template #body>
+                <tr v-for="item in tanques" v-if="tanques.length > 0" :key="item.id">
+                  <LBodyTh :value="item.id" center />
+                  <LBodyTh :value="item.atName" center />
+                  <LBodyTd :value="setTipo(item.atTipo)" center />
+                  <LBodyTh :value="item.capacidad90" center />
+                  <LBodyTd :value="setConector(item.conector)" center />
+                  <LBodyTd center>
+                    <div class="inline-flex shadow-sm" role="group">
+                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'"
+                        @click="goToEdit(item)">
+                        <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
+                      </span>
+                      <!-- <DeleteUser :model="item" :id="item.id" @successSubmit="fetchDataUsuarios()" /> -->
+                    </div>
+                  </LBodyTd>
+                </tr>
+                <tr v-else>
+                  <LBodyTh value="Sin información" colspan="7" center />
+                </tr>
+              </template>
+            </LTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Paginate v-if="pagination.last_page > 1" :pagination="pagination" :offset="7" @changePaginate="obtenerTanques()" />
+</template>
