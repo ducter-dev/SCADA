@@ -7,7 +7,7 @@
       </h2>
     </div>
   </div>
-  <div class="mt-5 space-y-5">
+  <div class="mt-5 space-y-5 h-max">
     <div class="grid gap-5 grid-cols-15">
       <div class="flex flex-col col-span-3">
         <InputAntenna/>
