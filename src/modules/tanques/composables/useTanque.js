@@ -22,7 +22,7 @@ const useTanque = () => {
     return store.tanksEntries
   }
 
-  const editarTanque = async ( tanque ) => {
+  const updateTanque = async ( tanque ) => {
     const resp = await store.editTank(tanque)
     return resp
   }
@@ -64,7 +64,7 @@ const useTanque = () => {
   return {
     fetchTanques,
     fetchTanquesAll,
-    editarTanque,
+    updateTanque,
     registrarTanque,
     eliminarTanque,
     getTanques,

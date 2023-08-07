@@ -6,7 +6,7 @@ import useTanque from '../composables/useTanque'
 import useToast from '../../dashboard/composables/useToast'
 
 
-const { getTanqueSelect, getTanques, fetchTanquesAll } = useTanque()
+const { getTanqueSelect, getTanques } = useTanque()
 const tanques = computed(() => getTanques())
 const router = useRouter()
 const tanqueSelected = computed(() => getTanqueSelect())
@@ -126,9 +126,6 @@ watch(() => tanqueForm.atTipo, () => {
     }
 })
 
-onMounted(() => {
-  fetchTanquesAll()
-}) 
 </script>
 
 <template>
