@@ -7,6 +7,11 @@ const useTanque = () => {
     const resp = await store.fetchTanks(params)
     return resp
   }
+
+  const fetchTanksFilter = async (query) => {
+    const resp = await store.fetchTanksFilter(query)
+    return resp
+  }
   
   const fetchTanquesAll = async () => {
     const resp = await store.fetchTanksAll()
@@ -63,6 +68,7 @@ const useTanque = () => {
 
   return {
     fetchTanques,
+    fetchTanksFilter,
     fetchTanquesAll,
     updateTanque,
     registrarTanque,
