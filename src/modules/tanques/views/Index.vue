@@ -217,8 +217,8 @@ onMounted(() => {
                   <LBodyTh :value="item.id" center />
                   <LBodyTh :value="item.atName" center />
                   <LBodyTd :value="setTipo(item.atTipo)" center />
-                  <LBodyTh :value="item.capacidad90" center />
                   <LBodyTd :value="setConector(item.conector)" center />
+                  <LBodyTh :value="item.capacidad90" center />
                   <LBodyTd center>
                     <div class="inline-flex shadow-sm" role="group">
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'"
