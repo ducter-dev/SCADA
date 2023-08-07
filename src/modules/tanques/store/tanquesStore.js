@@ -78,6 +78,30 @@ export const useTanqueStore = defineStore('tanques', {
       }
     },
 
+    async fetchTanksFilter(query) {
+      try {
+        const { data, status } = await scadaApi.get(`/tanques/search?atName=${query}`)
+        this.tanquesPaginate = data.items
+        const pagination = {
+          links: data.links,
+          page: data.page,
+          pages: data.pages,
+          size: data.size,
+          total: data.total
+        }
+        const obj = {
+          ok: true, data: this.tanquesPaginate, status, paginacion: pagination
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
     async editTank(tank) {
       try {
         const res = await scadaApi.put(`/tanques/${tank.id}`, tank)

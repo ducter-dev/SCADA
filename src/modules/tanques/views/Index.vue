@@ -8,11 +8,12 @@ import { useRouter } from 'vue-router'
 import Paginate from '@/layout/components/Paginate/Index.vue'
 import useToast from "@/modules/dashboard/composables/useToast"
 import IconPlus from '@/assets/icons/plus-solid.svg'
+import IconSearch from '@/assets/icons/search.svg'
 import RefreshIcon from "@/assets/icons/update.svg"
 import EditIcon from "@/assets/icons/pencil.svg"
 
 const router = useRouter()
-const { fetchTanques, eliminarTanque, getTanques, setSelectTank } = useTanque()
+const { fetchTanques, fetchTanksFilter, getTanques, setSelectTank } = useTanque()
 const { addToast } = useToast()
 
 const tiposTanque = [
@@ -27,9 +28,9 @@ const conectorTanque = [
   { id: 3, nombre: 'Ambos' }
 ]
 
-const tanques = computed(() => getTanques())
 let tanks = ref([])
 let loading = ref(false)
+let query = ref('')
 
 const links = ref([])
 let pagination = reactive({
@@ -90,34 +91,68 @@ const goToEdit = (item) => {
   router.push({ name: 'tanques.edit' })
 }
 
-const deleteTank = async (tanque) => {
+const search = async () => {
   try {
-    const res = await eliminarTanque(tanque)
-    const { data, status } = res
+    if (query.value.length < 3) {
+      if (query.value.length == 0) {
+        pagination.current_page = 1
+        pagination.size = 15
+        obtenerTanques()
+      }
+      return
+    }
+    loading.value = true
+    const res = await fetchTanksFilter(query.value)
+    const { data, status, message, paginacion } = res
+
     if (status == 200) {
-      console.log(data)
-      tanks.value = getTanques()
-      Swal.fire('Eliminado', 'El autotanque ha sido eliminado', 'success')
+      const { first, last, next, prev, self } = paginacion.links
+      links.value.push(first)
+      links.value.push(last)
+      links.value.push(next)
+      links.value.push(prev)
+      links.value.push(self)
+      pagination = paginacion
+      pagination.from = (paginacion.size * (paginacion.page - 1)) + 1
+      pagination.to = paginacion.size * paginacion.page
+      pagination.current_page = paginacion.page
+      pagination.last_page = paginacion.pages
+      pagination.links = links.value
+      tanks.value = data
+      loading.value = false
     } else {
-      Swal.fire("Error", data.message, "error")
+      loading.value = false
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: message,
+          type: "error"
+        },
+      })
     }
   } catch (error) {
-    Swal.fire('Error', 'Error, revise sus crecenciales', 'error')
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: error,
+        type: "error"
+      },
+    })
     router.push('/auth')
   }
 }
 
 const setTipo = (tipo) => {
-	switch (tipo) {
-		case 0:
-			return "Sencillo"
-		case 1:
-			return "Full A"
-		case 2:
-			return "Full B"
-		case 3:
-			return ""
-	}
+  switch (tipo) {
+    case 0:
+      return "Sencillo"
+    case 1:
+      return "Full A"
+    case 2:
+      return "Full B"
+    case 3:
+      return ""
+  }
 }
 
 const setConector = (conector) => {
@@ -180,7 +215,8 @@ onMounted(() => {
             <div class="flex items-center justify-between">
               <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de tanques
               </legend>
-              <div>
+              <div class="flex flex-row items-center justify-center my-4">
+                
                 <button class="p-2" @click="goToInsert()">
                   <span v-tippy="'Ingresar'">
                     <IconPlus
@@ -195,6 +231,16 @@ onMounted(() => {
                       :class="loading ? 'animate-spin' : ''" fill="currentColor" />
                   </span>
                 </button>
+                <div class="flex flex-col items-center">
+                  <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <IconSearch class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="currentColor" />
+                    </div>
+                    <input @input="search" v-model="query" type="text" id="simple-search"
+                      class="block w-full p-2 pl-10 text-sm border rounded-lg text-slate-600 border-slate-300 bg-slate-50 focus:ring-slate-600 focus:border-slate-600 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
+                      placeholder="Buscar..." required="" />
+                  </div>
+                </div>
               </div>
             </div>
             <LTable :loader="loading">
