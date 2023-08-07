@@ -5,6 +5,7 @@ export const useTanqueStore = defineStore('tanques', {
   id: 'tanques',
   state: () => ({
     tanques: [],
+    tanquesPaginate: [],
     tanqueSelect: {},
     tanquesInEntrada: [],
     tanquesInEntradaSel: [],
@@ -38,7 +39,7 @@ export const useTanqueStore = defineStore('tanques', {
         const { page, size } = params
         const { data, status } = await scadaApi.get(`/tanques?page=${page}&size=${size}`)
         console.log("🚀 ~ file: tanquesStore.js:41 ~ fetchTanks ~ data:", data)
-        this.tanques = data.items
+        this.tanquesPaginate = data.items
         const pagination = {
           links: data.links,
           page: data.page,
@@ -48,7 +49,7 @@ export const useTanqueStore = defineStore('tanques', {
         }
         console.log("🚀 ~ file: tanquesStore.js:49 ~ fetchTanks ~ pagination:", pagination)
         const obj = {
-          ok: true, data: this.tanques, status, paginacion: pagination
+          ok: true, data: this.tanquesPaginate, status, paginacion: pagination
         }
         return obj
       } catch (error) {
@@ -80,7 +81,8 @@ export const useTanqueStore = defineStore('tanques', {
     async editTank(tank) {
       try {
         const res = await scadaApi.put(`/tanques/${tank.id}`, tank)
-        const { data } = res
+        const { data, status } = res
+        console.log("🚀 ~ file: tanquesStore.js:84 ~ editTank ~ data:", data)
         const { atId, atTipo, atName, conector, capacidad90, transportadora } = data
         const tanque = this.tanques.find(t => t.id == data.id)
         tanque.atId = atId
@@ -90,7 +92,10 @@ export const useTanqueStore = defineStore('tanques', {
         tanque.capacidad90 = capacidad90
         tanque.transportadora = transportadora
         this.tanqueSelect = {}
-        return res
+        const obj = {
+          ok: true, data, status
+        }
+        return obj
       } catch (error) {
         if(error.response){
           return { ok: false, message: error.response.data.message }
@@ -103,9 +108,12 @@ export const useTanqueStore = defineStore('tanques', {
     async registerTank(tank) {
       try {
         const res = await scadaApi.post('tanques', tank)
-        const { data } = res
+        const { data, status } = res
         this.tanques.push(data)
-        return res
+        const obj = {
+          ok: true, data, status
+        }
+        return obj
       } catch (error) {
         if(error.response){
           return { ok: false, message: error.response.data.message }

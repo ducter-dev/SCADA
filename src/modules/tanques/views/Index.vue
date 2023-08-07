@@ -132,11 +132,7 @@ const setConector = (conector) => {
 }
 
 onMounted(() => {
-  if (tanques.value || tanques.value.length < 1) {
-    obtenerTanques()
-  } else {
-    tanks.value = tanques.value
-  }
+  obtenerTanques()
 })
 </script>
 
@@ -213,12 +209,12 @@ onMounted(() => {
                 </tr>
               </template>
               <template #body>
-                <tr v-for="item in tanques" v-if="tanques.length > 0" :key="item.id">
+                <tr v-for="item in tanks" v-if="tanks.length > 0" :key="item.id">
                   <LBodyTh :value="item.id" center />
                   <LBodyTh :value="item.atName" center />
                   <LBodyTd :value="setTipo(item.atTipo)" center />
-                  <LBodyTh :value="item.capacidad90" center />
                   <LBodyTd :value="setConector(item.conector)" center />
+                  <LBodyTh :value="item.capacidad90" center />
                   <LBodyTd center>
                     <div class="inline-flex shadow-sm" role="group">
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'"

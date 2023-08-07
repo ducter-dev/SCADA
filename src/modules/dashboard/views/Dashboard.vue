@@ -59,7 +59,6 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useIntervalFn } from '@vueuse/core'
 import useEventsBus from "../../../layout/eventBus"
-import useTanque from '../../tanques/composables/useTanque'
 import useDashboard from '../composables/useDashboard'
 import useTanqueEspera from '../../tanques/composables/useTanqueEspera'
 import useLlenaderas from '../../tanques/composables/useLlenaderas'
@@ -87,7 +86,6 @@ const { pause, resume, isActive } = useIntervalFn(() => {
   emit("reloadData", true)
 }, 100000)
 
-const { fetchTanquesAll } = useTanque()
 const { fetchLlenaderas } = useLlenaderas()
 
 const checkUser = () => {
@@ -98,7 +96,6 @@ const checkUser = () => {
 
 onMounted(() => {
   checkUser()
-  fetchTanquesAll()
   fetchLlenaderas()
 })
 
