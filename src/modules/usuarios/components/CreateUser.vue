@@ -53,7 +53,7 @@ const departamentos = [
 
 const getInitialFormData = () => ({
   usuario: '',
-  password: '',
+  email: '',
   categoria: ref(categorias[0]),
   departamento: ref(departamentos[0]),
 })
@@ -66,7 +66,7 @@ async function onSubmit() {
   loader.value = true
   const body = {
     username: userForm.usuario,
-    password: userForm.password,
+    email: userForm.email,
     categoria: userForm.categoria.id,
     departamento: userForm.departamento.id,
     registra: currentUser.value.id
@@ -157,7 +157,7 @@ async function onSubmit() {
                     <LFloatInput v-model="userForm.usuario" label="Usuario" square />
                   </div>
                   <div class="col-span-6 md:col-span-3">
-                    <LFloatInput v-model="userForm.password" label="Password" square />
+                    <LFloatInput v-model="userForm.email" label="Email" square />
                   </div>
                   <div class="col-span-6 md:col-span-3">
                     <Listbox v-model="userForm.categoria">

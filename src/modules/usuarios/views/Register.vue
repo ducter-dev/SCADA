@@ -1,6 +1,6 @@
 <template>
   <div class="w-3/12">
-    <div class="flex justify-center items-center content-center my-8">
+    <div class="flex items-center content-center justify-center my-8">
       <h2 class="text-xl font-bold">Registro</h2>
     </div>
     <form @submit.prevent="onSubmit">
@@ -38,6 +38,28 @@
             border border-gray-300
             text-dark text-base
             font-semibold
+            rounded-lg
+            focus:ring-black focus:border-dark
+            block
+            w-full
+            p-2.5
+          "
+          placeholder=""
+          required
+        />
+      </div>
+      <div class="mb-6">
+        <label for="user" class="block mb-2 text-base font-bold text-dark"
+          >Email</label
+        >
+        <input
+          type="email"
+          v-model="userForm.email"
+          class="
+            bg-gray-50
+            border border-gray-300
+            text-dark text-base
+            font-normal
             rounded-lg
             focus:ring-black focus:border-dark
             block
@@ -131,15 +153,17 @@ export default {
     const userForm = ref({
       usuario: '',
       password: '',
+      email: '',
       categoria: null,
       departamento: null,
     })
 
     const onSubmit = async() => {
-      const { usuario, password, categoria, departamento} = userForm.value
+      const { usuario, password, email, categoria, departamento} = userForm.value
       const dataForm = {
         username: usuario,
         password,
+        email,
         categoria,
         departamento
       }

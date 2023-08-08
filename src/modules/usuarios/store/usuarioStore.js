@@ -21,6 +21,7 @@ export const useUsuarioStore = defineStore('usuario', {
     },
 
     async insert(usuario) {
+      console.log("🚀 ~ file: usuarioStore.js:24 ~ insert ~ usuario:", usuario)
       const res = await scadaApi.post('/auth/register', usuario)
       const { data } = res
       this.usuarios.push(data)
