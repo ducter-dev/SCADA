@@ -76,41 +76,66 @@ export default {
 
     const onSubmit = async () => {
       submit.value = true
-      const { ok, detail, status } = await login(userForm.value)
-      if (!ok) {
-        intentos.value++
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: detail,
-            type: "error"
-          },
-        })
-        submit.value = false
-      }
-      else if(ok && status == "authenticated") {
+      const { ok, data, message, status } = await login(userForm.value)
+
+      if (status == 200) {
         addToast({
           message: {
             title: "¡Login Correcto!",
-            message: "Entrando a la aplicación.",
+            message: data,
             type: "info"
           },
         })
         submit.value = false
-        router.push('/dashboard')
-      }
-      else if(ok && status == "locked"){
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: "Tus credenciales estan bloqueadas",
-            type: "error"
-          },
-        })
-        submit.value = false
-      }
+        router.push({ name: 'dashboard.home' })
+      } else {
+        switch (status) {
+          case 419:
+            intentos.value++
+            addToast({
+              message: {
+                title: "¡Error!",
+                message: message,
+                type: "error"
+              },
+            })
+            submit.value = false
+            break
+          case 420:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message: message,
+                type: "error"
+              },
+            })
+            submit.value = false
+            break
+          case 421:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message: message,
+                type: "error"
+              },
+            })
+            submit.value = false
+            break
+          case 422:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message: message,
+                type: "error"
+              },
+            })
+            submit.value = false
+            break
+        }
 
+      }
     }
+
     watch(
       () => intentos.value, async(intento) => {
         if (intento == 3) {
