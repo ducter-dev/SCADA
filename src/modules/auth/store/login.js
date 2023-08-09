@@ -103,7 +103,54 @@ export const useLoginStore = defineStore('login', {
         }
         return obj
       }
+    },
+    async recoveryPassword(email) {
+      const form = {
+        email
+      }
+      try {
+        const { data, status } = await scadaApi.post('/auth/recuperar-password', form )
+        console.log("🚀 ~ file: login.js:113 ~ recoveryPassword ~ data:", data)
+        const obj = {
+          ok: true, data: data, status
+        }
+        console.log("🚀 ~ file: login.js:117 ~ recoveryPassword ~ obj:", obj)
+        return obj
+      } catch (error) {
+        console.log("🚀 ~ file: login.js:120 ~ recoveryPassword ~ error:", error)
+        if (error.response) {
+          console.log("🚀 ~ file: login.js:122 ~ recoveryPassword ~ error.response:", error.response)
+          // La respuesta fue hecha y el servidor respondió con un código de estado
+          // que esta fuera del rango de 2xx
+          if (error.response.status == 419) {
+            console.log('Aqui deberiamos entrar')
+            // Si existe validación del lado del servidor aplicar llenado de errores aquí
+            const obj = {
+              ok: false, data:error.response.data.message, status: error.response.status 
+            }
+            return obj
+          } else {
+            // Si existe error manda un toast
+            const obj = {
+              ok: false, detail:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
+            }
+            return obj
+          }
+        } else if (error.request) {
+          // La petición fue hecha pero no se recibió respuesta
+          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+          // http.ClientRequest en node.js
+          const obj = {
+            ok: false, detail: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+          }
+          return obj
+        } else {
+          const obj = {
+            ok: false, detail:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+          }
+          return obj
+        }
+      }
     }
-  },
-
+  }
 })

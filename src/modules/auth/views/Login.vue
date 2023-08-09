@@ -29,7 +29,7 @@
     </div>
   </form>
   <div class="py-5">
-    <div class="flex flex-row-reverse">
+    <div class="flex flex-row-reverse justify-between">
       <div class="text-center sm:text-left whitespace-nowrap">
         <router-link :to="{ name: 'Landing' }"
           class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
@@ -38,6 +38,12 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           <span class="inline-block ml-1">volver</span>
+        </router-link>
+      </div>
+      <div class="text-center sm:text-left whitespace-nowrap">
+        <router-link :to="{ name: 'rescutepassword' }"
+          class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 no-underline transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset hover:underline">
+          <span class="inline-block ml-1">Olvidé mi contraseña</span>
         </router-link>
       </div>
 
@@ -79,7 +85,7 @@ export default {
             message: detail,
             type: "error"
           },
-        });
+        })
         submit.value = false
       }
       else if(ok && status == "authenticated") {
@@ -89,7 +95,7 @@ export default {
             message: "Entrando a la aplicación.",
             type: "info"
           },
-        });
+        })
         submit.value = false
         router.push('/dashboard')
       }
@@ -100,7 +106,7 @@ export default {
             message: "Tus credenciales estan bloqueadas",
             type: "error"
           },
-        });
+        })
         submit.value = false
       }
 
@@ -117,7 +123,7 @@ export default {
               message: "Espera" + detail,
               type: "error"
             },
-          });
+          })
         }
       }
     ) 

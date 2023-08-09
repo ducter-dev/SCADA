@@ -43,6 +43,11 @@ const useAuth = () => {
     return store.user
   }
 
+  const recoveryPassword = async (email) => {
+    const res = await store.recoveryPassword(email)
+    return res
+  }
+
   return {
     login,
     logout,
@@ -51,6 +56,7 @@ const useAuth = () => {
     setlocked,
     getCurrentUser,
     getLocalUser,
+    recoveryPassword,
   }
 }
 
