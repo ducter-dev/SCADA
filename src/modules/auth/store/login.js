@@ -29,41 +29,28 @@ export const useLoginStore = defineStore('login', {
         localStorage.setItem('token', token)
         localStorage.setItem('user', JSON.stringify(this.user))
         if(!bloqueado){
-          this.status = 'authenticated'
+          this.status = status == 200 ? 'authenticated' : null
           localStorage.setItem('token', token)
         }
         const obj = {
-          ok: true, detail: data.user, status: (bloqueado)? 'locked':'authenticated'
+          ok: true, data: data.user, message: 'Login correcto.', status
         }
         return obj
       } catch (error) {
         if (error.response) {
-          // La respuesta fue hecha y el servidor respondió con un código de estado
-          // que esta fuera del rango de 2xx
-          if (error.response.status == 419) {
-            // Si existe validación del lado del servidor aplicar llenado de errores aquí
-            const obj = {
-              ok: false, detail:error.response.data.message, status: error.response.status 
-            }
-            return obj
-          } else {
-            // Si existe error manda un toast
-            const obj = {
-              ok: false, detail:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
-            }
-            return obj
-          }
-        } else if (error.request) {
-          // La petición fue hecha pero no se recibió respuesta
-          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
-          // http.ClientRequest en node.js
           const obj = {
-            ok: false, detail: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+            ok: false, message:error.response.data.message, status: error.response.status 
+          }
+          return obj
+          
+        } else if (error.request) {
+          const obj = {
+            ok: false, message: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
           }
           return obj
         } else {
           const obj = {
-            ok: false, detail:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+            ok: false, message:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
           }
           return obj
         }
