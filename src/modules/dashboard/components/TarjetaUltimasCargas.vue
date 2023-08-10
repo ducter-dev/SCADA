@@ -36,7 +36,7 @@ const setDataFromResult = (data) => {
  */
 const fecthInformationOnTanksLastDepartures = async () => {
   try {
-    const date = ref(new Date(2023,4,31))
+    const date = ref(new Date())
     const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
     const res = await fetchTanksSalidas(dateToUse.value, 0)
     const { data, status } = res
