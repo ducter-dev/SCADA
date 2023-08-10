@@ -77,12 +77,13 @@ export default {
     const onSubmit = async () => {
       submit.value = true
       const { ok, data, message, status } = await login(userForm.value)
+      console.log("🚀 ~ file: Login.vue:80 ~ onSubmit ~ data:", data)
 
       if (status == 200) {
         addToast({
           message: {
             title: "¡Login Correcto!",
-            message: data,
+            message: data.username,
             type: "info"
           },
         })
@@ -131,6 +132,16 @@ export default {
             })
             submit.value = false
             break
+          case 423:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message: message,
+                type: "error"
+              },
+            })
+            submit.value = false
+            break
         }
 
       }
@@ -144,8 +155,8 @@ export default {
           console.log(detail)
           addToast({
             message: {
-              title: "¡Error!",
-              message: "Espera" + detail,
+              title: "¡Bloqueo!",
+              message: `La cuenta ha sido bloqueada, deberá esperar hasta ${detail} para volver a intentar loguearse.`,
               type: "error"
             },
           })
