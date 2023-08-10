@@ -76,14 +76,12 @@ export const useLoginStore = defineStore('login', {
       }
     },
     async locked(usuario) {
-      console.log(format(new Date(), 'yyyy-MM-dd H:m:s'))
       const dataForm = {
-        user:usuario,
-        fechaBloqueo: format(new Date(), 'yyyy-MM-dd H:m:s')
+        user:usuario
       }
       try {
         const { data } = await scadaApi.post('/auth/bloqueados', dataForm )
-        return {detail:data.fechaDesbloqueo}
+        return { detail: data.fechaDesbloqueo}
       } catch (error) {
         const obj = {
           detail:error.response.data.message
