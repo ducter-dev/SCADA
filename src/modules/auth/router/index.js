@@ -13,7 +13,7 @@ export default {
       component: () => import('../views/Register.vue')
     },
     {
-      path: 'resetpassword',
+      path: 'actualizar-password',
       name: 'resetpassword',
       component: () => import('../views/ResetPassword.vue')
     },    
