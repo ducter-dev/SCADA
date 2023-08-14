@@ -14,7 +14,6 @@ const useAuth = () => {
   }
 
   const logout = async (bitacora) => {
-    console.log("🚀 ~ file: useAuth.js:17 ~ logout ~ bitacora:", bitacora)
     await insertBitacora(bitacora)
     store.logout()
     return true
@@ -48,6 +47,15 @@ const useAuth = () => {
     return res
   }
 
+  const updatePassword = async (form) => {
+    const res = await store.updatePassword(form)
+    return res
+  }
+
+  const getIdCaducado = () => {
+    return store.id_caducado
+  }
+
   return {
     login,
     logout,
@@ -57,6 +65,8 @@ const useAuth = () => {
     getCurrentUser,
     getLocalUser,
     recoveryPassword,
+    updatePassword,
+    getIdCaducado,
   }
 }
 

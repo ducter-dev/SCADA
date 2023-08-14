@@ -131,6 +131,7 @@ export default {
               },
             })
             submit.value = false
+            router.push({name: 'resetpassword'})
             break
           case 423:
             addToast({
