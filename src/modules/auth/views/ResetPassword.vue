@@ -127,7 +127,7 @@ watch(form, () => {
 
             Actualizando Credenciales
           </template>
-          <template v-else> Actualzizar Credenciales </template>
+          <template v-else> Actualizar Credenciales </template>
         </button>
 			</div>
 		</div>

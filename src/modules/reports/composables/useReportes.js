@@ -140,6 +140,16 @@ const useReportes = () => {
     }
   }
 
+  const getBalanceMensual = (fecha, tipo) => {
+    try {
+      const url = `${api_url}/reportes/balance-mensual/${fecha}/tipo/${tipo}`
+      open(url, 'Download')  
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   return {
     getCargasDiarias,
     getUltimasCargas,
@@ -155,6 +165,7 @@ const useReportes = () => {
     getReciboPatin,
     getDensidades,
     getCromatografoMensual,
+    getBalanceMensual,
   }
 }
 

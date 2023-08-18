@@ -23,7 +23,7 @@ const sufix = ref('05')
 
 const { addToast } = useToast()
 
-const { getCromatografoMensual } = useReportes()
+const { getCromatografoMensual, getBalanceMensual } = useReportes()
 
 const getReportServicio = async (type) => {
 	const fecha = formatPicker()
@@ -44,6 +44,10 @@ const getReportServicio = async (type) => {
 			break
 		case 'croma-eb04c3':
 			fileOpen.value = getCromatografoMensual(fecha, reportType, 'c3')
+			detail = `Reporte Mensual de Cromatógrafo EB04 Corriente 3 de ${fecha}`
+			break
+		case 'balance-mensual':
+			fileOpen.value = getBalanceMensual(fecha, reportType)
 			detail = `Reporte Mensual de Cromatógrafo EB04 Corriente 3 de ${fecha}`
 			break
 			default:
