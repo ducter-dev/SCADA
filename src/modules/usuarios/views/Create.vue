@@ -2,12 +2,12 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useEventsBus from "@/layout/eventBus"
-import useTanque from '../composables/useTanque'
 import useToast from '@/modules/dashboard/composables/useToast'
-import FormTanque from '../components/FormTanque.vue'
+import FormUsuario from '../components/FormUsuario.vue'
+import useUsuario from '../composables/useUser'
 
 const router = useRouter()
-const { registrarTanque } = useTanque()
+const { insertUsuario } = useUsuario()
 
 const { addToast } = useToast()
 const { emit, bus } = useEventsBus()
@@ -19,18 +19,18 @@ async function onSubmit(form) {
 
   try {
     loader.value = true
-    const { data, status, message } = await registrarTanque(form)
+    const { data, status, message } = await insertUsuario(form)
     if (status == 200) {
       addToast({
         message: {
           title: "Éxito!",
-          message: `Se agregó el tanque ${data.atName} a nuestros registros.`,
+          message: `Se agregó el usuario ${data.username} a nuestros registros.`,
           type: "success"
         },
 
       })
       loader.value = false
-      router.push({ name: 'tanques.home' })
+      router.push({ name: 'usuarios.home' })
     } else {
       loader.value = false
       addToast({
@@ -87,8 +87,8 @@ watch(() => bus.value.get('submitForm'), (value) => {
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
               clip-rule="evenodd" />
           </svg>
-          <router-link :to="{ name: 'tanques.home' }"
-            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700">Tanques</router-link>
+          <router-link :to="{ name: 'usuarios.home' }"
+            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700">Usuarios</router-link>
         </div>
       </li>
       <li>
@@ -100,7 +100,7 @@ watch(() => bus.value.get('submitForm'), (value) => {
               clip-rule="evenodd" />
           </svg>
           <a href="#" class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700" aria-current="page">Nuevo
-            Tanque</a>
+            Usuario</a>
         </div>
       </li>
     </ol>
@@ -108,10 +108,10 @@ watch(() => bus.value.get('submitForm'), (value) => {
   <div
     class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
     <h2 class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate">
-      Agregar tanque
+      Agregar usuario
     </h2>
   </div>
   <div class="flex items-center justify-center my-4 ">
-    <FormTanque />
+    <FormUsuario />
   </div>
 </template>
