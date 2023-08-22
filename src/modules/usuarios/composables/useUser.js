@@ -4,7 +4,6 @@ const useUsuario = () => {
   const store = useUsuarioStore()
   
   const fetchUsuarios = async(params) => {
-    console.log('3')
     const resp = await store.fetch(params)
     return resp
   }
@@ -16,14 +15,11 @@ const useUsuario = () => {
 
   const insertUsuario = async(usuario) => {
     const resp = await store.insert(usuario)
-    console.log("🚀 ~ file: useUser.js:13 ~ insertUsuario ~ resp:", resp)
     return resp
   }
 
   const updateUsuario = async(usuario) => {
-    console.log("🚀 ~ file: useUser.js:18 ~ updateUsuario ~ usuario:", usuario)
     const resp = await store.update(usuario)
-    console.log("🚀 ~ file: useUser.js:20 ~ updateUsuario ~ resp:", resp)
     return resp
   }
 
@@ -37,7 +33,7 @@ const useUsuario = () => {
   }
 
   const setSelectedUsuario = (usuario) => {
-    store.select(usuario)
+    store.selectUser(usuario)
   }
 
   const getSelectedUsuario = () => {

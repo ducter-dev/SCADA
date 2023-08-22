@@ -72,18 +72,15 @@ export const useUsuarioStore = defineStore('usuario', {
 
     async update(user) {
       try {
-        console.log("🚀 ~ file: usuarioStore.js:32 ~ update ~ user:", user)
         const res = await scadaApi.put(`/users/${user.id}`, user )
-        console.log("🚀 ~ file: usuarioStore.js:36 ~ update ~ res:", res)
         const { data } = res
         const userUpdate = data
-        console.log("🚀 ~ file: usuarioStore.js:38 ~ update ~ userUpdate:", userUpdate)
-        console.log("🚀 ~ file: usuarioStore.js:39 ~ update ~ this.usuarios:", this.usuarios)
         const usuarioStore = this.usuarios.find( u => u.id == userUpdate.id)
-        console.log("🚀 ~ file: usuarioStore.js:41 ~ update ~ usuarioStore:", usuarioStore)
+        usuarioStore.nombre = userUpdate.nombre
         usuarioStore.username = userUpdate.username
         usuarioStore.categoria = userUpdate.categoria
         usuarioStore.departamento = userUpdate.departamento
+        usuarioStore.email = userUpdate.email
         this.usuarioSelected = {}
         return res
         
@@ -110,7 +107,7 @@ export const useUsuarioStore = defineStore('usuario', {
       }
     },
 
-    select(usuario) {
+    selectUser(usuario) {
       this.usuarioSelected = usuario
     }
   }

@@ -158,7 +158,6 @@ const setDepartamento = (departamento) => {
 }
 
 onMounted(() => {
-  console.log('1')
   obtenerUsuarios()
 })
 </script>
@@ -216,7 +215,7 @@ onMounted(() => {
                       fill="currentColor" />
                   </span>
                 </button>
-                <button class="p-2" @click="fetchDataUsuarios()">
+                <button class="p-2" @click="obtenerUsuarios()">
                   <span v-tippy="'Actualizar'">
                     <RefreshIcon
                       class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
@@ -240,6 +239,7 @@ onMounted(() => {
                 <tr>
                   <LHeaderTh value="No." center />
                   <LHeaderTh value="Nombre" center />
+                  <LHeaderTh value="Email" center />
                   <LHeaderTh value="Categoría" center />
                   <LHeaderTh value="Departamento" center />
                   <LHeaderTh value="Acciones" center />
@@ -249,12 +249,13 @@ onMounted(() => {
                 <tr v-for="(user, index) in users" v-if="users.length > 0" :key="user.id">
                   <LBodyTh :value="index + 1" center />
                   <LBodyTd :value="user.username" center />
+                  <LBodyTd :value="user.email" center />
                   <LBodyTd :value="setCategoria(user.categoria)" center />
                   <LBodyTd :value="setDepartamento(user.departamento)" center />
                   <LBodyTd center>
                     <div class="inline-flex shadow-sm" role="group">
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'"
-                        @click="goToEdit(item)">
+                        @click="goToEdit(user)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
                       <!-- <DeleteUser :model="item" :id="item.id" @successSubmit="fetchDataUsuarios()" /> -->
