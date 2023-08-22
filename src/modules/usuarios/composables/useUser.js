@@ -3,21 +3,23 @@ import { useUsuarioStore } from '../store/usuarioStore'
 const useUsuario = () => {
   const store = useUsuarioStore()
   
-  const fetchUsuarios = async() => {
-    const resp = await store.fetch()
+  const fetchUsuarios = async(params) => {
+    const resp = await store.fetch(params)
+    return resp
+  }
+
+  const fetchUsersFilter = async (query) => {
+    const resp = await store.fetchUsersFilter(query)
     return resp
   }
 
   const insertUsuario = async(usuario) => {
     const resp = await store.insert(usuario)
-    console.log("🚀 ~ file: useUser.js:13 ~ insertUsuario ~ resp:", resp)
     return resp
   }
 
   const updateUsuario = async(usuario) => {
-    console.log("🚀 ~ file: useUser.js:18 ~ updateUsuario ~ usuario:", usuario)
     const resp = await store.update(usuario)
-    console.log("🚀 ~ file: useUser.js:20 ~ updateUsuario ~ resp:", resp)
     return resp
   }
 
@@ -30,8 +32,8 @@ const useUsuario = () => {
     return store.usuarios
   }
 
-  const selectUsuario = (usuario) => {
-    store.select(usuario)
+  const setSelectedUsuario = (usuario) => {
+    store.selectUser(usuario)
   }
 
   const getSelectedUsuario = () => {
@@ -40,10 +42,11 @@ const useUsuario = () => {
 
   return {
     fetchUsuarios,
+    fetchUsersFilter,
     insertUsuario,
     updateUsuario,
     deleteUsuario,
-    selectUsuario,
+    setSelectedUsuario,
     getSelectedUsuario,
     getUsuarios,
   }

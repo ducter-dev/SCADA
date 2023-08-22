@@ -13,16 +13,6 @@ export default {
       component: () => import('../../dashboard/views/Configuracion.vue')
     },
     {
-      path: 'usuarios/editar',
-      name: 'EditarUsuarios',
-      component: () => import('../../usuarios/views/EditarUser.vue')
-    },
-    {
-      path: 'entrada/registro',
-      name: 'Registro',
-      component: () => import('../../usuarios/views/Register.vue')
-    },
-    {
       path: 'entradas',
       name: 'entries',
       component: () => import('../../entries/views/index.vue')
@@ -36,16 +26,6 @@ export default {
       path: 'servicio',
       name: 'services',
       component: () => import('../../services/views/index.vue')
-    },
-    {
-      path: 'tanques/editar',
-      name: 'TanquesEditar',
-      component: () => import('../../tanques/views/Editar.vue')
-    },
-    {
-      path: 'tanques/nuevo',
-      name: 'TanquesNuevo',
-      component: () => import('../../tanques/views/Nuevo.vue')
     },
     {
       path: 'entrada/manual',

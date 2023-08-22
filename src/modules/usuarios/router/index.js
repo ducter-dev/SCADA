@@ -7,5 +7,15 @@ export default {
       name: 'usuarios.home',
       component: () => import('../views/Index.vue')
     },
+    {
+      path: '',
+      name: 'usuarios.create',
+      component: () => import('../views/Create.vue')
+    },
+    {
+      path: '',
+      name: 'usuarios.edit',
+      component: () => import('../views/Edit.vue')
+    },
   ]
 }
