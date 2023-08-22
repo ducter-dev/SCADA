@@ -3,8 +3,14 @@ import { useUsuarioStore } from '../store/usuarioStore'
 const useUsuario = () => {
   const store = useUsuarioStore()
   
-  const fetchUsuarios = async() => {
-    const resp = await store.fetch()
+  const fetchUsuarios = async(params) => {
+    console.log('3')
+    const resp = await store.fetch(params)
+    return resp
+  }
+
+  const fetchUsersFilter = async (query) => {
+    const resp = await store.fetchUsersFilter(query)
     return resp
   }
 
@@ -30,7 +36,7 @@ const useUsuario = () => {
     return store.usuarios
   }
 
-  const selectUsuario = (usuario) => {
+  const setSelectedUsuario = (usuario) => {
     store.select(usuario)
   }
 
@@ -40,10 +46,11 @@ const useUsuario = () => {
 
   return {
     fetchUsuarios,
+    fetchUsersFilter,
     insertUsuario,
     updateUsuario,
     deleteUsuario,
-    selectUsuario,
+    setSelectedUsuario,
     getSelectedUsuario,
     getUsuarios,
   }

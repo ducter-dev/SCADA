@@ -9,14 +9,55 @@ export const useUsuarioStore = defineStore('usuario', {
   }),
   getters: {},
   actions: {
-    async fetch () {
+    async fetch (params) {
+      console.log('4')
       try {
-        const res = await scadaApi.get('/users')
-        const { data } = res
-        this.usuarios = data
-        return res
+        const { page, size } = params
+        const { data, status } = await scadaApi.get(`/users?page=${page}&size=${size}`)
+        console.log("🚀 ~ file: usuariosStore.js:41 ~ fetchTanks ~ data:", data)
+        this.usuarios = data.items
+        const pagination = {
+          links: data.links,
+          page: data.page,
+          pages: data.pages,
+          size: data.size,
+          total: data.total
+        }
+        console.log("🚀 ~ file: usuarioStore.js:49 ~ fetch ~ pagination:", pagination)
+        const obj = {
+          ok: true, data: this.usuarios, status, paginacion: pagination
+        }
+        return obj
       } catch (error) {
-        return { ok: false, data: error.message}
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    async fetchUsersFilter(query) {
+      try {
+        const { data, status } = await scadaApi.get(`/users/search?name=${query}`)
+        this.usuarios = data.items
+        const pagination = {
+          links: data.links,
+          page: data.page,
+          pages: data.pages,
+          size: data.size,
+          total: data.total
+        }
+        const obj = {
+          ok: true, data: this.usuarios, status, paginacion: pagination
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 

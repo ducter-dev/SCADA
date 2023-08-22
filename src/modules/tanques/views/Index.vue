@@ -1,9 +1,6 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import useTanque from '../composables/useTanque'
-import TableTanques from '../components/TableTanques.vue'
-import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css'
 import { useRouter } from 'vue-router'
 import Paginate from '@/layout/components/Paginate/Index.vue'
 import useToast from "@/modules/dashboard/composables/useToast"
@@ -13,7 +10,7 @@ import RefreshIcon from "@/assets/icons/update.svg"
 import EditIcon from "@/assets/icons/pencil.svg"
 
 const router = useRouter()
-const { fetchTanques, fetchTanksFilter, getTanques, setSelectTank } = useTanque()
+const { fetchTanques, fetchTanksFilter, setSelectTank } = useTanque()
 const { addToast } = useToast()
 
 const tiposTanque = [
