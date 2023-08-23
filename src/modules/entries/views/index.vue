@@ -7,6 +7,7 @@ import CreateEntry from "../components/create.vue"
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import useEventsBus from "../../../layout/eventBus"
+import useAuth from "../../auth/composables/useAuth"
 
 /**
  * Declaración de los atributos que son asignables.
@@ -16,6 +17,10 @@ import useEventsBus from "../../../layout/eventBus"
 const { bus } = useEventsBus()
 const { fetchEntriesTanks, eliminarTanque, getTanksEntries } = useTank()
 const tanksList = computed(() => getTanksEntries())
+const { getCurrentUser } = useAuth()
+const sessionUser = computed(() => getCurrentUser())
+const showActionsCrud = ref(sessionUser.value.categoria != 4)
+
 const { addToast } = useToast()
 const date = ref(new Date())
 const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
@@ -148,7 +153,7 @@ onMounted(() => {
                             <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de entradas
                             </legend>
                             <div>
-                                <CreateEntry/>
+                                <CreateEntry :isShow="showActionsCrud" />
                                 <button class="p-2" @click="fetchDataEntriesTanks(dateToUse)">
                                     <svg xmlns="http://www.w3.org/2000/svg" :class="loadData ? 'animate-spin' : ''"
                                         class="w-4 h-4 text-slate-600 dark:text-slate-300" fill="currentColor"

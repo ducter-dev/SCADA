@@ -40,7 +40,7 @@ const exitApp = async () => {
                 type: "info"
             },
         })
-        router.push({ name: 'login' })
+        router.push({ name: 'auth.login' })
     }
 }
 </script>

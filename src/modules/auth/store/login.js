@@ -6,7 +6,7 @@ export const useLoginStore = defineStore('login', {
   id: 'login',
   state: () => ({
     status: null,
-    user: null,
+    user: JSON.parse(localStorage.getItem('user')),
     token: null,
     id_caducado: 0,
   }),
@@ -63,6 +63,7 @@ export const useLoginStore = defineStore('login', {
 
     async logout () {
       localStorage.setItem('token', '')
+      localStorage.setItem('user', '')
       this.token = null
       this.user = null
       this.status = 'No authenticated'

@@ -10,6 +10,7 @@ import useEventsBus from "../../../layout/eventBus"
 import ModalDelete from '../../../layout/components/Modal/Delete.vue'
 import ModalPosicion from '../../../layout/components/Modal/Posicion.vue'
 import EditTankWaitingList from "./EditTankWaitingList.vue"
+import useAuth from "../../auth/composables/useAuth"
 
 
 /**
@@ -28,6 +29,11 @@ const showModal = ref(false)
 const configModalPosicion = ref({})
 const showModalPosicion = ref(false)
 const tanqueSelected = ref({})
+const { getCurrentUser } = useAuth()
+
+const sessionUser = computed(() => getCurrentUser())
+const showActionsCrud = ref(sessionUser.value.categoria != 4)
+
 
 
 /**
@@ -361,7 +367,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
           <span class="text-xs text-slate-700 dark:text-slate-200">(Elementos en la lista: <strong>{{
             dataTankWaitingList.length }}</strong> )</span>
         </legend>
-        <div class="flex flex-row items-center justify-center ml-2">
+        <div v-show="showActionsCrud" class="flex flex-row items-center justify-center ml-2">
           <button class="p-2" @click="alarmTanque()">
             <AlarmIcon class="w-4 h-4 text-slate-600 dark:text-slate-300" fill="currentColor" />
           </button>
@@ -386,7 +392,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
             <LHeaderTh value="Conector" center />
             <LHeaderTh value="Hora ingreso" center />
             <LHeaderTh value="Fecha ingreso" center />
-            <LHeaderTh value="Acciones" center />
+            <LHeaderTh v-show="showActionsCrud" value="Acciones" center />
           </tr>
         </template>
         <template #body>
@@ -401,7 +407,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
             <LBodyTd :value="setConector(item.conector)" center />
             <LBodyTd :value="item.horaEntrada" center />
             <LBodyTd :value="item.fechaEntrada" center />
-            <LBodyTd center>
+            <LBodyTd v-show="showActionsCrud" center>
 
               <div class="inline-flex shadow-sm" role="group">
                 <EditTankWaitingList :tanque="item"/>

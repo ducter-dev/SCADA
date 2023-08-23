@@ -1,27 +1,27 @@
 <template>
-  <div class="relative min-h-screen flex ">
+  <div class="relative flex min-h-screen ">
     <div
-      class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
+      class="flex flex-col items-center flex-auto min-w-0 bg-white sm:flex-row md:items-start sm:justify-center md:justify-start">
       <div class="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden
-           bg-primary text-white bg-no-repeat bg-cover relative bg-[url('./assets/bgHero.jpg')]">
-        <div class="absolute bg-gradient-to-b from-link to-primary opacity-60 inset-0 z-0"></div>
-        <div class="w-full text-center max-w-lg z-10">
-          <img alt="ductos del altiplano" src="../assets/logo_ductos_altiplano.png" class="mx-auto w-40"
+          bg-primary text-white bg-no-repeat bg-cover relative bg-[url('./assets/bgHero.jpg')]">
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-link to-primary opacity-60"></div>
+        <div class="z-10 w-full max-w-lg text-center">
+          <img alt="ductos del altiplano" src="../assets/logo_ductos_altiplano.png" class="w-40 mx-auto"
             style="filter: brightness(0) invert(1);">
-          <div class="sm:text-4xl font-sans xl:text-5xl text-center font-bold leading-tight py-10">SCADA IRGE V2</div>
+          <div class="py-10 font-sans font-bold leading-tight text-center sm:text-4xl xl:text-5xl">SCADA IRGE V2</div>
 
-          <router-link :to="{ name: 'login' }"
-            class="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-white border-2 border-white  hover:text-red-500 group hover:bg-slate-50">
+          <router-link :to="{ name: 'auth.login' }"
+            class="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-white border-2 border-white hover:text-red-500 group hover:bg-slate-50">
             <span
               class="absolute left-0 block w-full h-0 transition-all bg-white opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
             <span
-              class="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease text-red-500">
+              class="absolute right-0 flex items-center justify-start w-10 h-10 text-red-500 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
             </span>
-            <span class="relative text-xl font-sans">Comenzar</span>
+            <span class="relative font-sans text-xl">Comenzar</span>
           </router-link>
         </div>
         <!---remove custom style-->

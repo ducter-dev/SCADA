@@ -41,6 +41,7 @@ let dataFillerStatus = ref({})
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
 const currentUser = computed(() => getCurrentUser())
+const showActionsCrud = ref(currentUser.value.categoria != 4)
 const dataWaitingTank = ref({})
 
 // ** Variable para mostrar el tanque para asignar.
@@ -454,7 +455,7 @@ onMounted(() => {
 <template>
   <div class="max-w-sm p-1 mt-5 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
     <div class="p-2 border border-solid border-slate-300">
-      <div class="flex items-start">
+      <div v-show="showActionsCrud" class="flex items-start">
         <Menu as="div" class="relative inline-block text-left">
           <MenuButton class="mr-5">
             <IconBars class="w-4 h-4 text-slate-500" />
