@@ -1,15 +1,29 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { toggleSidebar } from "../../../layout/composables"
-import Header from "../../../layout/components/Header/Index.vue"
-import Sidebar from "../../../layout/components/Sidebar/Index.vue"
-import SidebarMobile from "../../../layout/components/Sidebar/Mobile.vue"
-import Footer from "../../../layout/components/Footer.vue"
-import ToastList from "../components/toast/list.vue"
+import { useRouter } from 'vue-router'
+import { toggleSidebar } from '../../../layout/composables'
+import Header from '../../../layout/components/Header/Index.vue'
+import Sidebar from '../../../layout/components/Sidebar/Index.vue'
+import SidebarMobile from '../../../layout/components/Sidebar/Mobile.vue'
+import Footer from '../../../layout/components/Footer.vue'
+import ToastList from '../components/toast/list.vue'
 import useTanque from '../../tanques/composables/useTanque'
+import useAuth from '../../auth/composables/useAuth'
 
 const { fetchTanquesAll } = useTanque()
+const { getCurrentUser } = useAuth()
+
+const sessionUser = computed(() => getCurrentUser())
+const router = useRouter()
+
+const goToLogin = () => {
+  router.push( { name: 'login' })
+}
+
+if (!sessionUser.value) {
+  goToLogin()
+}
 
 onMounted(() => {
   fetchTanquesAll()

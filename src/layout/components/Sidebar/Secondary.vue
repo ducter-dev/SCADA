@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import IconHouse from "../../../assets/icons/house.svg"
 import IconGasPump from "../../../assets/icons/gas-pump.svg"
@@ -10,6 +10,13 @@ import IconSliders from '../../../assets/icons/sliders.svg'
 import IconFile from '../../../assets/icons/file-arrow-down-solid.svg'
 import IconBook from '../../../assets/icons/book-solid.svg'
 import Dropdown from './Dropdown.vue'
+import useAuth from '../../../modules/auth/composables/useAuth'
+
+const { getCurrentUser } = useAuth()
+const sessionUser = computed(() => getCurrentUser())
+const verConfig = ref(false)
+
+verConfig.value = sessionUser.value.categoria == 1
 
 const route = useRoute()
 const routeName = computed(() => route.name)
@@ -75,6 +82,7 @@ const routeName = computed(() => route.name)
           <span class="truncate">Bitácora</span>
         </router-link>
         <Dropdown 
+          v-show="verConfig"
           class="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800" 
           label="Configuration" 
           :active="

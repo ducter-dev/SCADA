@@ -25,6 +25,10 @@ const { emit } = useEventsBus()
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
 
+const props = defineProps({
+    isShow: Boolean
+})
+
 const isOpen = ref(false)
 const loader = ref(false)
 
@@ -180,7 +184,7 @@ watch(() => entryForm.atTipo, () => {
 
 </script>
 <template>
-    <button class="p-2" @click="openModal">
+    <button v-show="isShow" class="p-2" @click="openModal">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 text-blue-600 dark:text-blue-300"
             fill="currentColor">
             <path
