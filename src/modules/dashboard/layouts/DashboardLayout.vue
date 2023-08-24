@@ -18,7 +18,7 @@ const sessionUser = computed(() => getCurrentUser())
 const router = useRouter()
 
 const goToLogin = () => {
-  router.push( { name: 'login' })
+  router.push( { name: 'auth.login' })
 }
 
 if (!sessionUser.value) {
