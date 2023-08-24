@@ -42,6 +42,7 @@ const tanqueForm = reactive(initialFormData())
 
 if (Object.keys(tanqueSelected.value).length > 0) {
   isEditing.value = true
+  isDisabled.value = false
   tanqueForm.id = tanqueSelected.value.id
   tanqueForm.atId = tanqueSelected.value.atId
   tanqueForm.atName = tanqueSelected.value.atName

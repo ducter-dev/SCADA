@@ -5,6 +5,7 @@ import useEventsBus from "@/layout/eventBus"
 import useUsuario from '../composables/useUser'
 import useToast from '../../dashboard/composables/useToast'
 import FormUsuario from '../components/FormUsuario.vue'
+import IconLoaderSpinn from "@/assets/icons/loader.svg"
 
 const router = useRouter()
 const { updateUsuario } = useUsuario()
@@ -94,7 +95,13 @@ watch(() => bus.value.get('submitForm'), (value) => {
       Editar usuario
     </h2>
   </div>
-  <div class="flex items-center justify-center my-4 ">
+  <div v-show="!loader" class="flex items-center justify-center my-4 ">
     <FormUsuario />
+  </div>
+  <div v-show="loader" class="flex flex-row items-center justify-center my-4 ">
+    <span class="text-slate-600 dark:text-slate-300">
+      <IconLoaderSpinn class="inline w-4 h-4 mr-2 animate-spin" />
+      Cargando
+    </span>
   </div>
 </template>

@@ -81,7 +81,7 @@ const onSubmit = async() => {
 	<div class="py-5">
 		<div class="flex flex-row-reverse">
 			<div class="text-center sm:text-left whitespace-nowrap">
-				<router-link :to="{ name: 'login' }"
+				<router-link :to="{ name: 'auth.login' }"
 					class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
 						class="inline-block w-4 h-4 align-text-top">

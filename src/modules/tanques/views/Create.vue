@@ -5,6 +5,7 @@ import useEventsBus from "@/layout/eventBus"
 import useTanque from '../composables/useTanque'
 import useToast from '@/modules/dashboard/composables/useToast'
 import FormTanque from '../components/FormTanque.vue'
+import IconLoaderSpinn from "@/assets/icons/loader.svg"
 
 const router = useRouter()
 const { registrarTanque } = useTanque()
@@ -111,7 +112,13 @@ watch(() => bus.value.get('submitForm'), (value) => {
       Agregar tanque
     </h2>
   </div>
-  <div class="flex items-center justify-center my-4 ">
+  <div v-show="!loader" class="flex items-center justify-center my-4 ">
     <FormTanque />
+  </div>
+  <div v-show="loader" class="flex flex-row items-center justify-center my-4 ">
+    <span class="text-slate-600 dark:text-slate-300">
+      <IconLoaderSpinn class="inline w-4 h-4 mr-2 animate-spin" />
+      Cargando
+    </span>
   </div>
 </template>

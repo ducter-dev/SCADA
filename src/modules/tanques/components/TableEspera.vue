@@ -396,7 +396,7 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
           </tr>
         </template>
         <template #body>
-          <tr v-for="(item, index) in dataTankWaitingList" :key="item.id" v-if="dataTankWaitingList.length > 0"
+          <tr v-for="item in dataTankWaitingList" :key="item.id" v-if="dataTankWaitingList.length > 0"
             class=" odd:bg-white odd:dark:bg-slate-800 even:bg-slate-100 even:dark:bg-slate-600">
             <LBodyTh :value="item.posicion" center />
             <LBodyTd :value="item.atName" center />
@@ -419,11 +419,11 @@ watch(() => bus.value.get('successAcceptAssignment'), (val) => {
                   </svg>
                 </button>
                 <button type="button" @click="openModalDelete(item)"
-                  class="px-2 py-1.5 text-sm font-medium text-red-900 bg-transparent border-t border-b border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700">
+                  class="px-2 py-1.5 text-sm font-medium text-blue-900 bg-transparent border-t border-b border-blue-900 hover:bg-blue-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:bg-blue-700">
                   <DeleteIcon class="w-3 h-3" />
                 </button>
                 <button type="button" @click="callTanque(item)"
-                  class="px-2 py-1.5 text-sm font-medium text-slate-900 bg-transparent border border-slate-900 hover:bg-slate-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-slate-500 focus:bg-slate-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-slate-700 dark:focus:bg-slate-700">
+                  class="px-2 py-1.5 text-sm font-medium text-blue-900 bg-transparent border border-blue-900 hover:bg-blue-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-slate-500 focus:bg-slate-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:bg-blue-700">
                   <CallIcon class="w-3 h-3" />
                 </button>
               </div>
