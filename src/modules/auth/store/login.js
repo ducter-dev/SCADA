@@ -6,7 +6,7 @@ export const useLoginStore = defineStore('login', {
   id: 'login',
   state: () => ({
     status: null,
-    user: JSON.parse(localStorage.getItem('user')),
+    user: null,
     token: null,
     id_caducado: 0,
   }),
