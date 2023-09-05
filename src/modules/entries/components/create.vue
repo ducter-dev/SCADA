@@ -60,7 +60,7 @@ const getInitialFormData = () => ({
     atTipo: ref(tanksTypes[0]),
     atName: '',
     capacidad: '',
-    conector: ref(tankConnectors[0]),
+    conector: ref(tankConnectors[2]),
     password: '',
     embarque: 0,
 })
