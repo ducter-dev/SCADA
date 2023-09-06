@@ -49,9 +49,9 @@ const tanksTypes = [
 ]
 
 const tankConnectors = [
-    { id: 1, name: 'Izquierdo', unavailable: false },
-    { id: 2, name: 'Derecho', unavailable: false },
-    { id: 3, name: 'Ambos', unavailable: false }
+    { id: 3, name: 'Ambos', unavailable: false },
+    { id: 1, name: 'Izquierdo', unavailable: true },
+    { id: 2, name: 'Derecho', unavailable: true }
 ]
 
 const getInitialFormData = () => ({
@@ -60,7 +60,7 @@ const getInitialFormData = () => ({
     atTipo: ref(tanksTypes[0]),
     atName: '',
     capacidad: '',
-    conector: ref(tankConnectors[2]),
+    conector: ref(tankConnectors[0]),
     password: '',
     embarque: 0,
 })

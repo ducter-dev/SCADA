@@ -426,17 +426,25 @@ const getTankToAssigment = () => {
   console.log("🚀 ~ file: WaitingList.vue:454 ~ getTankToAssigment ~ llenaderaDisponible:", llenaderaDisponible)
   if (llenaderaDisponible == 0) {
     console.log('Aqui salimos ...')
-    // return
+    return
   }
 
   const llenaderaSt = fillers.value.find( ll => ll.numero == llenaderaDisponible)
-  console.log("🚀 ~ file: WaitingList.vue:456 ~ getTankToAssigment ~ llenaderaSt:", llenaderaSt)
   
   // Recorremos los tanques de la lista de espera para encontrar el tanque apropiado.
 
   const tank = tanksWaiting.value.find( t => t.conector == llenaderaSt.conector || t.conector == 3)
-  /* console.log("🚀 ~ file: WaitingList.vue:470 ~ getTankToAssigment ~ tank:", tank) */
-  dataWaitingTank.value = tank  
+  if (tank) {
+    dataWaitingTank.value = tank  
+  } else {
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: `Error: No se encontró tanque que coincida el conector de la llenadera.`,
+        type: "error"
+      },
+    })
+  }
   /* console.log("🚀 ~ file: WaitingList.vue:472 ~ getTankToAssigment ~ dataWaitingTank.value:", dataWaitingTank.value) */
 }
 
