@@ -423,7 +423,6 @@ const releaseDispacth = async () => {
 const getTankToAssigment = () => {
   //  Llenadera disponible y sus caractersticas
   const llenaderaDisponible = filler.value
-  console.log("🚀 ~ file: WaitingList.vue:454 ~ getTankToAssigment ~ llenaderaDisponible:", llenaderaDisponible)
   if (llenaderaDisponible == 0) {
     console.log('Aqui salimos ...')
     return
@@ -432,20 +431,22 @@ const getTankToAssigment = () => {
   const llenaderaSt = fillers.value.find( ll => ll.numero == llenaderaDisponible)
   
   // Recorremos los tanques de la lista de espera para encontrar el tanque apropiado.
+  
+  if (tanksWaiting.value.length > 0) {
+    const tank = tanksWaiting.value.find( t => t.conector == llenaderaSt.conector || t.conector == 3)
+    if (tank) {
+      dataWaitingTank.value = tank  
+    } else {
 
-  const tank = tanksWaiting.value.find( t => t.conector == llenaderaSt.conector || t.conector == 3)
-  if (tank) {
-    dataWaitingTank.value = tank  
-  } else {
-    addToast({
-      message: {
-        title: "¡Error!",
-        message: `Error: No se encontró tanque que coincida el conector de la llenadera.`,
-        type: "error"
-      },
-    })
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: `Error: No se encontró tanque que coincida el conector de la llenadera.`,
+          type: "error"
+        },
+      })
+    }
   }
-  /* console.log("🚀 ~ file: WaitingList.vue:472 ~ getTankToAssigment ~ dataWaitingTank.value:", dataWaitingTank.value) */
 }
 
 watch(() => bus.value.get('reloadData'), (val) => {
