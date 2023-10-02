@@ -50,7 +50,14 @@ const useReportes = () => {
   const getReportEsferas = (fecha, esfera, tipo) => {
     // esfera a ó b
     try {
-      const url = `${api_url}/reportes/esferas/${esfera}/fecha/${fecha}/tipo/${tipo}`
+      let url = ''
+      if (esfera === 'ab') {
+        url = `${api_url}/reportes/esferas/fecha/${fecha}/tipo/${tipo}`
+      } else {
+
+        url = `${api_url}/reportes/esferas/${esfera}/fecha/${fecha}/tipo/${tipo}`
+      }
+
       open(url, 'Download')  
       return true
     } catch (error) {

@@ -61,6 +61,10 @@ const getReportServicio = async (type) => {
 			fileOpen.value = getReportEsferas(fecha, 'b', reportType)
 			detail = `Reporte diario de esfera b del día ${fecha}`
 			break
+		case 'esferas':
+			fileOpen.value = getReportEsferas(fecha, 'ab', reportType)
+			detail = `Reporte diario de esferas del día ${fecha}`
+			break
 		case 'patin-401a':
 			fileOpen.value = getReportPatines(fecha, '401A', reportType)
 			detail = `Reporte diario de ${type} del día ${fecha}`
