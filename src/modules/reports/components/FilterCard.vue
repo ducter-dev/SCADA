@@ -102,7 +102,7 @@ const getReportServicio = async (type) => {
 			detail = `Reporte diario de cromatógrafo ${type} del día ${fecha}`
 			break
 		case 'bombas':
-			fileOpen.value = getReportBombas(fecha)
+			fileOpen.value = getReportBombas(fecha, reportType)
 			detail = `Reporte diario de bombas ${type} del día ${fecha}`
 			break
 		case 'llenaderas-5':

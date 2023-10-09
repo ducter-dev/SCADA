@@ -87,9 +87,9 @@ const useReportes = () => {
     }
   }
 
-  const getReportBombas = (fecha) => {
+  const getReportBombas = (fecha, tipo) => {
     try {
-      const url = `${api_url}/reportes/bombas/${fecha}`
+      const url = `${api_url}/reportes/bombas/${fecha}/tipo/${tipo}`
       open(url, 'Download')  
       return true
     } catch (error) {
