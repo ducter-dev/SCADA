@@ -23,14 +23,13 @@ import EditIcon from "../../../assets/icons/edit.svg"
 const props = defineProps({
   tanque: {}
 })
-//console.log("🚀 ~ file: EditTankWaitingList.vue:23 ~ props.tanque:", props.tanque)
 
 const { addToast } = useToast()
 const { emit } = useEventsBus()
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
 const { updateTanqueEspera } = useTanqueEspera()
-const { getTanques } = useTanque()
+const { getTanques, updateTanque } = useTanque()
 
 const tanques = computed(() => getTanques())
 
@@ -45,9 +44,7 @@ const openModal = () => {
 }
 
 const currentUser = computed(() => getCurrentUser())
-//console.log("🚀 ~ file: EditTankWaitingList.vue:48 ~ currentUser.value :", currentUser.value )
 const tanqueSel = props.tanque
-//console.log("🚀 ~ file: EditTankWaitingList.vue:45 ~ tanqueSel:", tanqueSel)
 
 const tanksTypes = [
   { id: 0, name: 'Sencillo', sufix: '', unavailable: false },
@@ -90,16 +87,21 @@ async function onSubmit() {
     password: tanqueForm.password,
     embarque: tanqueForm.embarque,
     capacidad: tanqueForm.capacidad,
+    capacidad90: tanqueForm.capacidad,
     conector: tanqueForm.conector.id,
     posicion: tanqueForm.posicion,
+    transportadora: 0
   }
-  console.log("🚀 ~ file: EditTanque.vue:93 ~ onSubmit ~ body:", body)
 
   const { data, status } = await updateTanqueEspera(body)
-  console.log("🚀 ~ file: EditTanque.vue:96 ~ onSubmit ~ status:", status)
-  console.log("🚀 ~ file: EditTanque.vue:97 ~ onSubmit ~ data:", data)
 
   if (status == 200) {
+    // Actualizar tanque en BD
+
+    const response = await updateTanque(body)
+    console.log("🚀 ~ file: EditTankWaitingList.vue:101 ~ onSubmit ~ response:", response)
+    
+
     loader.value = false
     emit("successUpdateTanqueWaiting", true)
     closeModal()

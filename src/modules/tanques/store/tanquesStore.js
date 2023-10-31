@@ -109,6 +109,7 @@ export const useTanqueStore = defineStore('tanques', {
         console.log("🚀 ~ file: tanquesStore.js:84 ~ editTank ~ data:", data)
         const { atId, atTipo, atName, conector, capacidad90, transportadora } = data
         const tanque = this.tanques.find(t => t.id == data.id)
+        console.log("🚀 ~ file: tanquesStore.js:112 ~ editTank ~ tanque:", tanque)
         tanque.atId = atId
         tanque.atTipo = atTipo
         tanque.atName = atName
