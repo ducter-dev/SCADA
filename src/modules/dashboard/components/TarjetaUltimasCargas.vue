@@ -68,6 +68,16 @@ const fecthInformationOnTanksLastDepartures = async () => {
   }
 }
 
+const setNumber = (num) => {
+	let result = 0
+	if (Number.isInteger(num)) {
+		result = `${num}.000`
+	} else {
+		result = `${num}`
+	}
+	return result
+}
+
 watch(() => bus.value.get('reloadData'), (val) => {
   fecthInformationOnTanksLastDepartures()
 })
@@ -101,7 +111,7 @@ onMounted(() => {
             <LBodyTh :value="item.id" center />
             <LBodyTd :value="item.llenadera" center />
             <LBodyTd :value="item.atName" center />
-            <LBodyTd :value="item.masaTons" center />
+            <LBodyTd :value="setNumber(item.masaTons)" center />
             <LBodyTd :value="item.densidadCor" center />
           </tr>
           <tr v-show="dataResult.length < 1">

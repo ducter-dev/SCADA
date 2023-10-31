@@ -62,6 +62,16 @@ const formatPicker = () => {
 	return format(date.value, 'dd-MM-yyyy')
 }
 
+const setNumber = (num) => {
+	let result = 0
+	if (Number.isInteger(num)) {
+		result = `${num}.000`
+	} else {
+		result = `${num}`
+	}
+	return result
+}
+
 const setTipo = (categoria) => {
 	switch (categoria) {
 		case 0:
@@ -140,7 +150,7 @@ onMounted(() => {
 									<LBodyTh :value="item.id" center />
 									<LBodyTd :value="item.atName" center />
 									<LBodyTd :value="setTipo(item.atTipo)" center />
-									<LBodyTd :value="item.masaTons" center />
+									<LBodyTd :value="setNumber(item.masaTons)" center />
 									<LBodyTd :value="item.volNatBls" center />
 									<LBodyTd :value="item.densidadCor" center />
 									<LBodyTd :value="item.llenadera" center />
